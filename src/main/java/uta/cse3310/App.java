@@ -68,6 +68,11 @@ public class App /*extends WebSocketServer*/
   private Player[] playerList;
   private Player[] leaderboardList;
 
+  public App()
+  {
+    
+  }
+
   public Game[] getGamelist()
   {
     return null;

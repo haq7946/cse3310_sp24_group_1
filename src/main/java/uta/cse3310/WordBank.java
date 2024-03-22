@@ -5,6 +5,11 @@ public class WordBank
 {
     private Word[] wordList;
 
+    public WordBank()
+    {
+        
+    }
+
     public static Word[] initializeWordBank(File file)
     {
         return null;

@@ -6,6 +6,11 @@ public class Word
     private int wordLength;
     //private Orientation orient;
 
+    public Word()
+    {
+        
+    }
+
     public static String getWord()
     {
         return "";

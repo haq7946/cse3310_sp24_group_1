@@ -8,6 +8,11 @@ public class Player
     private int status;
     private int numberOfVictores;
 
+    public Player()
+    {
+        
+    }
+
     public static String getUsername()
     {
         return "";

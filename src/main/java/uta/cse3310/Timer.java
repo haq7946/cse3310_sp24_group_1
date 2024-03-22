@@ -6,6 +6,11 @@ public class Timer
     private int initialTimer;
     private boolean suddenDeathMode;
 
+    public Timer()
+    {
+        
+    }
+
     public static int getTimer()
     {
         return 0;

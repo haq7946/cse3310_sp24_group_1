@@ -12,6 +12,11 @@ public class Game
     private String[] wordList;
     private String[] completedWordList;
 
+    public Game()
+    {
+        
+    }
+
     public static int getGameID()
     {
         return 0;

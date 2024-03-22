@@ -12,6 +12,11 @@ public class Board
     private double diagonalDownOrientation;
     private double boardFormationTime;
 
+    public Board()
+    {
+        
+    }
+
     public static void updateBoardArray(char[][] arr)
     {
 
