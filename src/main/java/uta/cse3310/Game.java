@@ -1,7 +1,94 @@
 package uta.cse3310;
 
-public class Game {
+public class Game 
+{
+    private int gameID;
+    private Player[] playerList;
+    private int numberOfPlayers;
+    private Board board;
+    private int gameStatus;
 
+    private String[] wordList;
+    private String[] completedWordList;
+
+    public static int getGameID()
+    {
+
+    }
+
+    public static void startGame()
+    {
+
+    }
+
+    public static void setGameID(int gam)
+    {
+
+    }
+
+    public static int getNumberOfPlayers()
+    {
+
+    }
+
+    public static void setNumberOfPlayers(int num)
+    {
+
+    }
+
+    public static void updateState()
+    {
+
+    }
+
+    public static void exitGame()
+    {
+
+    }
+
+    public static void initializeWordList()
+    {
+
+    }
+
+    public static void crossOutWord()
+    {
+
+    }
+
+    public static String selectWord()
+    {
+
+    }
+
+    public static void gameChat(String message)
+    {
+
+    }
+
+    public static boolean checkValidWord(String word)
+    {
+
+    }
+
+    public static Player checkWinner()
+    {
+
+    }
+
+    public static void roomChat(String message, int gameID)
+    {
+
+    }
+
+    public static String[] chooseWords(File file)
+    {
+        
+    }
+
+
+
+    /*
     PlayerType Players;
     public PlayerType CurrentTurn;
     public PlayerType[] Button;
@@ -166,6 +253,7 @@ public class Game {
         // timer is needed.
 
     }
+    */
 }
 // In windows, shift-alt-F formats the source code
 // In linux, it is ctrl-shift-I
