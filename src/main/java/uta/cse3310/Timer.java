@@ -8,7 +8,7 @@ public class Timer
 
     public static int getTimer()
     {
-
+        return 0;
     }
 
     public static void setTimer(int time)
@@ -18,11 +18,11 @@ public class Timer
 
     public static boolean checkSuddenDeath()
     {
-
+        return false;
     }
 
     public static void revealWord(String word)
     {
-        
+
     }
 }

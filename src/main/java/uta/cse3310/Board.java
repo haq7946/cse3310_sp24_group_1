@@ -1,4 +1,5 @@
 package uta.cse3310;
+import java.io.File;
 
 public class Board 
 {
@@ -18,7 +19,7 @@ public class Board
 
     public static char[][] getBoardArray()
     {
-
+        return null;
     }
 
     public static void setDensity(double dens)
@@ -28,12 +29,12 @@ public class Board
 
     public static double getDensity()
     {
-
+        return 0.0;
     }
 
     public static Word[] initializeWordBank(File file)
     {
-
+        return null;
     }
 
     public static void initializeBoard()
@@ -48,11 +49,11 @@ public class Board
 
     public static double[] getOrientationValues()
     {
-
+        return null;
     }
 
     public static double getBoardFormationTime()
     {
-        
+        return 0.0;
     }
 }

@@ -4,13 +4,13 @@ public class Player
 {
     private String username;
     private int score;
-    private String color;
+    private int color;
     private int status;
     private int numberOfVictores;
 
     public static String getUsername()
     {
-
+        return "";
     }
 
     public static void setUsername(String name)
@@ -20,7 +20,7 @@ public class Player
 
     public static int getScore()
     {
-
+        return 0;
     }
 
     public static void setScore(int score)
@@ -30,7 +30,7 @@ public class Player
 
     public static String getColor()
     {
-
+        return "";
     }
 
     public static void setColor()
@@ -40,7 +40,7 @@ public class Player
 
     public static int getStatus()
     {
-
+        return 0;
     }
 
     public static void getStatus(String status)
@@ -50,12 +50,12 @@ public class Player
 
     public static int getVictories()
     {
-
+        return 0;
     }
 
     public static void setVictories(int victory)
     {
-        
+
     }
 
 

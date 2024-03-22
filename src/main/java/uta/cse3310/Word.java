@@ -8,7 +8,7 @@ public class Word
 
     public static String getWord()
     {
-
+        return "";
     }
 
     public static void setWord(String s)
@@ -18,17 +18,17 @@ public class Word
 
     public static int getLength()
     {
-
+        return 0;
     }
 
     public static void setOrientation(int ori)
     {
-        
+
     }
 
     public static int getOrientation()
     {
-
+        return 0;
     }
 
 

@@ -45,6 +45,7 @@ import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.util.Collections;
+import java.io.File;
 
 import org.java_websocket.WebSocket;
 import org.java_websocket.drafts.Draft;
@@ -60,7 +61,7 @@ import java.time.Duration;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-public class App extends WebSocketServer
+public class App /*extends WebSocketServer*/
 {
 
   private Game[] gameList;
@@ -69,12 +70,12 @@ public class App extends WebSocketServer
 
   public Game[] getGamelist()
   {
-
+    return null;
   }
 
   public Game makeGame()
   {
-
+    return null;
   }
 
   public static void joinGame()
@@ -109,7 +110,7 @@ public class App extends WebSocketServer
 
   public static Player[] updateLeaderBoard(Player[] players)
   {
-
+    return null;
   }
 
   public static void globalChat(String message)
@@ -117,9 +118,9 @@ public class App extends WebSocketServer
 
   }
 
-  public static getPlayerColor(String name)
+  public static int getPlayerColor(String name)
   {
-
+    return 0;
   }
 
   public static void gameSelect(Game game)

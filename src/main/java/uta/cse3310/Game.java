@@ -1,4 +1,5 @@
 package uta.cse3310;
+import java.io.File;
 
 public class Game 
 {
@@ -13,7 +14,7 @@ public class Game
 
     public static int getGameID()
     {
-
+        return 0;
     }
 
     public static void startGame()
@@ -28,7 +29,7 @@ public class Game
 
     public static int getNumberOfPlayers()
     {
-
+        return 0;
     }
 
     public static void setNumberOfPlayers(int num)
@@ -58,7 +59,7 @@ public class Game
 
     public static String selectWord()
     {
-
+        return "";
     }
 
     public static void gameChat(String message)
@@ -68,12 +69,12 @@ public class Game
 
     public static boolean checkValidWord(String word)
     {
-
+        return false;
     }
 
     public static Player checkWinner()
     {
-
+        return null;
     }
 
     public static void roomChat(String message, int gameID)
@@ -83,7 +84,7 @@ public class Game
 
     public static String[] chooseWords(File file)
     {
-        
+        return null;
     }
 
 

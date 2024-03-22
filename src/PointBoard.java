@@ -4,11 +4,11 @@ public class PointBoard
 
     public static Player[] getScoreBoard()
     {
-
+        return null;
     }
 
     public static void setScoreBoard(Player[] playerList)
     {
-        
+
     }
 }

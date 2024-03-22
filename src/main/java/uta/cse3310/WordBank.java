@@ -1,4 +1,5 @@
 package uta.cse3310;
+import java.io.File;
 
 public class WordBank 
 {
@@ -6,11 +7,11 @@ public class WordBank
 
     public static Word[] initializeWordBank(File file)
     {
-
+        return null;
     }
 
     public static void updateWordBank(Word[] Word)
     {
-        
+
     }
 }
