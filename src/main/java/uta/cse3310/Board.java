@@ -14,7 +14,7 @@ public class Board
 
     public Board()
     {
-        
+        boardArray = new char[50][50];
     }
 
     public static void updateBoardArray(char[][] arr)
@@ -27,14 +27,14 @@ public class Board
         return null;
     }
 
-    public static void setDensity(double dens)
+    public void setDensity(double dens)
     {
-
+        density = dens;
     }
 
-    public static double getDensity()
+    public double getDensity()
     {
-        return 0.0;
+        return density;
     }
 
     public static Word[] initializeWordBank(File file)
@@ -42,9 +42,9 @@ public class Board
         return null;
     }
 
-    public static void initializeBoard()
+    public void initializeBoard()
     {
-
+        boardArray = new char[50][50];
     }
 
     public static void setOrientationValues()
