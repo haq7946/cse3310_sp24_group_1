@@ -1,13 +1,14 @@
 package uta.cse3310;
 import java.io.File;
-
+import java.lang.Math;
 public class Board 
 {
     private char[][] boardArray;
     private Word[] wordList;
     private double density;
     private double horizontalOrientation;
-    private double verticalOrientation;
+    private double verticalUpOrientation;
+    private double verticalDownOrientation;
     private double diagonalUpOrientation;
     private double diagonalDownOrientation;
     private double boardFormationTime;
@@ -47,18 +48,29 @@ public class Board
         boardArray = new char[50][50];
     }
 
-    public static void setOrientationValues()
+    public void setOrientationValues()
     {
-
+        double orientationValue = Math.random()/20 + 0.15;
+        horizontalOrientation = orientationValue;
+        verticalUpOrientation = orientationValue;
+        verticalDownOrientation = orientationValue;
+        diagonalUpOrientation = orientationValue;
+        diagonalDownOrientation = orientationValue;
     }
 
-    public static double[] getOrientationValues()
+    public double[] getOrientationValues()
     {
-        return null;
+        double[] values = new double[5];
+        values[0] = horizontalOrientation;
+        values[1] = verticalUpOrientation;
+        values[2] = verticalDownOrientation;
+        values[3] = diagonalUpOrientation;
+        values[4] = diagonalDownOrientation;
+        return values;
     }
 
-    public static double getBoardFormationTime()
+    public double getBoardFormationTime()
     {
-        return 0.0;
+        return boardFormationTime;
     }
 }
