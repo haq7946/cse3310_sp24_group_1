@@ -23,9 +23,9 @@ public class Board
 
     }
 
-    public static char[][] getBoardArray()
+    public char[][] getBoardArray()
     {
-        return null;
+        return boardArray;
     }
 
     public void setDensity(double dens)

@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import java.sql.Connection;
+
 import net.freeutils.httpserver.HTTPServer;
 import net.freeutils.httpserver.HTTPServer.ContextHandler;
 import net.freeutils.httpserver.HTTPServer.FileContextHandler;
@@ -18,6 +20,7 @@ public class HttpServer {
 
     private static final String HTML = "./html";
     int port = 8080;
+    Connection conn;
     String dirname = HTML;
 
     public HttpServer(int portNum, String dirName) {
@@ -47,6 +50,17 @@ public class HttpServer {
         } catch (Exception e) {
             System.err.println("error: " + e);
         }
+
+    }
+    public void onOpen(){
+        
+    }
+
+    public void onMessage(){
+
+    }
+
+    public void onClose(){
 
     }
 
