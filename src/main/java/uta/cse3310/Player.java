@@ -13,54 +13,54 @@ public class Player
         
     }
 
-    public static String getUsername()
+    public String getUsername()
     {
-        return "";
+        return username;
     }
 
-    public static void setUsername(String name)
+    public void setUsername(String name)
     {
-
+        username = name;
     }
 
-    public static int getScore()
+    public int getScore()
     {
-        return 0;
+        return score;
     }
 
-    public static void setScore(int score)
+    public void setScore(int scr)
     {
-
+        score = scr;
     }
 
-    public static String getColor()
+    public int getColor()
     {
-        return "";
+        return color;
     }
 
-    public static void setColor()
+    public void setColor(int clr)
     {
-
+        color = clr;
     }
 
-    public static int getStatus()
+    public int getStatus()
     {
-        return 0;
+        return status;
     }
 
-    public static void getStatus(String status)
+    public void setStatus(int stat)
     {
-
+        status = stat;
     }
 
-    public static int getVictories()
+    public int getVictories()
     {
-        return 0;
+        return numberOfVictores;
     }
 
-    public static void setVictories(int victory)
+    public void setVictories(int victory)
     {
-
+        numberOfVictores = victory;
     }
 
 
