@@ -1,11 +1,15 @@
 package uta.cse3310;
 import java.io.File;
 import java.lang.Math;
+import java.util.ArrayList;
+import java.lang.Math;
 public class Board 
 {
     private char[][] boardArray;
     private int boardLength;
     private int boardWidth;
+    private double xCoordinate;
+    private double yCoordinate;
     private Word[] wordList;
     private double density;
     private double horizontalOrientation;
@@ -17,8 +21,8 @@ public class Board
 
     public Board()
     {
-        boardLength = 50;
-        boardWidth = 50;
+        boardLength = 20;
+        boardWidth = 20;
         boardArray = new char[boardLength][boardWidth];
     }
 
@@ -54,22 +58,32 @@ public class Board
         return density;
     }
 
-    public static Word[] initializeWordBank(File file)
+    public static ArrayList<Word> addWordBank(Word word)
     {
         return null;
     }
 
     public void initializeBoard()
     {  
-        boardLength = 10;
-        boardWidth = 10;
+        int volume = boardLength * boardWidth;
+        int mass, calculatedDensity = 0;
+
         for(int i = 0; i < boardLength; i++)
         {
-            for(int j = 0; j < boardLength; j++)
+            for(int j = 0; j < boardWidth; j++)
             {
                 boardArray[i][j] = '#';
             }
         }
+        while(calculatedDensity < density)
+        {
+        }
+    }
+
+    public void placeWord(Word word)
+    {
+        xCoordinate = Math.floor(Math.random() * boardLength);
+        yCoordinate = Math.floor(Math.random() * boardWidth);
     }
 
     public void setOrientationValues()

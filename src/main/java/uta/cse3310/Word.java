@@ -1,4 +1,5 @@
 package uta.cse3310;
+import java.lang.Math;
 
 public class Word 
 {
@@ -6,9 +7,9 @@ public class Word
     private int wordLength;
     private Orientation orient;
 
-    public Word()
+    public Word(String word)
     {
-        
+        this.word = word;
     }
 
     public static String getWord()
