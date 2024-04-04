@@ -1,6 +1,7 @@
 package uta.cse3310;
 import java.io.File;
-
+import java.io.FileReader;
+import java.io.BufferedReader;
 public class Game 
 {
     private int gameID;
@@ -17,6 +18,8 @@ public class Game
         Board penis = new Board();
         penis.initializeBoard();
         penis.printBoardArray();
+        WordBank peepee = new WordBank();
+        peepee.initializeWordBank();
     }
 
     public static int getGameID()

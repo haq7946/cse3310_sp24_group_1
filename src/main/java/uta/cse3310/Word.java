@@ -4,7 +4,7 @@ public class Word
 {
     private String word;
     private int wordLength;
-    //private Orientation orient;
+    private Orientation orient;
 
     public Word()
     {

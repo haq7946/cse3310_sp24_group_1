@@ -17,7 +17,9 @@ public class Board
 
     public Board()
     {
-        //boardArray = new char[boardLength][boardWidth];
+        boardLength = 50;
+        boardWidth = 50;
+        boardArray = new char[boardLength][boardWidth];
     }
 
     public static void updateBoardArray(char[][] arr)
@@ -61,7 +63,6 @@ public class Board
     {  
         boardLength = 10;
         boardWidth = 10;
-        boardArray = new char[boardLength][boardWidth];
         for(int i = 0; i < boardLength; i++)
         {
             for(int j = 0; j < boardLength; j++)
