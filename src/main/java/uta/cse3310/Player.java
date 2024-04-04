@@ -8,9 +8,13 @@ public class Player
     private int status;
     private int numberOfVictores;
 
-    public Player()
+    public Player(String nick, int colorP)
     {
-        
+        setUsername(nick);
+        setColor(colorP);
+        setScore(0);
+        setStatus(0);
+        setVictories(0);
     }
 
     public String getUsername()
