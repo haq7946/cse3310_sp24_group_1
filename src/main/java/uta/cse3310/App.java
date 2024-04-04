@@ -47,19 +47,19 @@ import java.nio.ByteBuffer;
 import java.util.Collections;
 import java.io.File;
 
-import org.java_websocket.WebSocket;
-import org.java_websocket.drafts.Draft;
-import org.java_websocket.drafts.Draft_6455;
-import org.java_websocket.handshake.ClientHandshake;
-import org.java_websocket.server.WebSocketServer;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.Vector;
-import java.time.Instant;
-import java.time.Duration;
+// import org.java_websocket.WebSocket;
+// import org.java_websocket.drafts.Draft;
+// import org.java_websocket.drafts.Draft_6455;
+// import org.java_websocket.handshake.ClientHandshake;
+// import org.java_websocket.server.WebSocketServer;
+ import java.util.Timer;
+ import java.util.TimerTask;
+ import java.util.Vector;
+ import java.time.Instant;
+ import java.time.Duration;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+// import com.google.gson.Gson;
+// import com.google.gson.GsonBuilder;
 
 public class App /*extends WebSocketServer*/
 {
@@ -70,7 +70,7 @@ public class App /*extends WebSocketServer*/
 
   public App()
   {
-    
+    Game g = new Game();
   }
 
   public Game[] getGamelist()
@@ -95,7 +95,7 @@ public class App /*extends WebSocketServer*/
 
   public static void main(String[] args) 
   {
-    
+    App a = new App();
   }
 
   public static void addPlayer(String name)

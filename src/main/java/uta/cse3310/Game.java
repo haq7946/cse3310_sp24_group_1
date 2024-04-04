@@ -14,7 +14,9 @@ public class Game
 
     public Game()
     {
-        
+        Board penis = new Board();
+        penis.initializeBoard();
+        penis.printBoardArray();
     }
 
     public static int getGameID()

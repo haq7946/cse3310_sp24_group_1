@@ -4,6 +4,8 @@ import java.lang.Math;
 public class Board 
 {
     private char[][] boardArray;
+    private int boardLength;
+    private int boardWidth;
     private Word[] wordList;
     private double density;
     private double horizontalOrientation;
@@ -15,7 +17,7 @@ public class Board
 
     public Board()
     {
-        boardArray = new char[50][50];
+        //boardArray = new char[boardLength][boardWidth];
     }
 
     public static void updateBoardArray(char[][] arr)
@@ -26,6 +28,18 @@ public class Board
     public char[][] getBoardArray()
     {
         return boardArray;
+    }
+
+    public void printBoardArray()
+    {
+       for(int i = 0; i < boardLength; i++)
+        {
+            for(int j = 0; j < boardLength; j++)
+            {
+                System.out.print(boardArray[i][j] + "  ");
+            }
+            System.out.println("\n");
+        }
     }
 
     public void setDensity(double dens)
@@ -44,8 +58,17 @@ public class Board
     }
 
     public void initializeBoard()
-    {
-        boardArray = new char[50][50];
+    {  
+        boardLength = 10;
+        boardWidth = 10;
+        boardArray = new char[boardLength][boardWidth];
+        for(int i = 0; i < boardLength; i++)
+        {
+            for(int j = 0; j < boardLength; j++)
+            {
+                boardArray[i][j] = '#';
+            }
+        }
     }
 
     public void setOrientationValues()
