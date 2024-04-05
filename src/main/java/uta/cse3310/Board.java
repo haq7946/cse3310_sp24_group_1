@@ -1,9 +1,20 @@
 package uta.cse3310;
 import java.io.File;
 import java.lang.Math;
+import java.util.ArrayList;
+import java.io.FileReader;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+
 public class Board 
 {
     private char[][] boardArray;
+    private int boardLength;
+    private int boardWidth;
+    private double xCoordinate;
+    private double yCoordinate;
     private Word[] wordList;
     private double density;
     private double horizontalOrientation;
@@ -15,7 +26,9 @@ public class Board
 
     public Board()
     {
-        boardArray = new char[50][50];
+        boardLength = 20;
+        boardWidth = 20;
+        boardArray = new char[boardLength][boardWidth];
     }
 
     public static void updateBoardArray(char[][] arr)
@@ -28,6 +41,18 @@ public class Board
         return boardArray;
     }
 
+    public void printBoardArray()
+    {
+       for(int i = 0; i < boardLength; i++)
+        {
+            for(int j = 0; j < boardLength; j++)
+            {
+                System.out.print(boardArray[i][j] + "  ");
+            }
+            System.out.println("\n");
+        }
+    }
+
     public void setDensity(double dens)
     {
         density = dens;
@@ -38,14 +63,73 @@ public class Board
         return density;
     }
 
-    public static Word[] initializeWordBank(File file)
+    public static ArrayList<Word> addWordBank(Word word)
     {
         return null;
     }
 
-    public void initializeBoard()
+    public void initializeBoard(WordBank wordBank)
+    {  
+        int volume = boardLength * boardWidth;
+        int mass = 0;
+        int calculatedDensity = 0;
+        for(int i = 0; i < boardLength; i++)
+        {
+            for(int j = 0; j < boardWidth; j++)
+            {
+                boardArray[i][j] = '#';
+            }
+        }
+        System.out.println("word length is" + placeWord(wordBank));
+        /*
+        while(calculatedDensity < density)
+        {
+            mass += placeWord(wordBank);
+            calculatedDensity = mass/volume;
+        }
+        */
+    }
+
+    public int placeWord(WordBank wordBank)
     {
-        boardArray = new char[50][50];
+        //Reading number of lines in text file
+        int numberOfLines = 0;
+        try
+        {
+        BufferedReader br = new BufferedReader(new FileReader("resources\\words.txt"));
+        while(br.readLine() != null)
+        {
+            numberOfLines++;
+        }
+        //Selecting random line number
+        double lineNumber = Math.floor((Math.random() * numberOfLines));
+        //Selecting word from that line number, resetting br to beginning
+        br = new BufferedReader(new FileReader("resources\\words.txt"));
+        for(int i = 1; i < lineNumber; i++){
+            br.readLine();
+        }
+        //Word that will be placed in the board
+        String chosenWord = br.readLine();
+        //Check to see if word is not in the word bank, if it is then return 0 (word not able to be picked)
+        for(int i = 0; i < wordBank.getWordBank().size(); i++)
+        {
+            if(chosenWord.equals(wordBank.getWordBank().get(i)))
+            {
+                return 0;
+            }
+        }
+        //Choosing random coordinates for chosen word, make instance of a Word
+        Word word = new Word(chosenWord);
+        xCoordinate = Math.floor(Math.random() * boardLength);
+        yCoordinate = Math.floor(Math.random() * boardWidth);
+        //Return length to update calculatedDensity
+        return chosenWord.length();
+        }
+        catch(IOException e)
+        {
+            System.out.println("wadahek that wasn't a valid file!");
+        }
+        return -1;
     }
 
     public void setOrientationValues()

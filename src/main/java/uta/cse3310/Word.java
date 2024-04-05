@@ -1,19 +1,22 @@
 package uta.cse3310;
+import java.lang.Math;
 
 public class Word 
 {
     private String word;
     private int wordLength;
-    //private Orientation orient;
+    private Orientation orient;
 
-    public Word()
+    public Word(String word)
     {
-        
+        this.word = word;
+        orient = Orientation.VERTICALDOWN;
+
     }
 
-    public static String getWord()
+    public String getWord()
     {
-        return "";
+        return word;
     }
 
     public static void setWord(String s)
@@ -31,7 +34,7 @@ public class Word
 
     }
 
-    public static int getOrientation()
+    public int getOrientation()
     {
         return 0;
     }

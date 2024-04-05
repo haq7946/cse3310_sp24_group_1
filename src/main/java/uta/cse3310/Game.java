@@ -1,6 +1,7 @@
 package uta.cse3310;
 import java.io.File;
-
+import java.io.FileReader;
+import java.io.BufferedReader;
 public class Game 
 {
     private int gameID;
@@ -14,7 +15,11 @@ public class Game
 
     public Game()
     {
-        
+        Board board = new Board();
+        WordBank bank = new WordBank();
+        board.initializeBoard(bank);
+        board.printBoardArray();
+        bank.initializeWordBank();
     }
 
     public static int getGameID()

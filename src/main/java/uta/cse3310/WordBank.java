@@ -1,37 +1,41 @@
 package uta.cse3310;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.BufferedReader;
 import java.io.IOException;
-
+import java.util.ArrayList;
 public class WordBank 
 {
-    private Word[] wordList;
+    private ArrayList<Word> wordBank;
 
     public WordBank()
     {
-        
+        wordBank = new ArrayList<Word>();
+        Word word = new Word("Burger");
+        wordBank.add(word);
     }
 
-    public Word[] initializeWordBank(File file)
+    public ArrayList<Word> getWordBank()
     {
-        // try {
-        //     BufferedReader reader = new BufferedReader(new FileReader(file));
-        //     String word;
-        //     while((word = reader.readLine()) != null) //&& greater than size 0.67 word density
-        //     {
-        //         if(word.length() > 3)
-        //         {
-        //             //Store the word in the array
-        //         }
-        //     }
-        //     reader.close();
-        // } catch (FileNotFoundException e) {
-        //     // TODO Auto-generated catch block
-        //     e.printStackTrace();
-        // }
-        return null;
+        return wordBank;
+    }
+
+    public ArrayList<Word> initializeWordBank() //Put file parameter back in
+    {
+        try
+        {
+        BufferedReader br = new BufferedReader(new FileReader("resources\\words.txt"));
+        for(int i = 0; i < 5; i++)
+        {
+            System.out.println(br.readLine()); 
+        }
+        }
+        catch(IOException e)
+        {
+            System.out.println("wadahek that wasn't a valid file!");
+        }
+        return wordBank;
     }
 
     public static void updateWordBank(Word[] Word)

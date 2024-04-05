@@ -70,7 +70,7 @@ public class App /*extends WebSocketServer*/
 
   public App()
   {
-    
+    Game g = new Game();
   }
 
   public Game[] getGamelist()
@@ -95,7 +95,7 @@ public class App /*extends WebSocketServer*/
 
   public static void main(String[] args) 
   {
-    
+    App a = new App();
   }
 
   public static void addPlayer(String name)
