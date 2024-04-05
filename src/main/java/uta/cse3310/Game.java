@@ -15,11 +15,11 @@ public class Game
 
     public Game()
     {
-        Board penis = new Board();
-        penis.printBoardArray();
-        WordBank peepee = new WordBank();
-        peepee.initializeWordBank();
-        penis.initializeBoard(peepee);
+        Board board = new Board();
+        WordBank bank = new WordBank();
+        board.initializeBoard(bank);
+        board.printBoardArray();
+        bank.initializeWordBank();
     }
 
     public static int getGameID()

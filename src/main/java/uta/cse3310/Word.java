@@ -10,6 +10,8 @@ public class Word
     public Word(String word)
     {
         this.word = word;
+        orient = Orientation.VERTICALDOWN;
+
     }
 
     public String getWord()
@@ -32,7 +34,7 @@ public class Word
 
     }
 
-    public static int getOrientation()
+    public int getOrientation()
     {
         return 0;
     }

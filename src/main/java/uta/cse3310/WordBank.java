@@ -10,7 +10,9 @@ public class WordBank
 
     public WordBank()
     {
-        
+        wordBank = new ArrayList<Word>();
+        Word word = new Word("Burger");
+        wordBank.add(word);
     }
 
     public ArrayList<Word> getWordBank()
@@ -22,7 +24,7 @@ public class WordBank
     {
         try
         {
-        BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\brybo\\cse3310_sp24_group_1\\words.txt"));
+        BufferedReader br = new BufferedReader(new FileReader("resources\\words.txt"));
         for(int i = 0; i < 5; i++)
         {
             System.out.println(br.readLine()); 

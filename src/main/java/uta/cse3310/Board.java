@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.io.FileReader;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+
 public class Board 
 {
     private char[][] boardArray;
@@ -70,7 +73,6 @@ public class Board
         int volume = boardLength * boardWidth;
         int mass = 0;
         int calculatedDensity = 0;
-
         for(int i = 0; i < boardLength; i++)
         {
             for(int j = 0; j < boardWidth; j++)
@@ -78,11 +80,14 @@ public class Board
                 boardArray[i][j] = '#';
             }
         }
+        System.out.println("word length is" + placeWord(wordBank));
+        /*
         while(calculatedDensity < density)
         {
             mass += placeWord(wordBank);
             calculatedDensity = mass/volume;
         }
+        */
     }
 
     public int placeWord(WordBank wordBank)
@@ -91,16 +96,15 @@ public class Board
         int numberOfLines = 0;
         try
         {
-        BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\brybo\\cse3310_sp24_group_1\\words.txt"));
+        BufferedReader br = new BufferedReader(new FileReader("resources\\words.txt"));
         while(br.readLine() != null)
         {
             numberOfLines++;
         }
-
         //Selecting random line number
         double lineNumber = Math.floor((Math.random() * numberOfLines));
         //Selecting word from that line number, resetting br to beginning
-        br = new BufferedReader(new FileReader("C:\\Users\\brybo\\cse3310_sp24_group_1\\words.txt"));
+        br = new BufferedReader(new FileReader("resources\\words.txt"));
         for(int i = 1; i < lineNumber; i++){
             br.readLine();
         }
@@ -114,12 +118,13 @@ public class Board
                 return 0;
             }
         }
+        //Choosing random coordinates for chosen word, make instance of a Word
+        Word word = new Word(chosenWord);
         xCoordinate = Math.floor(Math.random() * boardLength);
         yCoordinate = Math.floor(Math.random() * boardWidth);
         //Return length to update calculatedDensity
         return chosenWord.length();
         }
-
         catch(IOException e)
         {
             System.out.println("wadahek that wasn't a valid file!");
