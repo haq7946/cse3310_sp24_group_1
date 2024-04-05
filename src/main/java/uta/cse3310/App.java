@@ -45,6 +45,7 @@ import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.util.Collections;
+import java.io.File;
 
 import org.java_websocket.WebSocket;
 import org.java_websocket.drafts.Draft;
@@ -60,8 +61,78 @@ import java.time.Duration;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-public class App extends WebSocketServer {
+public class App /*extends WebSocketServer*/
+{
 
+  private Game[] gameList;
+  private Player[] playerList;
+  private Player[] leaderboardList;
+
+  public App()
+  {
+    Game g = new Game();
+  }
+
+  public Game[] getGamelist()
+  {
+    return null;
+  }
+
+  public Game makeGame()
+  {
+    return null;
+  }
+
+  public static void joinGame()
+  {
+
+  }
+
+  public static void refreshGames()
+  {
+
+  }
+
+  public static void main(String[] args) 
+  {
+    App a = new App();
+  }
+
+  public static void addPlayer(String name)
+  {
+
+  }
+
+  public static void toPlayerSelect()
+  {
+
+  }
+
+  public static void toLobby()
+  {
+
+  }
+
+  public static Player[] updateLeaderBoard(Player[] players)
+  {
+    return null;
+  }
+
+  public static void globalChat(String message)
+  {
+
+  }
+
+  public static int getPlayerColor(String name)
+  {
+    return 0;
+  }
+
+  public static void gameSelect(Game game)
+  {
+
+  }
+/*
   // All games currently underway on this server are stored in
   // the vector ActiveGames
   private Vector<Game> ActiveGames = new Vector<Game>();
@@ -229,4 +300,5 @@ public class App extends WebSocketServer {
     System.out.println("websocket Server started on port: " + port);
 
   }
+  */
 }

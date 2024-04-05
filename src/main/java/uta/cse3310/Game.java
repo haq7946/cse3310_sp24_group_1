@@ -22,9 +22,9 @@ public class Game
         bank.initializeWordBank();
     }
 
-    public int getGameID()
+    public static int getGameID()
     {
-        return gameID;
+        return 0;
     }
 
     public static void startGame()
@@ -32,19 +32,19 @@ public class Game
 
     }
 
-    public void setGameID(int gam)
+    public static void setGameID(int gam)
     {
-        gameID = gam;
+
     }
 
-    public int getNumberOfPlayers()
+    public static int getNumberOfPlayers()
     {
-        return numberOfPlayers;
+        return 0;
     }
 
-    public void setNumberOfPlayers(int num)
+    public static void setNumberOfPlayers(int num)
     {
-        numberOfPlayers = num;
+
     }
 
     public static void updateState()
@@ -264,6 +264,7 @@ public class Game
         // timer is needed.
 
     }
+    */
 }
 // In windows, shift-alt-F formats the source code
 // In linux, it is ctrl-shift-I
