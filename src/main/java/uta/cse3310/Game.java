@@ -1,7 +1,105 @@
 package uta.cse3310;
+import java.io.File;
+import java.io.FileReader;
+import java.io.BufferedReader;
+public class Game 
+{
+    private int gameID;
+    private Player[] playerList;
+    private int numberOfPlayers;
+    private Board board;
+    private int gameStatus;
 
-public class Game {
+    private String[] wordList;
+    private String[] completedWordList;
 
+    public Game()
+    {
+        Board board = new Board();
+        WordBank bank = new WordBank();
+        board.initializeBoard(bank);
+        board.printBoardArray();
+        bank.initializeWordBank();
+    }
+
+    public int getGameID()
+    {
+        return gameID;
+    }
+
+    public static void startGame()
+    {
+
+    }
+
+    public void setGameID(int gam)
+    {
+        gameID = gam;
+    }
+
+    public int getNumberOfPlayers()
+    {
+        return numberOfPlayers;
+    }
+
+    public void setNumberOfPlayers(int num)
+    {
+        numberOfPlayers = num;
+    }
+
+    public static void updateState()
+    {
+
+    }
+
+    public static void exitGame()
+    {
+
+    }
+
+    public static void initializeWordList()
+    {
+
+    }
+
+    public static void crossOutWord()
+    {
+
+    }
+
+    public static String selectWord()
+    {
+        return "";
+    }
+
+    public static void gameChat(String message)
+    {
+
+    }
+
+    public static boolean checkValidWord(String word)
+    {
+        return false;
+    }
+
+    public static Player checkWinner()
+    {
+        return null;
+    }
+
+    public static void roomChat(String message, int gameID)
+    {
+
+    }
+
+    public static String[] chooseWords(File file)
+    {
+        return null;
+    }
+
+
+
+    /*
     PlayerType Players;
     public PlayerType CurrentTurn;
     public PlayerType[] Button;
