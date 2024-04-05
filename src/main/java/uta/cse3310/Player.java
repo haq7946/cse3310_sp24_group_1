@@ -8,6 +8,9 @@ public class Player
     private int status;
     private int numberOfVictores;
 
+    //Track number of players
+    public static int numOfPlayers;
+
     public Player(String nick, int colorP)
     {
         setUsername(nick);
@@ -15,6 +18,15 @@ public class Player
         setScore(0);
         setStatus(0);
         setVictories(0);
+        numOfPlayers++;
+    }
+
+    public Player()
+    {
+        setScore(0);
+        setVictories(0);
+        setStatus(0);
+        numOfPlayers++;
     }
 
     public String getUsername()
@@ -65,6 +77,11 @@ public class Player
     public void setVictories(int victory)
     {
         numberOfVictores = victory;
+    }
+
+    public static int getTotalNumOfPlayers() //This will return total num of players in the whole game
+    {
+        return numOfPlayers;
     }
 
 
