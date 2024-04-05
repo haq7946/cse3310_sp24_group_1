@@ -12,9 +12,9 @@ public class Word
         this.word = word;
     }
 
-    public static String getWord()
+    public String getWord()
     {
-        return "";
+        return word;
     }
 
     public static void setWord(String s)

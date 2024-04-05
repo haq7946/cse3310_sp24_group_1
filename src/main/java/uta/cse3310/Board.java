@@ -2,7 +2,9 @@ package uta.cse3310;
 import java.io.File;
 import java.lang.Math;
 import java.util.ArrayList;
-import java.lang.Math;
+import java.io.FileReader;
+import java.io.BufferedReader;
+import java.io.IOException;
 public class Board 
 {
     private char[][] boardArray;
@@ -63,10 +65,11 @@ public class Board
         return null;
     }
 
-    public void initializeBoard()
+    public void initializeBoard(WordBank wordBank)
     {  
         int volume = boardLength * boardWidth;
-        int mass, calculatedDensity = 0;
+        int mass = 0;
+        int calculatedDensity = 0;
 
         for(int i = 0; i < boardLength; i++)
         {
@@ -77,13 +80,51 @@ public class Board
         }
         while(calculatedDensity < density)
         {
+            mass += placeWord(wordBank);
+            calculatedDensity = mass/volume;
         }
     }
 
-    public void placeWord(Word word)
+    public int placeWord(WordBank wordBank)
     {
+        //Reading number of lines in text file
+        int numberOfLines = 0;
+        try
+        {
+        BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\brybo\\cse3310_sp24_group_1\\words.txt"));
+        while(br.readLine() != null)
+        {
+            numberOfLines++;
+        }
+
+        //Selecting random line number
+        double lineNumber = Math.floor((Math.random() * numberOfLines));
+        //Selecting word from that line number, resetting br to beginning
+        br = new BufferedReader(new FileReader("C:\\Users\\brybo\\cse3310_sp24_group_1\\words.txt"));
+        for(int i = 1; i < lineNumber; i++){
+            br.readLine();
+        }
+        //Word that will be placed in the board
+        String chosenWord = br.readLine();
+        //Check to see if word is not in the word bank, if it is then return 0 (word not able to be picked)
+        for(int i = 0; i < wordBank.getWordBank().size(); i++)
+        {
+            if(chosenWord.equals(wordBank.getWordBank().get(i)))
+            {
+                return 0;
+            }
+        }
         xCoordinate = Math.floor(Math.random() * boardLength);
         yCoordinate = Math.floor(Math.random() * boardWidth);
+        //Return length to update calculatedDensity
+        return chosenWord.length();
+        }
+
+        catch(IOException e)
+        {
+            System.out.println("wadahek that wasn't a valid file!");
+        }
+        return -1;
     }
 
     public void setOrientationValues()

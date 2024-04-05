@@ -3,16 +3,22 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.ArrayList;
 public class WordBank 
 {
-    private Word[] wordList;
+    private ArrayList<Word> wordBank;
 
     public WordBank()
     {
         
     }
 
-    public Word[] initializeWordBank() //Put file parameter back in
+    public ArrayList<Word> getWordBank()
+    {
+        return wordBank;
+    }
+
+    public ArrayList<Word> initializeWordBank() //Put file parameter back in
     {
         try
         {
@@ -26,7 +32,7 @@ public class WordBank
         {
             System.out.println("wadahek that wasn't a valid file!");
         }
-        return wordList;
+        return wordBank;
     }
 
     public static void updateWordBank(Word[] Word)

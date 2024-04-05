@@ -16,10 +16,10 @@ public class Game
     public Game()
     {
         Board penis = new Board();
-        penis.initializeBoard();
         penis.printBoardArray();
         WordBank peepee = new WordBank();
         peepee.initializeWordBank();
+        penis.initializeBoard(peepee);
     }
 
     public static int getGameID()
