@@ -4,18 +4,34 @@ public class PointBoard
 {
     private Player[] scoreBoard;
 
-    public PointBoard()
+    public PointBoard(Player[] playerlst)
     {
-        
+        setScoreBoard(playerlst);
     }
 
-    public static Player[] getScoreBoard()
+    public Player[] getScoreBoard()
     {
-        return null;
+        // int totalPlayers = Player.getTotalNumOfPlayers();
+
+        //     System.out.println("....Score Board.....");
+        // for(int i = 0; i < totalPlayers; i++)
+        // {
+        //     System.out.println("\n");
+        //     System.out.println(scoreBoard[i].getUsername() + " : " + scoreBoard[i].getVictories());
+        // }
+
+        return scoreBoard;
     }
 
-    public static void setScoreBoard(Player[] playerList)
+    public void setScoreBoard(Player[] playerList)
     {
-
+        int totalPlayers = Player.getTotalNumOfPlayers();
+        for(int i = 0; i < totalPlayers; i++)
+        {
+            scoreBoard[i] = new Player();
+            scoreBoard[i].setUsername(playerList[i].getUsername()); 
+            scoreBoard[i].setScore(playerList[i].getScore());
+        }
     }
+    
 }

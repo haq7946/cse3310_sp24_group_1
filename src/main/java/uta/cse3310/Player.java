@@ -26,7 +26,6 @@ public class Player
         setScore(0);
         setVictories(0);
         setStatus(0);
-        numOfPlayers++;
     }
 
     public String getUsername()

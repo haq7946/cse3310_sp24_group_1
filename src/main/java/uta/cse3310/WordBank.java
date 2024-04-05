@@ -14,7 +14,7 @@ public class WordBank
         
     }
 
-    public Word[] initializeWordBank(File file) throws IOException
+    public Word[] initializeWordBank(File file)
     {
         // try {
         //     BufferedReader reader = new BufferedReader(new FileReader(file));
