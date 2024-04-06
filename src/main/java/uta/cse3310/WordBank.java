@@ -4,6 +4,9 @@ import java.io.FileReader;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.lang.Comparable;
+import java.util.Collections;
 public class WordBank 
 {
     private ArrayList<Word> wordBank;
@@ -43,6 +46,7 @@ public class WordBank
 
     public String toString()
     {
+        Collections.sort(wordBank, new WordComparator());
         StringBuilder str = new StringBuilder();
         str.append("Word Bank: {\n");
         for(int i = 0; i < wordBank.size(); i++)
