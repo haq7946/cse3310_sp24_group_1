@@ -10,9 +10,9 @@ public class WordBank
 
     public WordBank()
     {
-        wordBank = new ArrayList<Word>();
-        Word word = new Word("Burger");
-        wordBank.add(word);
+         wordBank = new ArrayList<Word>();
+         Word word = new Word("Burger");
+         wordBank.add(word);
     }
 
     public ArrayList<Word> getWordBank()

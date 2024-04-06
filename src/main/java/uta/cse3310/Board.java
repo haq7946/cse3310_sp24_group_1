@@ -13,8 +13,8 @@ public class Board
     private char[][] boardArray;
     private int boardLength;
     private int boardWidth;
-    private double xCoordinate;
-    private double yCoordinate;
+    private int xCoordinate;
+    private int yCoordinate;
     private Word[] wordList;
     private double density;
     private double horizontalOrientation;
@@ -26,6 +26,7 @@ public class Board
 
     public Board()
     {
+        density = 0.67;
         boardLength = 20;
         boardWidth = 20;
         boardArray = new char[boardLength][boardWidth];
@@ -70,9 +71,9 @@ public class Board
 
     public void initializeBoard(WordBank wordBank)
     {  
-        int volume = boardLength * boardWidth;
-        int mass = 0;
-        int calculatedDensity = 0;
+        double volume = boardLength * boardWidth;
+        double mass = 0;
+        double calculatedDensity = 0;
         for(int i = 0; i < boardLength; i++)
         {
             for(int j = 0; j < boardWidth; j++)
@@ -80,14 +81,13 @@ public class Board
                 boardArray[i][j] = '#';
             }
         }
-        System.out.println("word length is" + placeWord(wordBank));
-        /*
         while(calculatedDensity < density)
         {
+            System.out.println("placing word in...");
             mass += placeWord(wordBank);
             calculatedDensity = mass/volume;
         }
-        */
+        System.out.println("Total word length is " + mass);
     }
 
     public int placeWord(WordBank wordBank)
@@ -96,7 +96,7 @@ public class Board
         int numberOfLines = 0;
         try
         {
-        BufferedReader br = new BufferedReader(new FileReader("resources\\words.txt"));
+        BufferedReader br = new BufferedReader(new FileReader("words.txt"));
         while(br.readLine() != null)
         {
             numberOfLines++;
@@ -104,7 +104,7 @@ public class Board
         //Selecting random line number
         double lineNumber = Math.floor((Math.random() * numberOfLines));
         //Selecting word from that line number, resetting br to beginning
-        br = new BufferedReader(new FileReader("resources\\words.txt"));
+        br = new BufferedReader(new FileReader("words.txt"));
         for(int i = 1; i < lineNumber; i++){
             br.readLine();
         }
@@ -118,10 +118,58 @@ public class Board
                 return 0;
             }
         }
+        //Check to see if word is of length 4 or greater, if not then return 0 (word too short)
+        if(chosenWord.length() < 4)
+        {
+            return 0;
+        }
         //Choosing random coordinates for chosen word, make instance of a Word
-        Word word = new Word(chosenWord);
-        xCoordinate = Math.floor(Math.random() * boardLength);
-        yCoordinate = Math.floor(Math.random() * boardWidth);
+        Word placingWord = new Word(chosenWord);
+        xCoordinate = (int)(Math.random() * boardLength);
+        yCoordinate = (int)(Math.random() * boardWidth);
+        int wordLength = placingWord.getWord().length();
+        //System.out.println(placingWord.getOrientation());
+        //Based on the orientation, use the x/y coordinate and move from there to fill in the board
+        //Do for loop to see if word will fit in with given x/y coordinates
+        //If doesn't fit, return 0 (word doesn't fit, chance that word will NEVER fit, so just choose another word)
+        //Else, do another for loop to place the word in
+        if(placingWord.getOrientation().name() == "HORIZONTAL")
+        {
+            //Checking for loop
+            for(int i = 0; i < wordLength; i++)
+            {
+                if( ((xCoordinate + i) >= boardLength) || boardArray[yCoordinate][xCoordinate + i] != '#')
+                {
+                    return 0;   
+                }
+            }
+            for(int i = 0; i < wordLength; i++)
+            {
+                boardArray[yCoordinate][xCoordinate + i] = placingWord.getWord().charAt(i);
+            }
+        }
+        /*
+        else if(placingWord.getOrientation().name() == "VERTICALUP")
+        {
+            System.out.println("Gamerr");
+        }
+        else if(placingWord.getOrientation().name() == "VERTICALDOWN")
+        {
+            System.out.println("Gamerrr");
+        }
+        else if(placingWord.getOrientation().name() == "DIAGONALUP")
+        {
+            System.out.println("Gamerrrr");
+        }
+        else if(placingWord.getOrientation().name() == "DIAGONALDOWN")
+        {
+            System.out.println("Gamerrrrr");
+        }
+        else if(placingWord.getOrientation().name() == "INVALID")
+        {
+            System.out.println("NOT GAMER");
+        }
+        */
         //Return length to update calculatedDensity
         return chosenWord.length();
         }
