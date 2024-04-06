@@ -61,7 +61,7 @@ import java.time.Duration;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-public class App /*extends WebSocketServer*/
+public class App extends WebSocketServer
 {
 
   private Game[] gameList;
@@ -131,6 +131,41 @@ public class App /*extends WebSocketServer*/
   public static void gameSelect(Game game)
   {
 
+  }
+
+  @Override
+  public void onOpen(WebSocket conn, ClientHandshake handshake) 
+  {
+
+  }
+  @Override
+  public void onClose(WebSocket conn, int code, String reason, boolean remote) 
+  {
+    
+  }
+
+  @Override
+  public void onMessage(WebSocket conn, String message) 
+  {
+    
+  }
+
+  @Override
+  public void onMessage(WebSocket conn, ByteBuffer message) 
+  {
+    
+  }
+
+  @Override
+  public void onError(WebSocket conn, Exception ex) 
+  {
+    
+  }
+  
+  @Override
+  public void onStart() 
+  {
+    
   }
 /*
   // All games currently underway on this server are stored in
