@@ -2,9 +2,11 @@ package uta.cse3310;
 import java.io.File;
 import java.io.FileReader;
 import java.io.BufferedReader;
+import java.time.format.DateTimeFormatter;  
+import java.time.LocalDateTime;   
 public class Game 
 {
-    private int gameID;
+    private String gameID;
     private Player[] playerList;
     private int numberOfPlayers;
     private Board board;
@@ -20,11 +22,15 @@ public class Game
         board.initializeBoard(bank);
         board.printBoardArray();
         bank.initializeWordBank();
+
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
+        LocalDateTime now = LocalDateTime.now();  
+        gameID = dtf.format(now); //GameID uses format yyyy/MM/dd HH:mm:ss
     }
 
-    public static int getGameID()
+    public String getGameID()
     {
-        return 0;
+        return gameID;
     }
 
     public static void startGame()
@@ -32,14 +38,14 @@ public class Game
 
     }
 
-    public static void setGameID(int gam)
+    public void setGameID(int gam)
     {
 
     }
 
-    public static int getNumberOfPlayers()
+    public int getNumberOfPlayers()
     {
-        return 0;
+        return numberOfPlayers;
     }
 
     public static void setNumberOfPlayers(int num)
