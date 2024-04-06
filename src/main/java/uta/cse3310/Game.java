@@ -19,7 +19,7 @@ public class Game
         WordBank bank = new WordBank();
         board.initializeBoard(bank);
         board.printBoardArray();
-        //bank.initializeWordBank();
+        System.out.println(bank);
     }
 
     public static int getGameID()
