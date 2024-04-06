@@ -9,9 +9,29 @@ public class Word
 
     public Word(String word)
     {
+        //When word is created, input the word given into the word field, randomize the orientation
         this.word = word;
-        orient = Orientation.VERTICALDOWN;
-
+        int value = (int)(Math.random() * 5);
+        switch(value)
+        {
+            case 0:
+                orient = Orientation.HORIZONTAL;
+                break;
+            case 1:
+                orient = Orientation.VERTICALUP;
+                break;
+            case 2:
+                orient = Orientation.VERTICALDOWN;
+                break;
+            case 3:
+                orient = Orientation.DIAGONALUP;
+                break;
+            case 4:
+                orient = Orientation.DIAGONALDOWN;
+                break;
+            default:
+                orient = Orientation.INVALID;
+        }
     }
 
     public String getWord()
@@ -34,9 +54,9 @@ public class Word
 
     }
 
-    public int getOrientation()
+    public Orientation getOrientation()
     {
-        return 0;
+        return orient;
     }
 
 

@@ -236,6 +236,7 @@ public class Board
         double volume = boardLength * boardWidth;
         double mass = 0;
         double calculatedDensity = 0;
+        int counter = 0;
         for(int i = 0; i < boardLength; i++)
         {
             for(int j = 0; j < boardWidth; j++)

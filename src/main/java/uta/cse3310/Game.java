@@ -21,7 +21,7 @@ public class Game
         WordBank bank = new WordBank();
         board.initializeBoard(bank);
         board.printBoardArray();
-        bank.initializeWordBank();
+        System.out.println(bank);
 
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
         LocalDateTime now = LocalDateTime.now();  
