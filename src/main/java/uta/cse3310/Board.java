@@ -94,7 +94,7 @@ public class Board
         int numberOfLines = 0;
         try
         {
-        BufferedReader br = new BufferedReader(new FileReader("resources\\words.txt"));
+        BufferedReader br = new BufferedReader(new FileReader("resources/words.txt"));
         while(br.readLine() != null)
         {
             numberOfLines++;
@@ -102,7 +102,7 @@ public class Board
         //Selecting random line number
         double lineNumber = Math.floor((Math.random() * numberOfLines));
         //Selecting word from that line number, resetting br to beginning
-        br = new BufferedReader(new FileReader("resources\\words.txt"));
+        br = new BufferedReader(new FileReader("resources/words.txt"));
         for(int i = 1; i < lineNumber; i++){
             br.readLine();
         }
@@ -214,6 +214,7 @@ public class Board
         catch(IOException e)
         {
             System.out.println("wadahek that wasn't a valid file!");
+            e.printStackTrace();
         }
         return -1;
     }

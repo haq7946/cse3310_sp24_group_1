@@ -26,7 +26,7 @@ public class WordBank
     {
         try
         {
-        BufferedReader br = new BufferedReader(new FileReader("resources\\words.txt"));
+        BufferedReader br = new BufferedReader(new FileReader("resources/words.txt"));
         for(int i = 0; i < 5; i++)
         {
             System.out.println(br.readLine()); 
