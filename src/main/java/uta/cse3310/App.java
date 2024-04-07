@@ -61,7 +61,7 @@ import java.time.Duration;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-public class App extends WebSocketServer
+public class App /*extends WebSocketServer*/
 {
 
   private Game[] gameList;
@@ -133,7 +133,7 @@ public class App extends WebSocketServer
 
   }
 
-  @Override
+  /*@Override
   public void onOpen(WebSocket conn, ClientHandshake handshake) 
   {
 
@@ -151,12 +151,6 @@ public class App extends WebSocketServer
   }
 
   @Override
-  public void onMessage(WebSocket conn, ByteBuffer message) 
-  {
-    
-  }
-
-  @Override
   public void onError(WebSocket conn, Exception ex) 
   {
     
@@ -166,7 +160,7 @@ public class App extends WebSocketServer
   public void onStart() 
   {
     
-  }
+  }*/
 /*
   // All games currently underway on this server are stored in
   // the vector ActiveGames
