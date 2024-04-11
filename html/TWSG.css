@@ -54,3 +54,16 @@ th{
   font-size: medium;
   align:center;
 }
+
+.smallbutton{
+  background-color: #04AA6D; /* Green */
+  border: 3px brown;
+  color: white;
+  padding: 10px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 15px;
+  margin: 4px 2px;
+  cursor: pointer;
+}

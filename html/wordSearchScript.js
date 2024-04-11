@@ -50,28 +50,25 @@ function nameFunction() {   //gets the username
 
 function backToNameFunction() { //Navigate to room page
     display = 0;
+    console.log(Player.nick.value + " left the game");
     Player.nick = 'none';
-    console.log(Player.nick.value);
     hideShow();
 }
 
 function backToLobbyFunction() { //Navigate to room page
     display = 1;
+    console.log(Player.nick.value + " left the room");
     hideShow();
 }
 
 function roomFunction() { //Navigate to room page
     display = 2;
+    console.log(Player.nick.value + " joined the room");
     hideShow();
 }
 
 window.onload = function () {
     hideShow();
-    for (let node of document.querySelectorAll("td")) {
-        if (node.textContent != "") continue;
-        let charCode = Math.round(65 + Math.random() * 25)
-        node.textContent = String.fromCharCode(charCode);
-    }
 
 }
 
@@ -82,15 +79,15 @@ function createRoom() {
     buildRooms();
 }
 
-function buildRooms(){
+function buildRooms(){ //Add player data
     var table = document.getElementById("rmTable")
 
     for(var i = 0; i < 1; i++)
     {
         var row = `<tr>
-                        <td>${Player.nick.value}'s Room<td> 
-                  <tr /`
-        
+                        <td>${Player.nick.value}'s Room<td>
+                        <button id ="rmButton" class ="smallbutton button 2" onclick="roomFunction()" >Join room</button>
+                  <tr />`
         table.innerHTML += row;
     }
 
