@@ -63,7 +63,7 @@ import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
 
-public class App //extends WebSocketServer //TEMP
+public class App extends WebSocketServer //TEMP
 {
 
   private ArrayList<Game> gameList; //list of current games
