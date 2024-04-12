@@ -61,16 +61,33 @@ import java.time.Duration;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-public class App /*extends WebSocketServer*/
+public class App extends WebSocketServer
 {
 
   private Game[] gameList;
   private Player[] playerList;
   private Player[] leaderboardList;
 
+  private int connectionId = 0;
+
   public App()
   {
     Game g = new Game();
+  }
+
+  public App(int port) 
+  {
+    super(new InetSocketAddress(port));
+  }
+
+  public App(InetSocketAddress address) 
+  {
+    super(address);
+  }
+
+  public App(int port, Draft_6455 draft) 
+  {
+    super(new InetSocketAddress(port), Collections.<Draft>singletonList(draft));
   }
 
   public Game[] getGamelist()
@@ -96,6 +113,20 @@ public class App /*extends WebSocketServer*/
   public static void main(String[] args) 
   {
     App a = new App();
+
+    // Set up the http server
+    int port = 9001;
+    HttpServer H = new HttpServer(port, "./html");
+    H.start();
+    System.out.println("http Server started on port: " + port);
+
+    // create and start the websocket server
+
+    port = 9101;
+    App A = new App(port);
+    A.setReuseAddr(true);
+    A.start();
+    System.out.println("websocket Server started on port: " + port);
   }
 
   public static void addPlayer(String name)
@@ -133,9 +164,14 @@ public class App /*extends WebSocketServer*/
 
   }
 
-  /*@Override
+  @Override
   public void onOpen(WebSocket conn, ClientHandshake handshake) 
   {
+    connectionId++;
+
+    System.out.println(conn.getRemoteSocketAddress().getAddress().getHostAddress() + " connected");
+
+    ServerEvent E = new ServerEvent();
 
   }
   @Override
@@ -160,7 +196,7 @@ public class App /*extends WebSocketServer*/
   public void onStart() 
   {
     
-  }*/
+  }
 /*
   // All games currently underway on this server are stored in
   // the vector ActiveGames

@@ -4,10 +4,12 @@ import java.io.FileReader;
 import java.io.BufferedReader;
 import java.time.format.DateTimeFormatter;  
 import java.time.LocalDateTime;   
+
+import java.util.ArrayList;
 public class Game 
 {
     private String gameID;
-    private Player[] playerList;
+    private ArrayList<Player> playerList;
     private int numberOfPlayers;
     private Board board;
     private int gameStatus;
@@ -19,6 +21,7 @@ public class Game
     {
         Board board = new Board();
         WordBank bank = new WordBank();
+        ArrayList<Player> playerList = new ArrayList<Player>();
         board.initializeBoard(bank);
         board.printBoardArray();
         System.out.println(bank);
@@ -103,6 +106,10 @@ public class Game
         return null;
     }
 
+    public void addPlayer(Player newPlayer)
+    {
+        playerList.add(newPlayer);
+    }
 
 
     /*
