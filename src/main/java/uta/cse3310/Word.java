@@ -8,6 +8,7 @@ public class Word
     private Orientation orient;
     private int xCoordinate;
     private int yCoordinate;
+    private boolean availability;
 
     public Word(String word, int xCoordinate, int yCoordinate)
     {
@@ -15,6 +16,7 @@ public class Word
         this.word = word;
         this.xCoordinate = xCoordinate;
         this.yCoordinate = yCoordinate;
+        availability = true;
         int value = (int)(Math.random() * 5);
         switch(value)
         {
@@ -73,5 +75,13 @@ public class Word
         return orient;
     }
 
+    public boolean getAvailability()
+    {
+        return availability;
+    }
 
+    public void setAvailability(boolean availability)
+    {
+        this.availability = availability;
+    }
 }

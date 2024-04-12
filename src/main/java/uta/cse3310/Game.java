@@ -10,6 +10,7 @@ public class Game
 {
     private String gameID;
     private ArrayList<Player> playerList;
+    private ArrayList<String> playerChat;
     private int numberOfPlayers;
     private Board board;
     private int gameStatus; //wtf does this do
@@ -55,9 +56,9 @@ public class Game
         return numberOfPlayers;
     }
 
-    public static void setNumberOfPlayers(int num)
+    public void setNumberOfPlayers(int num)
     {
-
+        numberOfPlayers = num;
     }
 
     public void updateState(UserEvent U)
@@ -75,9 +76,15 @@ public class Game
 
     }
 
-    public void crossOutWord()
+    public void crossOutWord(String word, WordBank wordBank)
     {
-
+        for(int i = 0; i < wordBank.getWordBank().size(); i++)
+        {
+            if(word.equals(wordBank.getWordBank().get(i).getWord()))
+            {
+                wordBank.getWordBank().get(i).setAvailability(false);
+            }
+        }      
     }
 
     public String selectWord()
@@ -87,17 +94,32 @@ public class Game
 
     public void gameChat(String message)
     {
-
+        playerChat.add(message);
     }
 
-    public boolean checkValidWord(String word)
+    public boolean checkValidWord(String word, WordBank wordBank)
     {
+        for(int i = 0; i < wordBank.getWordBank().size(); i++)
+        {
+            if(word.equals(wordBank.getWordBank().get(i).getWord()))
+            {
+                return true;
+            }
+        }
         return false;
     }
 
     public Player checkWinner()
     {
-        return null;
+        Player playerMax = playerList.get(0);
+        for(int i = 1; i < playerList.size(); i++)
+        {
+            if(playerList.get(i).getScore() > playerMax.getScore())
+            {
+                playerMax = playerList.get(i);
+            }
+        }
+        return playerMax;
     }
 
     public void roomChat(String message, int gameID)
