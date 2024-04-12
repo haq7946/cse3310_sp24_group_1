@@ -36,9 +36,9 @@ public class Game
         return gameID;
     }
 
-    public static void startGame()
+    public void startGame()
     {
-
+        
     }
 
     public void setGameID(int gam)
@@ -56,52 +56,52 @@ public class Game
 
     }
 
-    public static void updateState()
+    public void updateState(UserEvent U)
     {
 
     }
 
-    public static void exitGame()
+    public void exitGame()
     {
 
     }
 
-    public static void initializeWordList()
+    public void initializeWordList()
     {
 
     }
 
-    public static void crossOutWord()
+    public void crossOutWord()
     {
 
     }
 
-    public static String selectWord()
+    public String selectWord()
     {
         return "";
     }
 
-    public static void gameChat(String message)
+    public void gameChat(String message)
     {
 
     }
 
-    public static boolean checkValidWord(String word)
+    public boolean checkValidWord(String word)
     {
         return false;
     }
 
-    public static Player checkWinner()
+    public Player checkWinner()
     {
         return null;
     }
 
-    public static void roomChat(String message, int gameID)
+    public void roomChat(String message, int gameID)
     {
 
     }
 
-    public static String[] chooseWords(File file)
+    public String[] chooseWords(File file)
     {
         return null;
     }

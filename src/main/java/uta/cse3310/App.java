@@ -61,12 +61,14 @@ import java.time.Duration;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.util.ArrayList;
+
 public class App extends WebSocketServer
 {
 
-  private Game[] gameList;
-  private Player[] playerList;
-  private Player[] leaderboardList;
+  private ArrayList<Game> gameList;
+  private ArrayList<Player> playerList;
+  //private ArrayList<Player> leaderboardList; this is going to be a PointBoard i'm pretty sure - AE
 
   private int connectionId = 0;
 
@@ -100,12 +102,12 @@ public class App extends WebSocketServer
     return null;
   }
 
-  public static void joinGame()
+  public void joinGame()
   {
 
   }
 
-  public static void refreshGames()
+  public void refreshGames()
   {
 
   }
@@ -129,37 +131,37 @@ public class App extends WebSocketServer
     System.out.println("websocket Server started on port: " + port);
   }
 
-  public static void addPlayer(String name)
+  public void addPlayer(String name)
   {
 
   }
 
-  public static void toPlayerSelect()
+  public void toPlayerSelect()
   {
 
   }
 
-  public static void toLobby()
+  public void toLobby()
   {
 
   }
 
-  public static Player[] updateLeaderBoard(Player[] players)
+  public Player[] updateLeaderBoard(Player[] players)
   {
     return null;
   }
 
-  public static void globalChat(String message)
+  public void globalChat(String message)
   {
 
   }
 
-  public static int getPlayerColor(String name)
+  public int getPlayerColor(String name)
   {
     return 0;
   }
 
-  public static void gameSelect(Game game)
+  public void gameSelect(Game game)
   {
 
   }
@@ -173,6 +175,7 @@ public class App extends WebSocketServer
 
     ServerEvent E = new ServerEvent();
 
+
   }
   @Override
   public void onClose(WebSocket conn, int code, String reason, boolean remote) 
@@ -183,19 +186,48 @@ public class App extends WebSocketServer
   @Override
   public void onMessage(WebSocket conn, String message) 
   {
-    
+    System.out.println("< " + Duration.between(startTime, Instant.now()).toMillis() + " " + "-" + " " + escape(message));
+
+    // Bring in the data from the webpage
+    // A UserEvent is all that is allowed at this point
+    GsonBuilder builder = new GsonBuilder();
+    Gson gson = builder.create();
+    UserEvent U = gson.fromJson(message, UserEvent.class);
+
+    // Get our Game Object
+    Game G = conn.getAttachment();
+    G.updateState(U);
+
+    // send out the game state every time
+    // to everyone
+    String jsonString;
+    jsonString = gson.toJson(G);
+
+    System.out
+        .println("> " + Duration.between(startTime, Instant.now()).toMillis() + " " + "*" + " " + escape(jsonString));
+    broadcast(jsonString);
+  }
+
+  @Override
+  public void onMessage(WebSocket conn, ByteBuffer message) 
+  {
+    System.out.println(conn + ": " + message);
   }
 
   @Override
   public void onError(WebSocket conn, Exception ex) 
   {
-    
+    ex.printStackTrace();
+    if (conn != null) {
+      // some errors like port binding failed may not be assignable to a specific
+      // websocket
+    }
   }
   
   @Override
   public void onStart() 
   {
-    
+    setConnectionLostTimeout(0);
   }
 /*
   // All games currently underway on this server are stored in
@@ -358,7 +390,7 @@ public class App extends WebSocketServer
 
     // create and start the websocket server
 
-    port = 9880;
+    port = 9180;
     App A = new App(port);
     A.setReuseAddr(true);
     A.start();
