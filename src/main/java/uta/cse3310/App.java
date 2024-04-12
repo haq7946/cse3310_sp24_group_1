@@ -63,7 +63,7 @@ import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
 
-public class App //extends WebSocketServer //TEMP
+public class App extends WebSocketServer //TEMP
 {
 
   private ArrayList<Game> gameList; //list of current games
@@ -76,7 +76,6 @@ public class App //extends WebSocketServer //TEMP
   {
     Game g = new Game();
   }
-/*
   public App(int port) 
   {
     super(new InetSocketAddress(port));
@@ -113,7 +112,6 @@ public class App //extends WebSocketServer //TEMP
   {
 
   }
-*/
   public static void main(String[] args) 
   {
   App A = new App();
@@ -169,7 +167,6 @@ public class App //extends WebSocketServer //TEMP
   {
 
   }
-/*
   @Override
   public void onOpen(WebSocket conn, ClientHandshake handshake) 
   {
@@ -235,7 +232,6 @@ public class App //extends WebSocketServer //TEMP
   {
     setConnectionLostTimeout(0);
   } //TEMP
-  */
 /*
   // All games currently underway on this server are stored in
   // the vector ActiveGames
@@ -316,7 +312,7 @@ public class App //extends WebSocketServer //TEMP
     System.out
         .println("< " + Duration.between(startTime, Instant.now()).toMillis() + " " + "*" + " " + escape(jsonString));
     broadcast(jsonString);
-
+d
   }
 
   @Override
