@@ -22,7 +22,7 @@ public class Game
         board.initializeBoard(bank);
         board.printBoardArray();
         System.out.println(bank);
-
+        System.out.println(board);
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
         LocalDateTime now = LocalDateTime.now();  
         gameID = dtf.format(now); //GameID uses format yyyy/MM/dd HH:mm:ss

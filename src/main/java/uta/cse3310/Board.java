@@ -7,6 +7,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
+import java.lang.System;
 //TODO:
 //1. Limit word generation based off orientation limits (Do we really need this??? Ask prof about this -Bryan)
 //2. Fill in #'s with random letters, save those letter values in an arraylist for board information
@@ -27,7 +28,7 @@ public class Board
     private double verticalDownOrientation;
     private double diagonalUpOrientation;
     private double diagonalDownOrientation;
-    private char[] randomLetterFrequency;
+    private int[] randomLetterFrequency;
     private double boardFormationTime;
 
     public Board()
@@ -36,12 +37,17 @@ public class Board
         boardLength = 50;
         boardWidth = 50;
         boardArray = new char[boardLength][boardWidth];
-        randomLetterFrequency = new char[26];
+        randomLetterFrequency = new int[26];
     }
 
     public static void updateBoardArray(char[][] arr)
     {
 
+    }
+
+    public int[] getRandomLetterFrequency()
+    {
+        return randomLetterFrequency;
     }
 
     public char[][] getBoardArray()
@@ -78,6 +84,7 @@ public class Board
 
     public void initializeBoard(WordBank wordBank)
     {  
+        double startTimer = System.currentTimeMillis();
         double volume = boardLength * boardWidth;
         double mass = 0;
         double calculatedDensity = 0;
@@ -155,6 +162,8 @@ public class Board
         verticalDownOrientation /= wordBank.getWordBank().size();
         diagonalUpOrientation /= wordBank.getWordBank().size();
         diagonalDownOrientation /= wordBank.getWordBank().size();
+        double endTimer = System.currentTimeMillis();
+        boardFormationTime = endTimer - startTimer;
     }
 
     public int placeWord(WordBank wordBank, ArrayList<String> wordsFromFile)
@@ -294,5 +303,20 @@ public class Board
     public double getBoardFormationTime()
     {
         return boardFormationTime;
+    }
+
+    public String toString()
+    {
+        StringBuilder str = new StringBuilder();
+        str.append("Random letter frequency: {");
+        //Need to format the string like this sort there's not a comma at the end
+        str.append((char)(97) + ": " + randomLetterFrequency[0]);
+        for(int i = 1; i < 26; i++)
+        {
+            str.append(", " + (char)(i + 97) + ": " + randomLetterFrequency[i]);
+        }
+        str.append("}\n\n");
+        str.append("Time to generate board: " + boardFormationTime + " milliseconds\n");
+        return str.toString();
     }
 }
