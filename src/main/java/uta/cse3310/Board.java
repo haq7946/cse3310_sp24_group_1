@@ -9,10 +9,10 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.lang.System;
 //TODO:
-//1. Limit word generation based off orientation limits (Do we really need this??? Ask prof about this -Bryan)
-//2. Fill in #'s with random letters, save those letter values in an arraylist for board information
-//3. Display orientation limits for board information
-//4. Set a timer to display how long it took for the board to generate
+//1. Limit word generation based off orientation limits
+//2. 
+//3.
+//4. 
 //5. 
 public class Board 
 {
@@ -133,35 +133,7 @@ public class Board
             }
         }
         //Update orientation frequencies for board information
-        for(int i = 0; i < wordBank.getWordBank().size(); i++)
-        {
-            if(wordBank.getWordBank().get(i).getOrientation().name().equals("HORIZONTAL"))
-            {
-                horizontalOrientation++;
-            }
-            else if(wordBank.getWordBank().get(i).getOrientation().name().equals("VERTICALUP"))
-            {
-                verticalUpOrientation++;
-            }
-            else if(wordBank.getWordBank().get(i).getOrientation().name().equals("VERTICALDOWN"))
-            {
-                verticalDownOrientation++;
-            }
-            else if(wordBank.getWordBank().get(i).getOrientation().name().equals("DIAGONALUP"))
-            {
-                diagonalUpOrientation++;
-            }
-            else if(wordBank.getWordBank().get(i).getOrientation().name().equals("DIAGONALDOWN"))
-            {
-                diagonalDownOrientation++;
-            }
-        }
-        //Normalize those values to add up to 1
-        horizontalOrientation /= wordBank.getWordBank().size();
-        verticalUpOrientation /= wordBank.getWordBank().size();
-        verticalDownOrientation /= wordBank.getWordBank().size();
-        diagonalUpOrientation /= wordBank.getWordBank().size();
-        diagonalDownOrientation /= wordBank.getWordBank().size();
+        setOrientationValues(wordBank);
         double endTimer = System.currentTimeMillis();
         boardFormationTime = endTimer - startTimer;
     }
@@ -277,16 +249,39 @@ public class Board
         return chosenWord.length();
     }
 
-    public void setOrientationValues()
+    public void setOrientationValues(WordBank wordBank)
     {
         //All orientation values need a value of at least 0.15
-        double orientationValue = Math.floor((Math.random()/20) * 100)/100 + 0.15;
-        horizontalOrientation = orientationValue;
-        verticalUpOrientation = orientationValue;
-        verticalDownOrientation = orientationValue;
-        diagonalUpOrientation = orientationValue;
-        diagonalDownOrientation = orientationValue;
-        
+        for(int i = 0; i < wordBank.getWordBank().size(); i++)
+        {
+            if(wordBank.getWordBank().get(i).getOrientation().name().equals("HORIZONTAL"))
+            {
+                horizontalOrientation++;
+            }
+            else if(wordBank.getWordBank().get(i).getOrientation().name().equals("VERTICALUP"))
+            {
+                verticalUpOrientation++;
+            }
+            else if(wordBank.getWordBank().get(i).getOrientation().name().equals("VERTICALDOWN"))
+            {
+                verticalDownOrientation++;
+            }
+            else if(wordBank.getWordBank().get(i).getOrientation().name().equals("DIAGONALUP"))
+            {
+                diagonalUpOrientation++;
+            }
+            else if(wordBank.getWordBank().get(i).getOrientation().name().equals("DIAGONALDOWN"))
+            {
+                diagonalDownOrientation++;
+            }
+        }
+        //Normalize those values to add up to 1
+        horizontalOrientation /= wordBank.getWordBank().size();
+        verticalUpOrientation /= wordBank.getWordBank().size();
+        verticalDownOrientation /= wordBank.getWordBank().size();
+        diagonalUpOrientation /= wordBank.getWordBank().size();
+        diagonalDownOrientation /= wordBank.getWordBank().size();
+
     }
 
     public double[] getOrientationValues()
@@ -317,6 +312,8 @@ public class Board
         }
         str.append("}\n\n");
         str.append("Time to generate board: " + boardFormationTime + " milliseconds\n");
+        str.append("Orientation %'s: \nHorizontal: " + getOrientationValues()[0] + "\nVerticalUp: " + getOrientationValues()[1]);
+        str.append("\nVerticalDown: " + getOrientationValues()[2] + "\nDiagonalUp: " + getOrientationValues()[3] + "\nDiagonalDown: " + getOrientationValues()[4] + "\n");
         return str.toString();
     }
 }

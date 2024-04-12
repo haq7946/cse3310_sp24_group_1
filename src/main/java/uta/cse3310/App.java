@@ -76,8 +76,8 @@ public class App //extends WebSocketServer //TEMP
   {
     Game g = new Game();
   }
-
-  /*public App(int port) 
+/*
+  public App(int port) 
   {
     super(new InetSocketAddress(port));
   }
@@ -90,7 +90,7 @@ public class App //extends WebSocketServer //TEMP
   public App(int port, Draft_6455 draft) 
   {
     super(new InetSocketAddress(port), Collections.<Draft>singletonList(draft));
-  }*/
+  }
 
   public ArrayList<Game> getGamelist() //return the game list. probably never calling this method but w/e
   {
@@ -113,24 +113,24 @@ public class App //extends WebSocketServer //TEMP
   {
 
   }
-
+*/
   public static void main(String[] args) 
   {
-    //App a = new App();
-
+  App A = new App();
+  /*
     // Set up the http server
-    /*int port = 9001;
-    HttpServer H = new HttpServer(port, "./html");
-    H.start();
+    int port = 9001;
+    //HttpServer H = new HttpServer(port, "./html");
+   // H.start();
     System.out.println("http Server started on port: " + port);
 
     // create and start the websocket server
 
     port = 9101;
-    App A = new App(port);
     A.setReuseAddr(true);
     A.start();
-    System.out.println("websocket Server started on port: " + port);*/ //TEMP
+    System.out.println("websocket Server started on port: " + port); //TEMP
+    */
   }
 
   public void addPlayer(String name, int color) //add a new player to the lobby
@@ -169,8 +169,8 @@ public class App //extends WebSocketServer //TEMP
   {
 
   }
-
-  /*@Override
+/*
+  @Override
   public void onOpen(WebSocket conn, ClientHandshake handshake) 
   {
     connectionId++;
@@ -234,7 +234,8 @@ public class App //extends WebSocketServer //TEMP
   public void onStart() 
   {
     setConnectionLostTimeout(0);
-  }*/ //TEMP
+  } //TEMP
+  */
 /*
   // All games currently underway on this server are stored in
   // the vector ActiveGames
