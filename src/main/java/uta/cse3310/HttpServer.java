@@ -19,7 +19,7 @@ import net.freeutils.httpserver.HTTPServer.VirtualHost;
 public class HttpServer {
 
     private static final String HTML = "./html";
-    int port = 8080;
+    int port = 9001;
     Connection conn;
     String dirname = HTML;
 
@@ -52,15 +52,16 @@ public class HttpServer {
         }
 
     }
-    public void onOpen(){
-        
-    }
 
-    public void onMessage(){
+    public void onOpen() {
 
     }
 
-    public void onClose(){
+    public void onMessage() {
+
+    }
+
+    public void onClose() {
 
     }
 
