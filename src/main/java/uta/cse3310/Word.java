@@ -6,11 +6,15 @@ public class Word
     private String word;
     private int wordLength;
     private Orientation orient;
+    private int xCoordinate;
+    private int yCoordinate;
 
-    public Word(String word)
+    public Word(String word, int xCoordinate, int yCoordinate)
     {
         //When word is created, input the word given into the word field, randomize the orientation
         this.word = word;
+        this.xCoordinate = xCoordinate;
+        this.yCoordinate = yCoordinate;
         int value = (int)(Math.random() * 5);
         switch(value)
         {
@@ -37,6 +41,16 @@ public class Word
     public String getWord()
     {
         return word;
+    }
+
+    public int getXCoordinate()
+    {
+        return xCoordinate;
+    }
+
+    public int getYCoordinate()
+    {
+        return yCoordinate;
     }
 
     public static void setWord(String s)

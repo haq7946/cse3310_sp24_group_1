@@ -159,9 +159,9 @@ public class Board
             return 0;
         }
         //Choosing random coordinates for chosen word, make instance of a Word
-        Word placingWord = new Word(chosenWord);
         xCoordinate = (int)(Math.random() * boardLength);
         yCoordinate = (int)(Math.random() * boardWidth);
+        Word placingWord = new Word(chosenWord, xCoordinate, yCoordinate);
         int wordLength = placingWord.getWord().length();
         //Based on the orientation, use the x/y coordinate and move from there to fill in the board
         if(placingWord.getOrientation().name().equals("HORIZONTAL"))
