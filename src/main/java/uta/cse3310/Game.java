@@ -1,7 +1,157 @@
 package uta.cse3310;
+import java.io.File;
+import java.io.FileReader;
+import java.io.BufferedReader;
+import java.time.format.DateTimeFormatter;  
+import java.time.LocalDateTime;   
+import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+public class Game 
+{
+    private String gameID;
+    private ArrayList<Player> playerList;
+    private ArrayList<String> playerChat;
+    private int numberOfPlayers;
+    private Board board;
+    private int gameStatus; //wtf does this do
 
-public class Game {
+    private boolean isAvailableToJoin;
 
+    private String[] wordList;
+    private String[] completedWordList;
+
+    public Game()
+    {
+        Board board = new Board();
+        WordBank bank = new WordBank();
+        ArrayList<Player> playerList = new ArrayList<Player>();
+        boolean isAvailableToJoin =  true;
+
+        board.initializeBoard(bank); //i'm leaving these here for now because i don't want to break stuff for bryan
+        board.printBoardArray(); //but these need to go somewhere else
+        System.out.println(bank);
+        System.out.println(board);
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
+        LocalDateTime now = LocalDateTime.now();  
+        gameID = dtf.format(now); //GameID uses format yyyy/MM/dd HH:mm:ss
+    }
+
+    public String getGameID()
+    {
+        return gameID;
+    }
+
+    public void startGame() //starts the game and makes the game unavailable to join
+    {
+        isAvailableToJoin = false;
+    }
+
+    public void setGameID(int gam) //we are never going to use this method
+    {
+
+    }
+
+    public int getNumberOfPlayers()
+    {
+        return numberOfPlayers;
+    }
+
+    public void setNumberOfPlayers(int num)
+    {
+        numberOfPlayers = num;
+    }
+
+    public void updateState(UserEvent U)
+    {
+
+    }
+
+    public void exitGame()
+    {
+
+    }
+
+    public void initializeWordList()
+    {
+
+    }
+
+    public void crossOutWord(String word, WordBank wordBank)
+    {
+        for(int i = 0; i < wordBank.getWordBank().size(); i++)
+        {
+            if(word.equals(wordBank.getWordBank().get(i).getWord()))
+            {
+                wordBank.getWordBank().get(i).setAvailability(false);
+            }
+        }      
+    }
+
+    public String selectWord()
+    {
+        return "";
+    }
+
+    public void gameChat(String message)
+    {
+        playerChat.add(message);
+    }
+
+    public boolean checkValidWord(String word, WordBank wordBank)
+    {
+        for(int i = 0; i < wordBank.getWordBank().size(); i++)
+        {
+            if(word.equals(wordBank.getWordBank().get(i).getWord()))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public Player checkWinner()
+    {
+        Player playerMax = playerList.get(0);
+        for(int i = 1; i < playerList.size(); i++)
+        {
+            if(playerList.get(i).getScore() > playerMax.getScore())
+            {
+                playerMax = playerList.get(i);
+            }
+        }
+        return playerMax;
+    }
+
+    public void roomChat(String message, int gameID)
+    {
+
+    }
+
+    public String[] chooseWords(File file)
+    {
+        return null;
+    }
+
+    public void addPlayer(Player newPlayer)
+    {
+        if (numberOfPlayers < 4)
+        {
+            playerList.add(newPlayer);
+        }
+        else
+        {
+            System.out.println("Error: too many players in that game");
+        }
+    }
+
+    public void removePlayer(Player p)
+    {
+        playerList.remove(p);
+    }
+
+
+    /*
     PlayerType Players;
     public PlayerType CurrentTurn;
     public PlayerType[] Button;
@@ -178,6 +328,7 @@ public class Game {
         // timer is needed.
 
     }
+    */
 }
 // In windows, shift-alt-F formats the source code
 // In linux, it is ctrl-shift-I
