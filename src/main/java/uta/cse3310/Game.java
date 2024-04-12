@@ -2,8 +2,8 @@ package uta.cse3310;
 import java.io.File;
 import java.io.FileReader;
 import java.io.BufferedReader;
-import java.time.format.DateTimeFormatter;  
-import java.time.LocalDateTime;   
+import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;
 
 import java.util.ArrayList;
 public class Game 
@@ -12,7 +12,9 @@ public class Game
     private ArrayList<Player> playerList;
     private int numberOfPlayers;
     private Board board;
-    private int gameStatus;
+    private int gameStatus; //wtf does this do
+
+    private boolean isAvailableToJoin;
 
     private String[] wordList;
     private String[] completedWordList;
@@ -22,8 +24,10 @@ public class Game
         Board board = new Board();
         WordBank bank = new WordBank();
         ArrayList<Player> playerList = new ArrayList<Player>();
-        board.initializeBoard(bank);
-        board.printBoardArray();
+        boolean isAvailableToJoin =  true;
+
+        board.initializeBoard(bank); //i'm leaving these here for now because i don't want to break stuff for bryan
+        board.printBoardArray(); //but these need to go somewhere else
         System.out.println(bank);
 
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
@@ -36,12 +40,12 @@ public class Game
         return gameID;
     }
 
-    public void startGame()
+    public void startGame() //starts the game and makes the game unavailable to join
     {
-        
+        isAvailableToJoin = false;
     }
 
-    public void setGameID(int gam)
+    public void setGameID(int gam) //we are never going to use this method
     {
 
     }
@@ -108,7 +112,19 @@ public class Game
 
     public void addPlayer(Player newPlayer)
     {
-        playerList.add(newPlayer);
+        if (numberOfPlayers < 4)
+        {
+            playerList.add(newPlayer);
+        }
+        else
+        {
+            System.out.println("Error: too many players in that game");
+        }
+    }
+
+    public void removePlayer(Player p)
+    {
+        playerList.remove(p);
     }
 
 

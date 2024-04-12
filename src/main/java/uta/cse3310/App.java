@@ -63,11 +63,11 @@ import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
 
-public class App extends WebSocketServer
+public class App //extends WebSocketServer //TEMP
 {
 
-  private ArrayList<Game> gameList;
-  private ArrayList<Player> playerList;
+  private ArrayList<Game> gameList; //list of current games
+  private ArrayList<Player> playerList; //list of players that are in the lobby (i.e. players not currently in a game)
   //private ArrayList<Player> leaderboardList; this is going to be a PointBoard i'm pretty sure - AE
 
   private int connectionId = 0;
@@ -77,7 +77,7 @@ public class App extends WebSocketServer
     Game g = new Game();
   }
 
-  public App(int port) 
+  /*public App(int port) 
   {
     super(new InetSocketAddress(port));
   }
@@ -90,34 +90,36 @@ public class App extends WebSocketServer
   public App(int port, Draft_6455 draft) 
   {
     super(new InetSocketAddress(port), Collections.<Draft>singletonList(draft));
-  }
+  }*/
 
-  public Game[] getGamelist()
+  public ArrayList<Game> getGamelist() //return the game list. probably never calling this method but w/e
   {
-    return null;
+    return gameList;
   }
 
-  public Game makeGame()
+  public Game makeGame() //make a new game. called when a player clicks the "create new game" button
   {
-    return null;
+    Game g = new Game();
+    return g;
   }
 
-  public void joinGame()
+  public void joinGame(Game g, Player p) //adds a player to a game and removes them from the lobby
   {
-
+    g.addPlayer(p);
+    playerList.remove(p);
   }
 
-  public void refreshGames()
+  public void refreshGames() //wtf does this do
   {
 
   }
 
   public static void main(String[] args) 
   {
-    App a = new App();
+    //App a = new App();
 
     // Set up the http server
-    int port = 9001;
+    /*int port = 9001;
     HttpServer H = new HttpServer(port, "./html");
     H.start();
     System.out.println("http Server started on port: " + port);
@@ -128,22 +130,24 @@ public class App extends WebSocketServer
     App A = new App(port);
     A.setReuseAddr(true);
     A.start();
-    System.out.println("websocket Server started on port: " + port);
+    System.out.println("websocket Server started on port: " + port);*/ //TEMP
   }
 
-  public void addPlayer(String name)
+  public void addPlayer(String name, int color) //add a new player to the lobby
+  {
+    Player p = new Player(name, color);
+    playerList.add(p);
+  }
+
+  public void toPlayerSelect() //wtf is this method supposed to do
   {
 
   }
 
-  public void toPlayerSelect()
+  public void toLobby(Player p, Game g) //removes a player from the game they are in and sends them back to the lobby
   {
-
-  }
-
-  public void toLobby()
-  {
-
+    g.removePlayer(p); //remove from game player is in
+    playerList.add(p); //add him back to lobby list
   }
 
   public Player[] updateLeaderBoard(Player[] players)
@@ -151,22 +155,22 @@ public class App extends WebSocketServer
     return null;
   }
 
-  public void globalChat(String message)
+  public void globalChat(String message) //no idea how chat is going to work lmao
   {
 
   }
 
-  public int getPlayerColor(String name)
+  public int getPlayerColor(String name) //why is this in App???? probably needs to be removed
   {
     return 0;
   }
 
-  public void gameSelect(Game game)
+  public void gameSelect(Game game) //wtf does this do
   {
 
   }
 
-  @Override
+  /*@Override
   public void onOpen(WebSocket conn, ClientHandshake handshake) 
   {
     connectionId++;
@@ -175,18 +179,21 @@ public class App extends WebSocketServer
 
     ServerEvent E = new ServerEvent();
 
-
+    //a bunch of web socket bullshit needs to go here for making new games
   }
   @Override
   public void onClose(WebSocket conn, int code, String reason, boolean remote) 
   {
-    
+    System.out.println(conn + " has closed");
+    // Retrieve the game tied to the websocket connection
+    Game G = conn.getAttachment();
+    G = null;
   }
 
   @Override
   public void onMessage(WebSocket conn, String message) 
   {
-    System.out.println("< " + Duration.between(startTime, Instant.now()).toMillis() + " " + "-" + " " + escape(message));
+    //System.out.println("< " + Duration.between(startTime, Instant.now()).toMillis() + " " + "-" + " " + escape(message));
 
     // Bring in the data from the webpage
     // A UserEvent is all that is allowed at this point
@@ -203,8 +210,7 @@ public class App extends WebSocketServer
     String jsonString;
     jsonString = gson.toJson(G);
 
-    System.out
-        .println("> " + Duration.between(startTime, Instant.now()).toMillis() + " " + "*" + " " + escape(jsonString));
+    //System.out.println("> " + Duration.between(startTime, Instant.now()).toMillis() + " " + "*" + " " + escape(jsonString));
     broadcast(jsonString);
   }
 
@@ -228,7 +234,7 @@ public class App extends WebSocketServer
   public void onStart() 
   {
     setConnectionLostTimeout(0);
-  }
+  }*/ //TEMP
 /*
   // All games currently underway on this server are stored in
   // the vector ActiveGames
