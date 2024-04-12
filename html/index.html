@@ -29,6 +29,9 @@
     </tr>
 </table>
 
+<label id="timeMsg"></label>
+<label id="statMsg"></label>
+
 <script>
     var idx = -1;
     var gameid = -1;
@@ -40,7 +43,7 @@
     var connection = null;
 
     var serverUrl;
-    serverUrl = "ws://" + window.location.hostname + ":9880";
+    serverUrl = "ws://" + window.location.hostname +":"+ (parseInt(location.port) + 100);
     // Create the connection with the server
     connection = new WebSocket(serverUrl);
 
@@ -73,6 +76,15 @@
             gameid = obj.GameId;
         }
         else if ('CurrentTurn' in obj) {
+            // show statistics to everyone
+            var t = obj.Stats;
+            if (t) {
+                document.getElementById("timeMsg").innerHTML = "elapsed time " + t.RunningTime;
+                document.getElementById("statMsg").innerHTML =
+                    " in progress " + t.GamesInProgress + " XWin " + t.XWins + " OWin " + t.OWins +
+                    " Draw " + t.Draws + " Total " + t.TotalGames;
+            }
+
             // only pay attention to this game
             if (gameid == obj.GameId) {
                 // button state to display values
