@@ -8,13 +8,18 @@
 class Player {
     nick;
     color;
+    score;
 }   //Players unique nick
 
-var namePage = document.getElementById("namePage");
-var lobbyPage = document.getElementById("lobbyPage");
-var roomPage = document.getElementById("roomPage");
+////////////////////////////////////////////////////
+var namePage = document.getElementById("namePage"); //Main page
+var lobbyPage = document.getElementById("lobbyPage"); //Lobby Page
+var roomPage = document.getElementById("roomPage"); //Game Page
+////////////////////////////////////////////////////
 document.getElementById("rmButton").style.display = 'none'; ///Room button
-var display = 0;
+var display = 0;                                            //Debug purposes and control
+//////////////////////////////////////////////////
+var createRoomButton = document.getElementById("createRoom");  //Create Room
 
 function hideShow() {
     if (display == 0) {
@@ -49,9 +54,13 @@ function nameFunction() {   //gets the username
 }
 
 function backToNameFunction() { //Navigate to room page
-    display = 0;
     console.log(Player.nick.value + " left the game");
     Player.nick = 'none';
+    if(display == 2)
+    { // Exit the game/reload the website
+    location.reload();
+    }
+    display = 0;
     hideShow();
 }
 
@@ -69,7 +78,7 @@ function roomFunction() { //Navigate to room page
 
 window.onload = function () {
     hideShow();
-
+    
 }
 
 
@@ -77,9 +86,20 @@ function createRoom() {
     // document.getElementById("room1").textContent = `${Player.nick.value}'s Room`;
     console.log(Player.nick.value + " created a room");
     buildRooms();
+    disableRoomButton();
 }
 
-function buildRooms(){ //Add player data
+function disableRoomButton()
+{
+    createRoomButton.style.display = 'none';
+}
+
+function enableRoomButton()
+{
+    createRoomButton.style.display = 'block';
+}
+
+function buildRooms(){ //Add player data (will eventually print data based on JSON data)
     var table = document.getElementById("rmTable")
 
     for(var i = 0; i < 1; i++)
@@ -92,6 +112,18 @@ function buildRooms(){ //Add player data
     }
 
     document.getElementById("rmButton").style.display = 'block';  //Display the room button
+}
+
+function buildLeaderBoard(){
+    var leaderboard = document.getElementById("leaderboard");
+
+    for(var i = 0; i < 1; i++)
+    {
+        var leaderBoardRow = `<tr>
+                        <td>${Player.nick.value}     ${Player.score}<td>
+                             <tr />`
+        leaderboard.innerHTML += leaderBoardRow;
+    }
 }
 
 
@@ -126,7 +158,7 @@ let selected_letters = "";
        if(bcolor == "orange")
           document.getElementById(id).style.backgroundColor = "blue";
        else
-          document.getElementById(id).style.backgroundColor = "orange";
+          document.getElementById(id).style.backgroundColor = "black";
     }
 
     function saveToFile() {
