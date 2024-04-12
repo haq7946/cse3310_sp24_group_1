@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Word Search</title>
+    <link rel="stylesheet" href="TWSG.css">
+</head>
+
+<body>
+
+    <div id="namePage">
+        <h1>Welcome to the Word Search Game</h1>
+
+
+        <label class="">Username:</label>
+        <input id="nick"> <label id="errorMsg" style = "color: red; height: auto;"></label><br><br>
+        <button class = "smallbutton button 5" onclick="nameFunction()">submit</button>
+
+    </div>
+<!-- //////////////////////////////////////////////////////////////////// -->
+    <div id="lobbyPage">
+        <center><label style="color:Tomato;background-color:yellow;display:block;font-size:60px;">The World Search
+            Game</label></center>
+
+           <div class="box">
+            <center>
+            <h2 class="box-group">List of Rooms</h2>
+            <br>
+            <table class ="table table-room">
+                <tr class="info">
+                </tr>
+                <tbody id = "rmTable"></tbody>
+            </table>
+            <button class = "button button 5" onclick="createRoom()" style= "float:right">Create Room</button>
+            </center>
+        </div>
+        
+        <center>
+        <br>
+        <br /><br /><br /><br />
+        <button id ="rmButton" class ="button button 2" onclick="roomFunction()" style = "float:right">room page</button>
+        <br /><br /><br /><br />
+        <button class="button button3" onclick="backToNameFunction()" style = "float:right">back</button>
+        </center>
+    </div>
+<!-- ///////////////////////////////////////////////////////////////// -->
+    <div id="roomPage">
+        <center><label style="color:Tomato;background-color:yellow;display:block;font-size:60px;">The World Search
+                Game</label></center>
+        <!--
+<label id="topMessage">Top Message</br></br></label>
+-->
+        <div id="wrapper">
+            <div class="btn-group" style="float:left;width:65%;overflow:hidden;" id="demo"></div>
+            <div style="overflow:hidden;" id="demo2">
+                <!--
+<label id="scoreBoard" align="right" class="box-group">Score Board</label>
+-->
+                <center>
+                    <h2 class="box-group">Score Board</h2>
+                    <textarea id="w3review" name="w3review" align="center" text-align="center" rows="4" cols="50">
+</textarea>
+                    <h2 class="box-group">Room Chat</h2>
+                    <textarea id="roomchat" name="roomchat" text-align="center" rows="4" cols="50">
+</textarea>
+                    <h2 class="box-group">Word Bank</h2>
+                    <iframe src="words.txt" title="Word Bank"></iframe>
+                </center>
+            </div>
+        </div>
+        <!-- <div style="overflow:hidden;" id="demo3"> -->
+        <br /><br /><br />
+        <!--
+<button class="button button5" onclick="saveToFile()">Save</button>
+-->
+        <center><button class="button button2" onclick="backToLobbyFunction()">Start Game/Play Again?</button>
+            <br /><br /><br /><br />
+            <button class="button button3" onclick="backToNameFunction()">Exit Game</button>
+        </center>
+    </div>
+<!-- /////////////////////////////////////////////////////////////////// -->
+    <script src="wordSearchScript.js"></script>
+</body>
+
+</html>
