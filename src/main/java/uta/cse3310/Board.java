@@ -166,6 +166,13 @@ public class Board
         //Based on the orientation, use the x/y coordinate and move from there to fill in the board
         if(placingWord.getOrientation().name().equals("HORIZONTAL"))
         {
+            //Check to see how frequently this orientation has appeared so far within the wordbank
+            //If orientation appears too frequently choose another word with a different orientation
+            setOrientationValues(wordBank);
+            if(getOrientationValues()[0] > 0.21)
+            {
+                return 0;
+            }
             //Do for loop to see if word will fit in with given x/y coordinates
             //If doesn't fit, return 0 (word doesn't fit, chance that word will NEVER fit, so just choose another word)
             for(int i = 0; i < wordLength; i++)
@@ -184,6 +191,11 @@ public class Board
         //Rinse and repeat for all other orientations
         else if(placingWord.getOrientation().name().equals("VERTICALUP"))
         {
+            setOrientationValues(wordBank);
+            if(getOrientationValues()[1] > 0.21)
+            {
+                return 0;
+            }
             for(int i = 0; i < wordLength; i++)
             {
                 if( ((yCoordinate + i) >= boardWidth) || boardArray[yCoordinate + i][xCoordinate] != '#')
@@ -198,6 +210,11 @@ public class Board
         }
         else if(placingWord.getOrientation().name().equals("VERTICALDOWN"))
         {
+            setOrientationValues(wordBank);
+            if(getOrientationValues()[2] > 0.21)
+            {
+                return 0;
+            }
             for(int i = 0; i < wordLength; i++)
             {
                 if( ((yCoordinate - i) < 0) || boardArray[yCoordinate - i][xCoordinate] != '#')
@@ -212,6 +229,11 @@ public class Board
         }
         else if(placingWord.getOrientation().name().equals("DIAGONALUP"))
         {
+            setOrientationValues(wordBank);
+            if(getOrientationValues()[3] > 0.21)
+            {
+                return 0;
+            }
             for(int i = 0; i < wordLength; i++)
             {
                 if( ((yCoordinate + i) >= boardWidth) || (xCoordinate + i ) >= boardLength || boardArray[yCoordinate + i][xCoordinate + i] != '#')
@@ -226,6 +248,11 @@ public class Board
         }
         else if(placingWord.getOrientation().name().equals("DIAGONALDOWN"))
         {
+            setOrientationValues(wordBank);
+            if(getOrientationValues()[4] > 0.21)
+            {
+                return 0;
+            }
             for(int i = 0; i < wordLength; i++)
             {
                 if( ((yCoordinate - i) < 0) || (xCoordinate + i ) >= boardLength || boardArray[yCoordinate - i][xCoordinate + i] != '#')
@@ -251,6 +278,11 @@ public class Board
 
     public void setOrientationValues(WordBank wordBank)
     {
+        horizontalOrientation = 0;
+        verticalUpOrientation = 0;
+        verticalDownOrientation = 0;
+        diagonalUpOrientation = 0;
+        diagonalDownOrientation = 0;
         //All orientation values need a value of at least 0.15
         for(int i = 0; i < wordBank.getWordBank().size(); i++)
         {
