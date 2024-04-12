@@ -15,7 +15,7 @@
 
 
         <label class="">Username:</label>
-        <input id="nick"> <label id="errorMsg" style = "color: red; height: auto;"></label><br><br>
+        <input id="nick" placeholder="Enter Username"> <label id="errorMsg" style = "color: red; height: auto;"></label><br><br>
         <button class = "smallbutton button 5" onclick="nameFunction()">submit</button>
 
     </div>
@@ -24,7 +24,15 @@
         <center><label style="color:Tomato;background-color:yellow;display:block;font-size:60px;">The World Search
             Game</label></center>
 
-           <div class="box">
+            <div id ="leader scores"> 
+                <h2>Leaderboard</h2>
+                <table class ="scores leaderboard">
+                    <tbody id ="leaderboard" ></tbody>   
+                    <!-- We'll add scores here dynamically -->
+                </table>
+            </div>
+
+           <div class="box" >
             <center>
             <h2 class="box-group">List of Rooms</h2>
             <br>
@@ -33,9 +41,9 @@
                 </tr>
                 <tbody id = "rmTable"></tbody>
             </table>
-            <button class = "button button 5" onclick="createRoom()" style= "float:right">Create Room</button>
+            <button id ="createRoom" class = "button button 5" onclick="createRoom()" style= "float:right" >Create Room</button>
             </center>
-        </div>
+            </div>
         
         <center>
         <br>

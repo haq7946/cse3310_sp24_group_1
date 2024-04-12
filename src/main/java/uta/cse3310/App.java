@@ -116,7 +116,7 @@ public class App //extends WebSocketServer //TEMP
 
   public static void main(String[] args) 
   {
-    //App a = new App();
+    App a = new App();
 
     // Set up the http server
     /*int port = 9001;
