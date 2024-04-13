@@ -157,6 +157,12 @@ public class App extends WebSocketServer
     playerList.add(p);
   }
 
+  public void addPlayer(String name) //add a new player to the lobby
+  {
+    Player p = new Player(name);
+    playerList.add(p);
+  }
+
   public void toPlayerSelect() //wtf is this method supposed to do
   {
 
@@ -196,7 +202,8 @@ public class App extends WebSocketServer
 
     ServerEvent E = new ServerEvent();
 
-    
+    //A user has joined, create a new Player object for them
+    this.addPlayer("username", 1);
   }
   @Override
   public void onClose(WebSocket conn, int code, String reason, boolean remote) 
