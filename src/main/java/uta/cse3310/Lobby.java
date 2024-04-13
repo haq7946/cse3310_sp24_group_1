@@ -29,6 +29,7 @@ public class Lobby
     private static ArrayList<Game> gameList; // list of current games
     private static ArrayList<Player> playerList; // list of players that are in the lobby (i.e. players not currently in
                                                  // a game)
+    private ArrayList<String> playerChat; //list of message history sent
     // private ArrayList<Player> leaderboardList; this is going to be a PointBoard
     // i'm pretty sure - AE
 
@@ -36,6 +37,7 @@ public class Lobby
     {
         gameList = new ArrayList<Game>();
         playerList = new ArrayList<Player>();
+        makeGame();
     }
 
     public ArrayList<Game> getGamelist() // return the game list. probably never calling this method but w/e
@@ -84,9 +86,9 @@ public class Lobby
         return null;
     }
 
-    public void globalChat(String message) // no idea how chat is going to work lmao
+    public void globalChat(String message) // adds message to the arraylist of messages to be displayed
     {
-
+        playerChat.add(message); //Works exactly the same as the chat in game.java
     }
 
     public void updateState(UserEvent U)
