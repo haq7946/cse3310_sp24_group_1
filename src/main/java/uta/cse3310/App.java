@@ -75,8 +75,8 @@ public class App extends WebSocketServer
   {
     super(new InetSocketAddress(port));
     
-    gameList = null;
-    playerList = null;
+    gameList = new ArrayList<Game>();
+    playerList = new ArrayList<Player>();
   }
 
   public ArrayList<Game> getGamelist() //return the game list. probably never calling this method but w/e
@@ -129,13 +129,14 @@ public class App extends WebSocketServer
 
     //code below is for testing only
     myApp.makeGame();
+    myApp.addPlayer("TEST NAME", 1);
     for(Game i : gameList)
     {
       i.displayInfo();
     }
     for(Player i : playerList)
     {
-      System.out.println(i.getUsername());
+      System.out.println("username = " + i.getUsername());
     }
   }
 
