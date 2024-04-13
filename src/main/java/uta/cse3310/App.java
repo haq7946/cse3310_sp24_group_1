@@ -129,7 +129,18 @@ public class App extends WebSocketServer
 
     //code below is for testing only
     myApp.makeGame();
-    myApp.addPlayer("TEST NAME", 1);
+    myApp.addPlayer("test player 1", 1);
+    myApp.addPlayer("test player 2", 2);
+    for(Game i : gameList)
+    {
+      i.displayInfo();
+    }
+    for(Player i : playerList)
+    {
+      System.out.println("username = " + i.getUsername());
+    }
+    myApp.joinGame(gameList.get(0), playerList.get(0));
+
     for(Game i : gameList)
     {
       i.displayInfo();

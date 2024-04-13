@@ -146,6 +146,7 @@ public class Game
         if (numberOfPlayers < 4)
         {
             playerList.add(newPlayer);
+            numberOfPlayers++;
         }
         else
         {
@@ -156,12 +157,13 @@ public class Game
     public void removePlayer(Player p)
     {
         playerList.remove(p);
+        numberOfPlayers--;
     }
 
     public void displayInfo()
     {
         System.out.println("gameID = " + gameID);
-        System.out.println("playerList = " + playerList);
+        System.out.println("(game)playerList = " + playerList);
         System.out.println("numberOfPlayers = " + numberOfPlayers);
         System.out.println("isAvailableToJoin = " + isAvailableToJoin);
     }
