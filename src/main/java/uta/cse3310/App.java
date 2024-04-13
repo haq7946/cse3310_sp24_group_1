@@ -134,10 +134,17 @@ public class App extends WebSocketServer
     ServerEvent E = new ServerEvent();
     
     //A user has joined, create a new Player object for them
-    BufferedReader input = new BufferedReader(new InputStreamReader (System.in));
-    String inputString = input.readLine();
-    //TODO: write code to check if username already exists
-    myLobby.addPlayer(inputString);
+    try
+    {
+      BufferedReader input = new BufferedReader(new InputStreamReader (System.in));
+      String inputString = input.readLine();
+      //TODO: write code to check if username already exists
+      myLobby.addPlayer(inputString);
+    }
+    catch(IOException e)
+    {
+      System.out.println("Error");
+    }
   }
   @Override
   public void onClose(WebSocket conn, int code, String reason, boolean remote) 
@@ -193,3 +200,4 @@ public class App extends WebSocketServer
   {
     setConnectionLostTimeout(0);
   }
+}

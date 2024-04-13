@@ -167,3 +167,4 @@ public class Game
         System.out.println("numberOfPlayers = " + numberOfPlayers);
         System.out.println("isAvailableToJoin = " + isAvailableToJoin);
     }
+}
