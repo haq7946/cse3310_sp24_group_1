@@ -31,6 +31,15 @@ public class Board
     private int[] randomLetterFrequency;
     private double boardFormationTime;
 
+    public Board()
+    {
+        density = 0.67;
+        boardLength = 50;
+        boardWidth = 50;
+        boardArray = new char[boardLength][boardWidth];
+        randomLetterFrequency = new int[26];
+    }
+
     public static void updateBoardArray(char[][] arr)
     {
 
