@@ -65,29 +65,18 @@ import java.util.ArrayList;
 public class App extends WebSocketServer
 {
 
-  private ArrayList<Game> gameList; //list of current games
-  private ArrayList<Player> playerList; //list of players that are in the lobby (i.e. players not currently in a game)
+  private static ArrayList<Game> gameList; //list of current games
+  private static ArrayList<Player> playerList; //list of players that are in the lobby (i.e. players not currently in a game)
   //private ArrayList<Player> leaderboardList; this is going to be a PointBoard i'm pretty sure - AE
 
   private int connectionId = 0;
 
-  public App()
-  {
-    Game g = new Game();
-  }
   public App(int port) 
   {
     super(new InetSocketAddress(port));
-  }
-
-  public App(InetSocketAddress address) 
-  {
-    super(address);
-  }
-
-  public App(int port, Draft_6455 draft) 
-  {
-    super(new InetSocketAddress(port), Collections.<Draft>singletonList(draft));
+    
+    gameList = null;
+    playerList = null;
   }
 
   public ArrayList<Game> getGamelist() //return the game list. probably never calling this method but w/e
@@ -98,6 +87,7 @@ public class App extends WebSocketServer
   public Game makeGame() //make a new game. called when a player clicks the "create new game" button
   {
     Game g = new Game();
+    gameList.add(g); //add the new game to the list of games
     return g;
   }
 
@@ -113,21 +103,40 @@ public class App extends WebSocketServer
   }
   public static void main(String[] args) 
   {
-  App A = new App();
-  /*
-    // Set up the http server
+    String HttpPort = System.getenv("HTTP_PORT");
     int port = 9001;
-    //HttpServer H = new HttpServer(port, "./html");
-   // H.start();
+    if (HttpPort!=null) 
+    {
+      port = Integer.valueOf(HttpPort);
+    } 
+    // Set up the http server
+    HttpServer H = new HttpServer(port, "./html");
+    H.start();
     System.out.println("http Server started on port: " + port);
 
     // create and start the websocket server
-
     port = 9101;
-    A.setReuseAddr(true);
-    A.start();
-    System.out.println("websocket Server started on port: " + port); //TEMP
-    */
+    String WSPort = System.getenv("WEBSOCKET_PORT");
+    if (WSPort!=null) 
+    {
+      port = Integer.valueOf(WSPort);
+    }
+
+    App myApp = new App(port);
+    myApp.setReuseAddr(true);
+    myApp.start();
+    System.out.println("websocket Server started on port: " + port);
+
+    //code below is for testing only
+    myApp.makeGame();
+    for(Game i : gameList)
+    {
+      i.displayInfo();
+    }
+    for(Player i : playerList)
+    {
+      System.out.println(i.getUsername());
+    }
   }
 
   public void addPlayer(String name, int color) //add a new player to the lobby

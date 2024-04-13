@@ -51,8 +51,6 @@ public class Game
 
         System.out.println(bank);
         System.out.println(board);
-
-        
     }
 
     public void setGameID(int gam) //we are never going to use this method
@@ -156,6 +154,14 @@ public class Game
     public void removePlayer(Player p)
     {
         playerList.remove(p);
+    }
+
+    public void displayInfo()
+    {
+        System.out.println("gameID = " + gameID);
+        System.out.println("playerList = " + playerList);
+        System.out.println("numberOfPlayers = " + numberOfPlayers);
+        System.out.println("isAvailableToJoin = " + isAvailableToJoin);
     }
 
 
