@@ -114,11 +114,10 @@ public class App extends WebSocketServer
   public static void main(String[] args) 
   {
   App A = new App();
-  /*
     // Set up the http server
     int port = 9001;
-    //HttpServer H = new HttpServer(port, "./html");
-   // H.start();
+    HttpServer H = new HttpServer(port, "./html");
+    H.start();
     System.out.println("http Server started on port: " + port);
 
     // create and start the websocket server
@@ -127,7 +126,7 @@ public class App extends WebSocketServer
     A.setReuseAddr(true);
     A.start();
     System.out.println("websocket Server started on port: " + port); //TEMP
-    */
+
   }
 
   public void addPlayer(String name, int color) //add a new player to the lobby
