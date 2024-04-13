@@ -13,6 +13,8 @@ public class Word
     public Word(String word, int xCoordinate, int yCoordinate)
     {
         //When word is created, input the word given into the word field, randomize the orientation
+        //Additionally give it the x and y coordinate so we can find it later
+        //Make the availability true so it can be selected
         this.word = word;
         this.xCoordinate = xCoordinate;
         this.yCoordinate = yCoordinate;
