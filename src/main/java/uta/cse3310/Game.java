@@ -32,6 +32,7 @@ public class Game
         board = null;
         bank = null;
         isAvailableToJoin = true;
+        startGame();
 
         //I moved the board initialization stuff here to startGame() - AE 11:30 04/13
     }
@@ -50,6 +51,7 @@ public class Game
         board.initializeBoard(bank);
 
         System.out.println(bank);
+        board.printBoardArray();
         System.out.println(board);
 
         
