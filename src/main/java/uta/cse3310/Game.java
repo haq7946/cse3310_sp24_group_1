@@ -49,9 +49,8 @@ public class Game
         bank.initializeWordBank();
         board = new Board();
         board.initializeBoard(bank);
-
-        System.out.println(bank);
         board.printBoardArray();
+        System.out.println(bank);
         System.out.println(board);
     }
 
