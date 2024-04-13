@@ -14,6 +14,7 @@ public class Game
     private ArrayList<String> playerChat;
     private int numberOfPlayers;
     private Board board;
+    private WordBank bank;
     private int gameStatus; //wtf does this do
 
     private boolean isAvailableToJoin;
@@ -23,18 +24,16 @@ public class Game
 
     public Game()
     {
-        Board board = new Board();
-        WordBank bank = new WordBank();
-        ArrayList<Player> playerList = new ArrayList<Player>();
-        boolean isAvailableToJoin =  true;
-
-        board.initializeBoard(bank); //i'm leaving these here for now because i don't want to break stuff for bryan
-        board.printBoardArray(); //but these need to go somewhere else
-        System.out.println(bank);
-        System.out.println(board);
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
         LocalDateTime now = LocalDateTime.now();  
         gameID = dtf.format(now); //GameID uses format yyyy/MM/dd HH:mm:ss
+        playerList = new ArrayList<Player>();
+        numberOfPlayers = 0;
+        board = null;
+        bank = null;
+        isAvailableToJoin = true;
+
+        //I moved the board initialization stuff here to startGame() - AE 11:30 04/13
     }
 
     public String getGameID()
@@ -45,6 +44,15 @@ public class Game
     public void startGame() //starts the game and makes the game unavailable to join
     {
         isAvailableToJoin = false;
+        bank = new WordBank();
+        bank.initializeWordBank();
+        board = new Board();
+        board.initializeBoard(bank);
+
+        System.out.println(bank);
+        System.out.println(board);
+
+        
     }
 
     public void setGameID(int gam) //we are never going to use this method
@@ -67,7 +75,7 @@ public class Game
 
     }
 
-    public void exitGame()
+    public void exitGame() //what does this method do
     {
 
     }
@@ -123,7 +131,7 @@ public class Game
         return playerMax;
     }
 
-    public void roomChat(String message, int gameID)
+    public void roomChat(String message, String gameID)
     {
 
     }

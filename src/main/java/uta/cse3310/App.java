@@ -62,7 +62,7 @@ import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
 
-public class App extends WebSocketServer //TEMP
+public class App extends WebSocketServer
 {
 
   private ArrayList<Game> gameList; //list of current games
@@ -175,7 +175,7 @@ public class App extends WebSocketServer //TEMP
 
     ServerEvent E = new ServerEvent();
 
-    //a bunch of web socket bullshit needs to go here for making new games
+    
   }
   @Override
   public void onClose(WebSocket conn, int code, String reason, boolean remote) 
@@ -230,7 +230,7 @@ public class App extends WebSocketServer //TEMP
   public void onStart() 
   {
     setConnectionLostTimeout(0);
-  } //TEMP
+  }
 /*
   // All games currently underway on this server are stored in
   // the vector ActiveGames
