@@ -1,6 +1,6 @@
 package uta.cse3310;
 import java.io.File;
-import java.lang.Math;
+import java.util.Random;
 import java.util.ArrayList;
 import java.io.FileReader;
 import java.io.BufferedReader;
@@ -30,16 +30,28 @@ public class Board
     private double diagonalDownOrientation;
     private int[] randomLetterFrequency;
     private double boardFormationTime;
-
-    public Board()
+    private Random random;
+    private int seed;
+    public Board() //Regular Board
     {
         density = 0.67;
         boardLength = 50;
         boardWidth = 50;
         boardArray = new char[boardLength][boardWidth];
         randomLetterFrequency = new int[26];
+        seed = -1;
+        random = new Random();
     }
-
+    public Board(int seed) //Overloaded board for seed testing
+    {
+        density = 0.67;
+        boardLength = 50;
+        boardWidth = 50;
+        boardArray = new char[boardLength][boardWidth];
+        randomLetterFrequency = new int[26];
+        this.seed = seed;
+        random = new Random(seed);
+    }
     public static void updateBoardArray(char[][] arr)
     {
 
@@ -126,7 +138,7 @@ public class Board
             {
                 if(boardArray[i][j] == '#')
                 {
-                    char randomCharacter = (char)((Math.random() * 26) + 97);
+                    char randomCharacter = (char)((random.nextInt(26)) + 97);
                     boardArray[i][j] = randomCharacter;
                     randomLetterFrequency[randomCharacter - 97]++;
                 }
@@ -140,9 +152,8 @@ public class Board
 
     public int placeWord(WordBank wordBank, ArrayList<String> wordsFromFile)
     {
-
         //Selecting random line number
-        double lineNumber = Math.floor((Math.random() * wordsFromFile.size()));
+        double lineNumber = random.nextInt(wordsFromFile.size());
         //Selecting word from that line number that will be placed in the board
         String chosenWord = wordsFromFile.get((int)lineNumber);
         //Check to see if word is not in the word bank, if it is then return 0 (word not able to be picked)
@@ -159,9 +170,17 @@ public class Board
             return 0;
         }
         //Choosing random coordinates for chosen word, make instance of a Word
-        xCoordinate = (int)(Math.random() * boardLength);
-        yCoordinate = (int)(Math.random() * boardWidth);
-        Word placingWord = new Word(chosenWord, xCoordinate, yCoordinate);
+        xCoordinate = random.nextInt(boardLength);
+        yCoordinate = random.nextInt(boardWidth);
+        Word placingWord;
+        if(seed == -1) //Normal Word
+        {
+            placingWord = new Word(chosenWord, xCoordinate, yCoordinate);
+        }
+        else //Seeded word chosen for testing
+        {
+            placingWord = new Word(chosenWord, xCoordinate, yCoordinate, random.nextInt(5));
+        }
         int wordLength = placingWord.getWord().length();
         //Based on the orientation, use the x/y coordinate and move from there to fill in the board
         if(placingWord.getOrientation().name().equals("HORIZONTAL"))
