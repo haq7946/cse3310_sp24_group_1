@@ -1,6 +1,6 @@
 package uta.cse3310;
 import java.io.File;
-import java.lang.Math;
+import java.util.Random;
 import java.util.ArrayList;
 import java.io.FileReader;
 import java.io.BufferedReader;
@@ -9,10 +9,10 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.lang.System;
 //TODO:
-//1. Limit word generation based off orientation limits (Do we really need this??? Ask prof about this -Bryan)
-//2. Fill in #'s with random letters, save those letter values in an arraylist for board information
-//3. Display orientation limits for board information
-//4. Set a timer to display how long it took for the board to generate
+//1. Limit word generation based off orientation limits
+//2. 
+//3.
+//4. 
 //5. 
 public class Board 
 {
@@ -30,16 +30,28 @@ public class Board
     private double diagonalDownOrientation;
     private int[] randomLetterFrequency;
     private double boardFormationTime;
-
-    public Board()
+    private Random random;
+    private int seed;
+    public Board() //Regular Board
     {
         density = 0.67;
         boardLength = 50;
         boardWidth = 50;
         boardArray = new char[boardLength][boardWidth];
         randomLetterFrequency = new int[26];
+        seed = -1;
+        random = new Random();
     }
-
+    public Board(int seed) //Overloaded board for seed testing
+    {
+        density = 0.67;
+        boardLength = 50;
+        boardWidth = 50;
+        boardArray = new char[boardLength][boardWidth];
+        randomLetterFrequency = new int[26];
+        this.seed = seed;
+        random = new Random(seed);
+    }
     public static void updateBoardArray(char[][] arr)
     {
 
@@ -126,13 +138,171 @@ public class Board
             {
                 if(boardArray[i][j] == '#')
                 {
-                    char randomCharacter = (char)((Math.random() * 26) + 97);
+                    char randomCharacter = (char)((random.nextInt(26)) + 97);
                     boardArray[i][j] = randomCharacter;
                     randomLetterFrequency[randomCharacter - 97]++;
                 }
             }
         }
         //Update orientation frequencies for board information
+        setOrientationValues(wordBank);
+        double endTimer = System.currentTimeMillis();
+        boardFormationTime = endTimer - startTimer;
+    }
+
+    public int placeWord(WordBank wordBank, ArrayList<String> wordsFromFile)
+    {
+        //Selecting random line number
+        double lineNumber = random.nextInt(wordsFromFile.size());
+        //Selecting word from that line number that will be placed in the board
+        String chosenWord = wordsFromFile.get((int)lineNumber);
+        //Check to see if word is not in the word bank, if it is then return 0 (word not able to be picked)
+        for(int i = 0; i < wordBank.getWordBank().size(); i++)
+        {
+            if(chosenWord.equals(wordBank.getWordBank().get(i)))
+            {
+                return 0;
+            }
+        }
+        //Check to see if word is of length 4 or greater, if not then return 0 (word too short)
+        if(chosenWord.length() < 4)
+        {
+            return 0;
+        }
+        //Choosing random coordinates for chosen word, make instance of a Word
+        xCoordinate = random.nextInt(boardLength);
+        yCoordinate = random.nextInt(boardWidth);
+        Word placingWord;
+        if(seed == -1) //Normal Word
+        {
+            placingWord = new Word(chosenWord, xCoordinate, yCoordinate);
+        }
+        else //Seeded word chosen for testing
+        {
+            placingWord = new Word(chosenWord, xCoordinate, yCoordinate, random.nextInt(5));
+        }
+        int wordLength = placingWord.getWord().length();
+        //Based on the orientation, use the x/y coordinate and move from there to fill in the board
+        if(placingWord.getOrientation().name().equals("HORIZONTAL"))
+        {
+            //Check to see how frequently this orientation has appeared so far within the wordbank
+            //If orientation appears too frequently choose another word with a different orientation
+            setOrientationValues(wordBank);
+            if(getOrientationValues()[0] > 0.21)
+            {
+                return 0;
+            }
+            //Do for loop to see if word will fit in with given x/y coordinates
+            //If doesn't fit, return 0 (word doesn't fit, chance that word will NEVER fit, so just choose another word)
+            for(int i = 0; i < wordLength; i++)
+            {
+                if( ((xCoordinate + i) >= boardLength) || boardArray[yCoordinate][xCoordinate + i] != '#')
+                {
+                    return 0;   
+                }
+            }
+            //Else, do another for loop to place the word in
+            for(int i = 0; i < wordLength; i++)
+            {
+                boardArray[yCoordinate][xCoordinate + i] = placingWord.getWord().charAt(i);
+            }
+        }
+        //Rinse and repeat for all other orientations
+        else if(placingWord.getOrientation().name().equals("VERTICALUP"))
+        {
+            setOrientationValues(wordBank);
+            if(getOrientationValues()[1] > 0.21)
+            {
+                return 0;
+            }
+            for(int i = 0; i < wordLength; i++)
+            {
+                if( ((yCoordinate + i) >= boardWidth) || boardArray[yCoordinate + i][xCoordinate] != '#')
+                {
+                    return 0;   
+                }
+            }
+            for(int i = 0; i < wordLength; i++)
+            {
+                boardArray[yCoordinate + i][xCoordinate] = placingWord.getWord().charAt(i);
+            }
+        }
+        else if(placingWord.getOrientation().name().equals("VERTICALDOWN"))
+        {
+            setOrientationValues(wordBank);
+            if(getOrientationValues()[2] > 0.21)
+            {
+                return 0;
+            }
+            for(int i = 0; i < wordLength; i++)
+            {
+                if( ((yCoordinate - i) < 0) || boardArray[yCoordinate - i][xCoordinate] != '#')
+                {
+                    return 0;   
+                }
+            }
+            for(int i = 0; i < wordLength; i++)
+            {
+                boardArray[yCoordinate - i][xCoordinate] = placingWord.getWord().charAt(i);
+            }
+        }
+        else if(placingWord.getOrientation().name().equals("DIAGONALUP"))
+        {
+            setOrientationValues(wordBank);
+            if(getOrientationValues()[3] > 0.21)
+            {
+                return 0;
+            }
+            for(int i = 0; i < wordLength; i++)
+            {
+                if( ((yCoordinate + i) >= boardWidth) || (xCoordinate + i ) >= boardLength || boardArray[yCoordinate + i][xCoordinate + i] != '#')
+                {
+                    return 0;   
+                }            
+            }
+            for(int i = 0; i < wordLength; i++)
+            {
+                boardArray[yCoordinate + i][xCoordinate + i] = placingWord.getWord().charAt(i);
+            }
+        }
+        else if(placingWord.getOrientation().name().equals("DIAGONALDOWN"))
+        {
+            setOrientationValues(wordBank);
+            if(getOrientationValues()[4] > 0.21)
+            {
+                return 0;
+            }
+            for(int i = 0; i < wordLength; i++)
+            {
+                if( ((yCoordinate - i) < 0) || (xCoordinate + i ) >= boardLength || boardArray[yCoordinate - i][xCoordinate + i] != '#')
+                {
+                    return 0;   
+                }            
+            }
+
+            for(int i = 0; i < wordLength; i++)
+            {
+                boardArray[yCoordinate - i][xCoordinate + i] = placingWord.getWord().charAt(i);
+            }
+        }
+        else if(placingWord.getOrientation().name().equals("INVALID"))
+        {
+            System.out.println("NOT GAMER");
+        }
+        //Add the placed word to the wordbank
+        wordBank.getWordBank().add(placingWord);
+        //Return length to update calculatedDensity
+        return chosenWord.length();
+    }
+
+    public void setOrientationValues(WordBank wordBank)
+    {
+        horizontalOrientation = 0;
+        verticalUpOrientation = 0;
+        verticalDownOrientation = 0;
+        diagonalUpOrientation = 0;
+        diagonalDownOrientation = 0;
+        //All orientation values need a value of at least 0.15
         for(int i = 0; i < wordBank.getWordBank().size(); i++)
         {
             if(wordBank.getWordBank().get(i).getOrientation().name().equals("HORIZONTAL"))
@@ -162,131 +332,7 @@ public class Board
         verticalDownOrientation /= wordBank.getWordBank().size();
         diagonalUpOrientation /= wordBank.getWordBank().size();
         diagonalDownOrientation /= wordBank.getWordBank().size();
-        double endTimer = System.currentTimeMillis();
-        boardFormationTime = endTimer - startTimer;
-    }
 
-    public int placeWord(WordBank wordBank, ArrayList<String> wordsFromFile)
-    {
-
-        //Selecting random line number
-        double lineNumber = Math.floor((Math.random() * wordsFromFile.size()));
-        //Selecting word from that line number that will be placed in the board
-        String chosenWord = wordsFromFile.get((int)lineNumber);
-        //Check to see if word is not in the word bank, if it is then return 0 (word not able to be picked)
-        for(int i = 0; i < wordBank.getWordBank().size(); i++)
-        {
-            if(chosenWord.equals(wordBank.getWordBank().get(i)))
-            {
-                return 0;
-            }
-        }
-        //Check to see if word is of length 4 or greater, if not then return 0 (word too short)
-        if(chosenWord.length() < 4)
-        {
-            return 0;
-        }
-        //Choosing random coordinates for chosen word, make instance of a Word
-        Word placingWord = new Word(chosenWord);
-        xCoordinate = (int)(Math.random() * boardLength);
-        yCoordinate = (int)(Math.random() * boardWidth);
-        int wordLength = placingWord.getWord().length();
-        //Based on the orientation, use the x/y coordinate and move from there to fill in the board
-        if(placingWord.getOrientation().name().equals("HORIZONTAL"))
-        {
-            //Do for loop to see if word will fit in with given x/y coordinates
-            //If doesn't fit, return 0 (word doesn't fit, chance that word will NEVER fit, so just choose another word)
-            for(int i = 0; i < wordLength; i++)
-            {
-                if( ((xCoordinate + i) >= boardLength) || boardArray[yCoordinate][xCoordinate + i] != '#')
-                {
-                    return 0;   
-                }
-            }
-            //Else, do another for loop to place the word in
-            for(int i = 0; i < wordLength; i++)
-            {
-                boardArray[yCoordinate][xCoordinate + i] = placingWord.getWord().charAt(i);
-            }
-        }
-        //Rinse and repeat for all other orientations
-        else if(placingWord.getOrientation().name().equals("VERTICALUP"))
-        {
-            for(int i = 0; i < wordLength; i++)
-            {
-                if( ((yCoordinate + i) >= boardWidth) || boardArray[yCoordinate + i][xCoordinate] != '#')
-                {
-                    return 0;   
-                }
-            }
-            for(int i = 0; i < wordLength; i++)
-            {
-                boardArray[yCoordinate + i][xCoordinate] = placingWord.getWord().charAt(i);
-            }
-        }
-        else if(placingWord.getOrientation().name().equals("VERTICALDOWN"))
-        {
-            for(int i = 0; i < wordLength; i++)
-            {
-                if( ((yCoordinate - i) < 0) || boardArray[yCoordinate - i][xCoordinate] != '#')
-                {
-                    return 0;   
-                }
-            }
-            for(int i = 0; i < wordLength; i++)
-            {
-                boardArray[yCoordinate - i][xCoordinate] = placingWord.getWord().charAt(i);
-            }
-        }
-        else if(placingWord.getOrientation().name().equals("DIAGONALUP"))
-        {
-            for(int i = 0; i < wordLength; i++)
-            {
-                if( ((yCoordinate + i) >= boardWidth) || (xCoordinate + i ) >= boardLength || boardArray[yCoordinate + i][xCoordinate + i] != '#')
-                {
-                    return 0;   
-                }            
-            }
-            for(int i = 0; i < wordLength; i++)
-            {
-                boardArray[yCoordinate + i][xCoordinate + i] = placingWord.getWord().charAt(i);
-            }
-        }
-        else if(placingWord.getOrientation().name().equals("DIAGONALDOWN"))
-        {
-            for(int i = 0; i < wordLength; i++)
-            {
-                if( ((yCoordinate - i) < 0) || (xCoordinate + i ) >= boardLength || boardArray[yCoordinate - i][xCoordinate + i] != '#')
-                {
-                    return 0;   
-                }            
-            }
-
-            for(int i = 0; i < wordLength; i++)
-            {
-                boardArray[yCoordinate - i][xCoordinate + i] = placingWord.getWord().charAt(i);
-            }
-        }
-        else if(placingWord.getOrientation().name().equals("INVALID"))
-        {
-            System.out.println("NOT GAMER");
-        }
-        //Add the placed word to the wordbank
-        wordBank.getWordBank().add(placingWord);
-        //Return length to update calculatedDensity
-        return chosenWord.length();
-    }
-
-    public void setOrientationValues()
-    {
-        //All orientation values need a value of at least 0.15
-        double orientationValue = Math.floor((Math.random()/20) * 100)/100 + 0.15;
-        horizontalOrientation = orientationValue;
-        verticalUpOrientation = orientationValue;
-        verticalDownOrientation = orientationValue;
-        diagonalUpOrientation = orientationValue;
-        diagonalDownOrientation = orientationValue;
-        
     }
 
     public double[] getOrientationValues()
@@ -317,6 +363,8 @@ public class Board
         }
         str.append("}\n\n");
         str.append("Time to generate board: " + boardFormationTime + " milliseconds\n");
+        str.append("Orientation %'s: \nHorizontal: " + getOrientationValues()[0] + "\nVerticalUp: " + getOrientationValues()[1]);
+        str.append("\nVerticalDown: " + getOrientationValues()[2] + "\nDiagonalUp: " + getOrientationValues()[3] + "\nDiagonalDown: " + getOrientationValues()[4] + "\n");
         return str.toString();
     }
 }

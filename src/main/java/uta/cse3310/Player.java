@@ -21,11 +21,21 @@ public class Player
         numOfPlayers++;
     }
 
+    public Player(String nick)
+    {
+        setUsername(nick);
+        setScore(0);
+        setStatus(0);
+        setVictories(0);
+        numOfPlayers++;
+    }
+
     public Player()
     {
         setScore(0);
         setVictories(0);
         setStatus(0);
+        numOfPlayers++;
     }
 
     public String getUsername()
@@ -82,6 +92,4 @@ public class Player
     {
         return numOfPlayers;
     }
-
-
 }
