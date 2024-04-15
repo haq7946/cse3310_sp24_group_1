@@ -15,9 +15,9 @@ public class Game
     private int numberOfPlayers;
     private Board board;
     private WordBank bank;
+    private boolean isAvailableToJoin;
     private int gameStatus; //wtf does this do
 
-    private boolean isAvailableToJoin;
 
     private String[] wordList;
     private String[] completedWordList;
@@ -49,9 +49,8 @@ public class Game
         bank.initializeWordBank();
         board = new Board();
         board.initializeBoard(bank);
-
-        System.out.println(bank);
         board.printBoardArray();
+        System.out.println(bank);
         System.out.println(board);
     }
 
@@ -166,5 +165,9 @@ public class Game
         System.out.println("(game)playerList = " + playerList);
         System.out.println("numberOfPlayers = " + numberOfPlayers);
         System.out.println("isAvailableToJoin = " + isAvailableToJoin);
+    }
+
+    public boolean isAvailableToJoin() {
+        return isAvailableToJoin;
     }
 }

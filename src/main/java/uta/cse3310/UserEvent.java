@@ -6,7 +6,7 @@ public class UserEvent
     String GameId; // the game ID on the server
     PlayerType PlayerIdx; // REDPLAYER, ORANGEPLAYER, GREENOPLAYER, or BLACKPLAYER
     int Button; // button number from 0 to 8
-
+    String nick;
     UserEvent() 
     {
 

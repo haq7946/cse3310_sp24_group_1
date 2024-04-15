@@ -1,5 +1,6 @@
 
 
+
 // var connection = null;
 // var serverUrl;
 // serverUrl = "ws://" + window.location.hostname + ":9880";
@@ -8,18 +9,13 @@
 class Player {
     nick;
     color;
-    score;
 }   //Players unique nick
 
-////////////////////////////////////////////////////
-var namePage = document.getElementById("namePage"); //Main page
-var lobbyPage = document.getElementById("lobbyPage"); //Lobby Page
-var roomPage = document.getElementById("roomPage"); //Game Page
-////////////////////////////////////////////////////
+var namePage = document.getElementById("namePage");
+var lobbyPage = document.getElementById("lobbyPage");
+var roomPage = document.getElementById("roomPage");
 document.getElementById("rmButton").style.display = 'none'; ///Room button
-var display = 0;                                            //Debug purposes and control
-//////////////////////////////////////////////////
-var createRoomButton = document.getElementById("createRoom");  //Create Room
+var display = 0;
 
 function hideShow() {
     if (display == 0) {
@@ -54,13 +50,9 @@ function nameFunction() {   //gets the username
 }
 
 function backToNameFunction() { //Navigate to room page
+    display = 0;
     console.log(Player.nick.value + " left the game");
     Player.nick = 'none';
-    if(display == 2)
-    { // Exit the game/reload the website
-    location.reload();
-    }
-    display = 0;
     hideShow();
 }
 
@@ -78,7 +70,7 @@ function roomFunction() { //Navigate to room page
 
 window.onload = function () {
     hideShow();
-    
+
 }
 
 
@@ -86,20 +78,9 @@ function createRoom() {
     // document.getElementById("room1").textContent = `${Player.nick.value}'s Room`;
     console.log(Player.nick.value + " created a room");
     buildRooms();
-    disableRoomButton();
 }
 
-function disableRoomButton()
-{
-    createRoomButton.style.display = 'none';
-}
-
-function enableRoomButton()
-{
-    createRoomButton.style.display = 'block';
-}
-
-function buildRooms(){ //Add player data (will eventually print data based on JSON data)
+function buildRooms(){ //Add player data
     var table = document.getElementById("rmTable")
 
     for(var i = 0; i < 1; i++)
@@ -114,18 +95,6 @@ function buildRooms(){ //Add player data (will eventually print data based on JS
     document.getElementById("rmButton").style.display = 'block';  //Display the room button
 }
 
-function buildLeaderBoard(){
-    var leaderboard = document.getElementById("leaderboard");
-
-    for(var i = 0; i < 1; i++)
-    {
-        var leaderBoardRow = `<tr>
-                        <td>${Player.nick.value}     ${Player.score}<td>
-                             <tr />`
-        leaderboard.innerHTML += leaderBoardRow;
-    }
-}
-
 
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -134,7 +103,9 @@ function buildLeaderBoard(){
 const WIDTH = 50;
 const HEIGHT = 50;
 const Buttons = new Array(WIDTH*HEIGHT);
-let selected_letters = "";   
+let selected_letters = "";
+let idx =  Math.round(0 + Math.random() * 4); 
+const PlayerToColor = new Map([[0,"red"],[1,"orange"],[2,"green"],[3,"black"]]);
     for(let index=0;index<Buttons.length;index++) {
         let charCode = Math.round(65 + Math.random() * 25);
         Buttons[index]=String.fromCharCode(charCode);
@@ -155,10 +126,12 @@ let selected_letters = "";
        selected_letters += letter 
        document.getElementById("w3review").value="selected "+letter+" at coordinate ("+x+","+y+")\nselected letters="+selected_letters;
        let bcolor = document.getElementById(id).style.backgroundColor;
-       if(bcolor == "orange")
+
+       if(bcolor == PlayerToColor.get(idx))
           document.getElementById(id).style.backgroundColor = "blue";
        else
-          document.getElementById(id).style.backgroundColor = "black";
+          document.getElementById(id).style.backgroundColor = PlayerToColor.get(idx);
+
     }
 
     function saveToFile() {
