@@ -188,13 +188,6 @@ const PlayerToColor = new Map([[0,"red"],[1,"orange"],[2,"green"],[3,"black"]]);
 
     }
 
-    function saveToFile() {
-/*
-        const fs = require('node:fs');
-        fs.writeFileSync("data.txt", JSON.stringify(Buttons));
-
-*/
-    }
 
     function updateButtons(_Buttons,sButtons) {
        for(let i=0;i<_Buttons.length;i++)
