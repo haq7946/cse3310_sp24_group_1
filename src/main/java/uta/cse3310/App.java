@@ -183,7 +183,7 @@ public class App extends WebSocketServer
     // Get our Lobby Event data from server
     LobbyEvent C = conn.getAttachment();
     //L.updateState(C); we update here
-
+    
     // send out the game state every time
     // to everyone
     String jsonString;

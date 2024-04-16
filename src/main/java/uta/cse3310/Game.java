@@ -9,18 +9,18 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 public class Game 
 {
-    private String gameID;
-    private ArrayList<Player> playerList;
-    private ArrayList<String> playerChat;
-    private int numberOfPlayers;
-    private Board board;
-    private WordBank bank;
-    private boolean isAvailableToJoin;
-    private int gameStatus; //wtf does this do
+    public String gameID;
+    public ArrayList<Player> playerList;
+    public ArrayList<String> playerChat;
+    public int numberOfPlayers;
+    public Board board;
+    public WordBank bank;
+    public boolean isAvailableToJoin;
+    public int gameStatus; //wtf does this do
 
 
-    private String[] wordList;
-    private String[] completedWordList;
+    public String[] wordList;
+    public String[] completedWordList;
 
     public Game()
     {
