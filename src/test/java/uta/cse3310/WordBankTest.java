@@ -3,7 +3,6 @@ import java.util.ArrayList;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import java.util.ArrayList;
 public class WordBankTest extends TestCase
 {
     public WordBankTest(String testName)
@@ -15,7 +14,7 @@ public class WordBankTest extends TestCase
     {
         return new TestSuite(WordBankTest.class);
     }
-
+    //Just testing if sorting word bank works correctly
     public void testSort()
     {
         WordBank wordBank = new WordBank();

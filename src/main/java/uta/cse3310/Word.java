@@ -45,8 +45,8 @@ public class Word
     public Word(String word, int orientation) //Using seed for orientation; word constructor for testing
     {
         this.word = word;
-        this.xCoordinate = xCoordinate;
-        this.yCoordinate = yCoordinate;
+        this.xCoordinate = 0;
+        this.yCoordinate = 0;
         availability = true;
         switch(orientation)
         {
