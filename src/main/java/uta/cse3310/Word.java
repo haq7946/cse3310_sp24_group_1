@@ -10,15 +10,14 @@ public class Word
     private int yCoordinate;
     private boolean availability;
     private Random random;
-    public Word(String word, int xCoordinate, int yCoordinate) //Regular word constructor
+    public Word(String word) //Regular word constructor
     {
         random = new Random();
         //When word is created, input the word given into the word field, randomize the orientation
-        //Additionally give it the x and y coordinate so we can find it later
         //Make the availability true so it can be selected
         this.word = word;
-        this.xCoordinate = xCoordinate;
-        this.yCoordinate = yCoordinate;
+        xCoordinate = 0;
+        yCoordinate = 0;
         availability = true;
         int value = random.nextInt(5);
         switch(value)
@@ -42,7 +41,8 @@ public class Word
                 orient = Orientation.INVALID;
         }
     }
-    public Word(String word, int xCoordinate, int yCoordinate, int orientation) //Using seed for orientation; word constructor for testing
+
+    public Word(String word, int orientation) //Using seed for orientation; word constructor for testing
     {
         this.word = word;
         this.xCoordinate = xCoordinate;
@@ -82,6 +82,16 @@ public class Word
     public int getYCoordinate()
     {
         return yCoordinate;
+    }
+
+    public void setXCoordinate(int x)
+    {
+        xCoordinate = x;
+    }
+
+    public void setYCoordinate(int y)
+    {
+        yCoordinate = y;
     }
 
     public static void setWord(String s)

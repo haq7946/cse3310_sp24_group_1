@@ -21,24 +21,11 @@ public class WordBank
         return wordBank;
     }
 
-
-    public ArrayList<Word> initializeWordBank() //Put file parameter back in
+    public ArrayList<Word> initializeWordBank()
     {
-        try
-        {
-        BufferedReader br = new BufferedReader(new FileReader("resources/words.txt"));
-        for(int i = 0; i < 5; i++)
-        {
-            System.out.println(br.readLine()); 
-        }
-        }
-        catch(IOException e)
-        {
-            System.out.println("wadahek that wasn't a valid file!");
-        }
+        Collections.sort(wordBank, new WordComparator());
         return wordBank;
     }
-
     public static void updateWordBank(Word[] Word)
     {
 

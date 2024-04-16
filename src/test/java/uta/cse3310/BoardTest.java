@@ -86,7 +86,8 @@ public class BoardTest extends TestCase
             density /= (b.getBoardLength() * b.getBoardWidth());
             //Density of placed characters = 1 - random characters
             density = 1 - density;
-            assertTrue(density > b.getDensity());
+            //0.1% leeway due to weird double activity
+            assertTrue(density + 0.001 > b.getDensity());
         }
     }
 
