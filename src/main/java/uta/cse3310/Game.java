@@ -109,7 +109,7 @@ public class Game
     {
         for(int i = 0; i < wordBank.getWordBank().size(); i++)
         {
-            if(word.equals(wordBank.getWordBank().get(i).getWord()))
+            if(word.equals(wordBank.getWordBank().get(i).getWord()) && wordBank.getWordBank().get(i).getAvailability() == true)
             {
                 return true;
             }
