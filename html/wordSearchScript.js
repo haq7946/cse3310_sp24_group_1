@@ -10,6 +10,22 @@ class Lobby {
     gameList
     playerList
     //playerChat
+    button
+}
+
+class Game{
+    gameID;
+    playerList;
+    playerChat;
+    numberOfPlayers;
+    board;
+    bank;
+    isAvailableToJoin;
+    gameStatus; //wtf does this do
+
+
+    wordList;
+    completedWordList;
 }
 
 
@@ -39,7 +55,9 @@ connection.onmessage = function (evt){
     msg = evt.data;
         console.log("Message received: " + msg);
         const obj = JSON.parse(msg);
-    
+
+    console.log(obj.playerList);
+    console.log(obj.gameList);
 
 }
 
@@ -87,6 +105,7 @@ function nameFunction() {   //gets the username
         P.numberOfVictories = "0";
 
         globalLobby.playerList.push(P);
+        globalLobby.button = "nameButton";
         connection.send(JSON.stringify(globalLobby));
         console.log(JSON.stringify(globalLobby))
 
@@ -103,6 +122,7 @@ function nameFunction() {   //gets the username
 function backToNameFunction() { //Navigate to room page
     console.log(Player.username.value + " left the game");
     Player.username = 'none';
+
     if(display == 2)
     { // Exit the game/reload the website
     location.reload();
@@ -114,6 +134,9 @@ function backToNameFunction() { //Navigate to room page
 function backToLobbyFunction() { //Navigate to room page
     display = 1;
     console.log(Player.username.value + " left the room");
+    globalLobby.button = "backButton";
+    connection.send(JSON.stringify(globalLobby));
+    console.log(JSON.stringify(globalLobby));
     hideShow();
 }
 
@@ -135,6 +158,12 @@ window.onload = function () {
 function createRoom() {
     // document.getElementById("room1").textContent = `${Player.nick.value}'s Room`;
     console.log(Player.username.value + " created a room");
+    globalLobby.button = "createRoomButton";
+    G = new Game();
+    globalLobby.gameList.push(G);
+    connection.send(JSON.stringify(globalLobby));
+    console.log(JSON.stringify(globalLobby.gameList.board));
+    //Will be eventually moved to on message to update based on what JSON recieves
     buildRooms();
     disableRoomButton();
 }
@@ -151,8 +180,9 @@ function enableRoomButton()
 
 function buildRooms(){ //Add player data (will eventually print data based on JSON data)
     var table = document.getElementById("rmTable")
-
-    for(var i = 0; i < 1; i++)
+    //message = new Lobby();
+    //message = msg;
+    for(var i = 0; i < 1/*message.gameList.length*/; i++)
     {
         var row = `<tr>
                         <td>${Player.username.value}'s Room<td>
