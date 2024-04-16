@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.lang.System;
+import java.util.Arrays;
 //TODO:
 //1. Limit word generation based off orientation limits
 //2. 
@@ -51,6 +52,14 @@ public class Board
         randomLetterFrequency = new int[26];
         this.seed = seed;
         random = new Random(seed);
+    }
+    public double getBoardLength()
+    {
+        return boardLength;
+    }
+    public double getBoardWidth()
+    {
+        return boardWidth;
     }
     public static void updateBoardArray(char[][] arr)
     {
@@ -100,6 +109,7 @@ public class Board
         double volume = boardLength * boardWidth;
         double mass = 0;
         double calculatedDensity = 0;
+        Arrays.fill(randomLetterFrequency, 0);
         //Intializing board to #'s to prepare for word input
         for(int i = 0; i < boardLength; i++)
         {

@@ -76,11 +76,6 @@ public class App extends WebSocketServer
 
   public static void main(String[] args) 
   {
-<<<<<<< HEAD
-  App A = new App();
-    // Set up the http server
-    int port = 9001;
-=======
     String HttpPort = System.getenv("HTTP_PORT");
     int port = 9001;
     if (HttpPort!=null) 
@@ -88,19 +83,12 @@ public class App extends WebSocketServer
       port = Integer.valueOf(HttpPort);
     } 
     // Set up the http server
->>>>>>> 8ebd300a0f7fe6cc640fdf5e1a037a0134ecd998
     HttpServer H = new HttpServer(port, "./html");
     H.start();
     System.out.println("http Server started on port: " + port);
 
     // create and start the websocket server
     port = 9101;
-<<<<<<< HEAD
-    A.setReuseAddr(true);
-    A.start();
-    System.out.println("websocket Server started on port: " + port); //TEMP
-
-=======
     String WSPort = System.getenv("WEBSOCKET_PORT");
     if (WSPort!=null) 
     {
@@ -134,7 +122,6 @@ public class App extends WebSocketServer
     {
       System.out.println("username = " + i.getUsername());
     }*/
->>>>>>> 8ebd300a0f7fe6cc640fdf5e1a037a0134ecd998
   }
 
   @Override
