@@ -5,26 +5,26 @@ class Player {
     status;
     numberOfVictories;
 }   //Players unique nick
- 
+
 class Lobby {
     gameList
     playerList
     //playerChat
 }
- 
- 
+
+
 var connection = null;
 var serverUrl;
 serverUrl = "ws://" + window.location.hostname + ":9101";
 //Create the connection with the server
 connection = new WebSocket(serverUrl);
 console.log(connection);
- 
+
 globalLobby = new Lobby();
 globalLobby.playerList = new Array();
 globalLobby.gameList = new Array();
 //globalLobby.playerChat = new Array();
- 
+
 connection.onopen = function (evt) {
     console.log("open");
 }
@@ -39,8 +39,8 @@ connection.onmessage = function (evt){
     msg = evt.data;
         console.log("Message received: " + msg);
         const obj = JSON.parse(msg);
-   
- 
+    
+
 }
  
  
@@ -85,11 +85,11 @@ function nameFunction() {   //gets the username
         P.color = "0";
         P.status = "0";  //0 = notready and 1 = ready //
         P.numberOfVictories = "0";
- 
+
         globalLobby.playerList.push(P);
         connection.send(JSON.stringify(globalLobby));
         console.log(JSON.stringify(globalLobby))
- 
+
         display = 1;  //navigates user to next page
         hideShow();
     }
