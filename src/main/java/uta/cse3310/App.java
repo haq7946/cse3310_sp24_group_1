@@ -90,7 +90,7 @@ public class App extends WebSocketServer
     // create and start the websocket server
     port = 9101;
     String WSPort = System.getenv("WEBSOCKET_PORT");
-    if (WSPort!=null) 
+    if (WSPort!=null)
     {
       port = Integer.valueOf(WSPort);
     }
@@ -132,19 +132,19 @@ public class App extends WebSocketServer
     //ServerEvent E = new ServerEvent();  Our server event
 
     // No matches ? Create a new Game.
-    Player P = new Player("Bryan");
+    Lobby L = new Lobby();
     // allows the websocket to give us the Game when a message arrives
-    conn.setAttachment(P);
+    conn.setAttachment(L);
 
     Gson gson = new Gson();
     // Note only send to the single connection
-    conn.send(gson.toJson(P));
-    System.out.println(gson.toJson(P));
+    conn.send(gson.toJson(L));
+    System.out.println(gson.toJson(L));
     System.out.println("This is a test");
 
     // The state of the game has changed, so lets send it to everyone
     String jsonString;
-    jsonString = gson.toJson(P);
+    jsonString = gson.toJson(L);
 
     System.out.println(jsonString);
     broadcast(jsonString);
