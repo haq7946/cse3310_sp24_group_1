@@ -185,11 +185,15 @@ public class Board
         Word placingWord;
         if(seed == -1) //Normal Word
         {
-            placingWord = new Word(chosenWord, xCoordinate, yCoordinate);
+            placingWord = new Word(chosenWord);
+            placingWord.setXCoordinate(xCoordinate);
+            placingWord.setYCoordinate(yCoordinate);
         }
         else //Seeded word chosen for testing
         {
-            placingWord = new Word(chosenWord, xCoordinate, yCoordinate, random.nextInt(5));
+            placingWord = new Word(chosenWord, random.nextInt(5));
+            placingWord.setXCoordinate(xCoordinate);
+            placingWord.setYCoordinate(yCoordinate);
         }
         int wordLength = placingWord.getWord().length();
         //Based on the orientation, use the x/y coordinate and move from there to fill in the board

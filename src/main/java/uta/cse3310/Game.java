@@ -46,12 +46,12 @@ public class Game
     {
         isAvailableToJoin = false;
         bank = new WordBank();
-        bank.initializeWordBank();
+        //bank.initializeWordBank();
         board = new Board();
         board.initializeBoard(bank);
-        board.printBoardArray();
-        System.out.println(bank);
-        System.out.println(board);
+        //board.printBoardArray();
+        //System.out.println(bank);
+        //System.out.println(board);
     }
 
     public void setGameID(int gam) //we are never going to use this method
@@ -64,7 +64,7 @@ public class Game
         return numberOfPlayers;
     }
 
-    public void setNumberOfPlayers(int num)
+    public void setNumberOfPlayers(int num) //we are never going to use this method
     {
         numberOfPlayers = num;
     }
@@ -127,6 +127,8 @@ public class Game
                 playerMax = playerList.get(i);
             }
         }
+        int vic = playerMax.getVictories();
+        playerMax.setVictories(vic++);
         return playerMax;
     }
 
@@ -142,7 +144,7 @@ public class Game
 
     public void addPlayer(Player newPlayer)
     {
-        if (numberOfPlayers < 4)
+        if (numberOfPlayers < 4) //check that game has less than 4 players
         {
             playerList.add(newPlayer);
             numberOfPlayers++;

@@ -27,8 +27,7 @@ import java.util.ArrayList;
 public class Lobby 
 {
     private static ArrayList<Game> gameList; // list of current games
-    private static ArrayList<Player> playerList; // list of players that are in the lobby (i.e. players not currently in
-                                                 // a game)
+    private static ArrayList<Player> playerList; // list of players that are in the lobby (i.e. players not currently in a game)
     private ArrayList<String> playerChat; //list of message history sent
     // private ArrayList<Player> leaderboardList; this is going to be a PointBoard
     // i'm pretty sure - AE
@@ -37,7 +36,7 @@ public class Lobby
     {
         gameList = new ArrayList<Game>();
         playerList = new ArrayList<Player>();
-        makeGame();
+        //makeGame(); why is this here
     }
 
     public ArrayList<Game> getGamelist() // return the game list. probably never calling this method but w/e
@@ -104,6 +103,7 @@ public class Lobby
                 }
             }
         }
+        //nobody else has the same name, go ahead and add the new player
         Player p = new Player(name);
         playerList.add(p);
     }
