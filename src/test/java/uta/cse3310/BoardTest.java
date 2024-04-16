@@ -86,7 +86,7 @@ public class BoardTest extends TestCase
             density /= (b.getBoardLength() * b.getBoardWidth());
             //Density of placed characters = 1 - random characters
             density = 1 - density;
-            System.out.println(density);
+            assertTrue(density > b.getDensity());
         }
     }
 
