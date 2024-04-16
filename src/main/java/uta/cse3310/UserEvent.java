@@ -9,7 +9,7 @@ public class UserEvent
     String nick;
     UserEvent() 
     {
-
+        
     }
 
     UserEvent(String _GameId, PlayerType _PlayerIdx, int _Button) {

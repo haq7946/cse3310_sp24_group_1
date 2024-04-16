@@ -60,12 +60,50 @@ public class Lobby
 
     public void addPlayer(String name, int color) // add a new player to the lobby
     {
+        for (int i = 0; i < playerList.size(); i++) //check players in lobby to see if they already have the name
+        {
+            if(name.equals(playerList.get(i).getUsername()))
+            {
+                System.out.println("Error: username already taken (lobby)");
+                return;
+            }
+        }
+        for (int i = 0; i < gameList.size(); i++) //check players in games to see if they already have the name
+        {
+            for (int j = 0; j < gameList.get(i).getPlayerList().size(); j++)
+            {
+                if (name.equals(gameList.get(i).getPlayerList().get(j).getUsername()))
+                {
+                    System.out.println("Error: username already taken(game)");
+                    return;
+                }
+            }
+        }
         Player p = new Player(name, color);
         playerList.add(p);
     }
 
     public void addPlayer(String name) // add a new player to the lobby
     {
+        for (int i = 0; i < playerList.size(); i++) //check players in lobby to see if they already have the name
+        {
+            if(name.equals(playerList.get(i).getUsername()))
+            {
+                System.out.println("Error: username already taken (lobby)");
+                return;
+            }
+        }
+        for (int i = 0; i < gameList.size(); i++) //check players in games to see if they already have the name
+        {
+            for (int j = 0; j < gameList.get(i).getPlayerList().size(); j++)
+            {
+                if (name.equals(gameList.get(i).getPlayerList().get(j).getUsername()))
+                {
+                    System.out.println("Error: username already taken(game)");
+                    return;
+                }
+            }
+        }
         Player p = new Player(name);
         playerList.add(p);
     }

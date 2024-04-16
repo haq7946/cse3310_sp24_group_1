@@ -167,7 +167,13 @@ public class Game
         System.out.println("isAvailableToJoin = " + isAvailableToJoin);
     }
 
-    public boolean isAvailableToJoin() {
+    public boolean isAvailableToJoin() 
+    {
         return isAvailableToJoin;
+    }
+
+    public ArrayList<Player> getPlayerList()
+    {
+        return playerList;
     }
 }
