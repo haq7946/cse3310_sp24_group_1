@@ -132,19 +132,21 @@ public class App extends WebSocketServer
     //ServerEvent E = new ServerEvent();  Our server event
 
     // No matches ? Create a new Game.
-    Player P = new Player("Bryan");
+    LobbyEvent L = new LobbyEvent();
+    L.gameList = new ArrayList<Game>();
+    L.playerList = new ArrayList<Player>();
     // allows the websocket to give us the Game when a message arrives
-    conn.setAttachment(P);
+    conn.setAttachment(L);
 
     Gson gson = new Gson();
     // Note only send to the single connection
-    conn.send(gson.toJson(P));
-    System.out.println(gson.toJson(P));
+    conn.send(gson.toJson(L));
+    System.out.println(gson.toJson(L));
     System.out.println("This is a test");
 
     // The state of the game has changed, so lets send it to everyone
     String jsonString;
-    jsonString = gson.toJson(P);
+    jsonString = gson.toJson(L);
 
     System.out.println(jsonString);
     broadcast(jsonString);
@@ -155,7 +157,10 @@ public class App extends WebSocketServer
   {
     System.out.println(conn + " has closed");
     // Retrieve the game tied to the websocket connection
-    Lobby L = conn.getAttachment();
+    LobbyEvent L = new LobbyEvent();
+    L.gameList = new ArrayList<Game>();
+    L.playerList = new ArrayList<Player>();
+    L = conn.getAttachment();
     L = null;
   }
 
@@ -165,23 +170,25 @@ public class App extends WebSocketServer
     //System.out.println("< " + Duration.between(startTime, Instant.now()).toMillis() + " " + "-" + " " + escape(message));
 
     // Bring in the data from the webpage
-    // A UserEvent is all that is allowed at this point
+    // Lobby Event is passed from Json to gson [Web to code]
     GsonBuilder builder = new GsonBuilder();
     Gson gson = builder.create();
-    Player P = gson.fromJson(message, Player.class);
-    System.out.println("Have I got here?");
-    System.out.println(P.getUsername());
+    LobbyEvent L = new LobbyEvent();
+    L.gameList = new ArrayList<Game>();
+    L.playerList = new ArrayList<Player>();
+    L = gson.fromJson(message, LobbyEvent.class);
+    //System.out.println("Have I got here?");
+    System.out.println(L);
 
-    UserEvent U = new UserEvent();
-    // Get our Game Object
-    ///p
-    Player C = conn.getAttachment();
-    //L.updateState(U);
+
+    // Get our Lobby Event data from server
+    LobbyEvent C = conn.getAttachment();
+    //L.updateState(C); we update here
 
     // send out the game state every time
     // to everyone
     String jsonString;
-    jsonString = gson.toJson(P);
+    jsonString = gson.toJson(L);
 
     //System.out.println("> " + Duration.between(startTime, Instant.now()).toMillis() + " " + "*" + " " + escape(jsonString));
     System.out.println(jsonString);
