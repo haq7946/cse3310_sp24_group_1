@@ -1,19 +1,42 @@
-
-
-
-// var connection = null;
-// var serverUrl;
-// serverUrl = "ws://" + window.location.hostname + ":9880";
-// connection = new WebSocket(serverUrl);
-
 class Player {
-    nick;
+    username;
+    score;
     color;
+    status;
+    numberOfVictories;
 }   //Players unique nick
 
-var namePage = document.getElementById("namePage");
-var lobbyPage = document.getElementById("lobbyPage");
-var roomPage = document.getElementById("roomPage");
+
+var connection = null;
+var serverUrl;
+serverUrl = "ws://" + window.location.hostname + ":9101";
+//Create the connection with the server
+connection = new WebSocket(serverUrl);
+console.log(connection);
+
+connection.onopen = function (evt) {
+    console.log("open");
+}
+connection.onclose = function (evt) {
+    console.log("close");
+}
+
+const BoardStatetoDisplay = new Map(); //Eventually will be used for the 50 by 50 grid
+
+connection.onmessage = function (evt){
+    var msg;
+    msg = evt.data;
+        console.log("Message received: " + msg);
+        const obj = JSON.parse(msg);
+
+}
+
+
+////////////////////////////////////////////////////
+var namePage = document.getElementById("namePage"); //Main page
+var lobbyPage = document.getElementById("lobbyPage"); //Lobby Page
+var roomPage = document.getElementById("roomPage"); //Game Page
+////////////////////////////////////////////////////
 document.getElementById("rmButton").style.display = 'none'; ///Room button
 var display = 0;
 
@@ -37,34 +60,53 @@ function hideShow() {
 }
 
 function nameFunction() {   //gets the username 
-    Player.nick = document.querySelector("#nick");
-    console.log(Player.nick.value);
+    Player.username = document.querySelector("#nick");
+    console.log(Player.username.value);
 
-    if (nick.value != "") {
+    if (Player.username.value != "") {
+        //Send data to back-end port 9101
+        P = new Player();
+        P.username = Player.username.value;
+        P.score = "0";
+        P.color = "0";
+        P.status = "0";  //0 = notready and 1 = ready //
+        P.numberOfVictories = "0";
+        connection.send(JSON.stringify(P));
+        console.log(JSON.stringify(P))
+
         display = 1;  //navigates user to next page
         hideShow();
     }
-    else {
+    else 
+    {
         document.getElementById("errorMsg").innerHTML = "Error: Please enter a proper username.";
+        console.log("User didn't specify name");
     }
 }
 
 function backToNameFunction() { //Navigate to room page
+    console.log(Player.username.value + " left the game");
+    Player.username = 'none';
+    if(display == 2)
+    { // Exit the game/reload the website
+    location.reload();
+    }
     display = 0;
-    console.log(Player.nick.value + " left the game");
-    Player.nick = 'none';
     hideShow();
 }
 
 function backToLobbyFunction() { //Navigate to room page
     display = 1;
-    console.log(Player.nick.value + " left the room");
+    console.log(Player.username.value + " left the room");
     hideShow();
 }
 
 function roomFunction() { //Navigate to room page
     display = 2;
-    console.log(Player.nick.value + " joined the room");
+    console.log(Player.username.value + " joined the room");
+    P.status = "1"; //Player is ready to play
+    connection.send(JSON.stringify(P));//Send player status that player is ready
+    console.log(JSON.stringify(P));
     hideShow();
 }
 
@@ -76,7 +118,7 @@ window.onload = function () {
 
 function createRoom() {
     // document.getElementById("room1").textContent = `${Player.nick.value}'s Room`;
-    console.log(Player.nick.value + " created a room");
+    console.log(Player.username.value + " created a room");
     buildRooms();
 }
 
@@ -86,13 +128,25 @@ function buildRooms(){ //Add player data
     for(var i = 0; i < 1; i++)
     {
         var row = `<tr>
-                        <td>${Player.nick.value}'s Room<td>
+                        <td>${Player.username.value}'s Room<td>
                         <button id ="rmButton" class ="smallbutton button 2" onclick="roomFunction()" >Join room</button>
                   <tr />`
         table.innerHTML += row;
     }
 
     document.getElementById("rmButton").style.display = 'block';  //Display the room button
+}
+
+function buildLeaderBoard(){
+    var leaderboard = document.getElementById("leaderboard");
+
+    for(var i = 0; i < 1; i++)
+    {
+        var leaderBoardRow = `<tr>
+                        <td>${Player.username.value}     ${Player.score}<td>
+                             <tr />`
+        leaderboard.innerHTML += leaderBoardRow;
+    }
 }
 
 
@@ -134,13 +188,6 @@ const PlayerToColor = new Map([[0,"red"],[1,"orange"],[2,"green"],[3,"black"]]);
 
     }
 
-    function saveToFile() {
-/*
-        const fs = require('node:fs');
-        fs.writeFileSync("data.txt", JSON.stringify(Buttons));
-
-*/
-    }
 
     function updateButtons(_Buttons,sButtons) {
        for(let i=0;i<_Buttons.length;i++)

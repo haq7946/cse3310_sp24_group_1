@@ -5,8 +5,8 @@
   width: 18px;
   padding: 2px 2px; /* Some padding */
   cursor: pointer; /* Pointer/hand icon */
-  float: left; /* Float the buttons side by side */
-  align:left;
+//  float: left; /* Float the buttons side by side */
+//  align:left;
 }
 
 /* Clear floats (clearfix hack) */
@@ -23,7 +23,7 @@
 /* Add a background color on hover */
 .btn-group button:hover {
   background-color: red;
-  background-color: #3e8e41;
+//  background-color: #3e8e41;
 }
 .button {
   background-color: #04AA6D; /* Green */
@@ -42,33 +42,6 @@
 .button3 {background-color: #f44336;} /* Red */ 
 .button4 {background-color: #e7e7e7; color: black;} /* Gray */ 
 .button5 {background-color: #555555;} /* Black */
-textarea {resize:none;background-color:#e7e7e7;rows:4;cols:50;}
-iframe {background-color:powderblue;frameBorder:0;scrolling:auto;}
-
-th{
-  color:blue;
-}
-
-.table-room{
-  background-color: aqua;
-  font-size: medium;
-  align:center;
-}
-
-.smallbutton{
-  background-color: #04AA6D; /* Green */
-  border: 3px brown;
-  color: white;
-  padding: 10px 10px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 15px;
-  margin: 4px 2px;
-  cursor: pointer;
-}
-
-.leaderboard{
-  border: 15px;
-  background-color:#008CBA;
-}
+textarea {resize:none;background-color:#e7e7e7;cols:30;rows:15;}
+iframe {background-color:powderblue;frameBorder:0;scrolling:auto;width:"30";height:"200";}
+h1 {color:Tomato;background-color:yellow;display:block;font-size:60px;}

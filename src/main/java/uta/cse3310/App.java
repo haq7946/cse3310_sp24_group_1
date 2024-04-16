@@ -127,25 +127,29 @@ public class App extends WebSocketServer
   @Override
   public void onOpen(WebSocket conn, ClientHandshake handshake) 
   {
-    connectionId++;
-
     System.out.println(conn.getRemoteSocketAddress().getAddress().getHostAddress() + " connected");
 
-    ServerEvent E = new ServerEvent();
-    
-    //A user has joined, create a new Player object for them
-    try
-    {
-      BufferedReader input = new BufferedReader(new InputStreamReader (System.in));
-      String inputString = input.readLine();
-      //TODO: write code to check if username already exists
-      myLobby.addPlayer(inputString);
-    }
-    catch(IOException e)
-    {
-      System.out.println("Error");
-    }
+    //ServerEvent E = new ServerEvent();  Our server event
+
+    // No matches ? Create a new Game.
+    Player P = new Player("Bryan");
+    // allows the websocket to give us the Game when a message arrives
+    conn.setAttachment(P);
+
+    Gson gson = new Gson();
+    // Note only send to the single connection
+    conn.send(gson.toJson(P));
+    System.out.println(gson.toJson(P));
+    System.out.println("This is a test");
+
+    // The state of the game has changed, so lets send it to everyone
+    String jsonString;
+    jsonString = gson.toJson(P);
+
+    System.out.println(jsonString);
+    broadcast(jsonString);
   }
+
   @Override
   public void onClose(WebSocket conn, int code, String reason, boolean remote) 
   {
@@ -164,18 +168,23 @@ public class App extends WebSocketServer
     // A UserEvent is all that is allowed at this point
     GsonBuilder builder = new GsonBuilder();
     Gson gson = builder.create();
-    UserEvent U = gson.fromJson(message, UserEvent.class);
+    Player P = gson.fromJson(message, Player.class);
+    System.out.println("Have I got here?");
+    System.out.println(P.getUsername());
 
+    UserEvent U = new UserEvent();
     // Get our Game Object
-    Lobby L = conn.getAttachment();
-    L.updateState(U);
+    ///p
+    Player C = conn.getAttachment();
+    //L.updateState(U);
 
     // send out the game state every time
     // to everyone
     String jsonString;
-    jsonString = gson.toJson(L);
+    jsonString = gson.toJson(P);
 
     //System.out.println("> " + Duration.between(startTime, Instant.now()).toMillis() + " " + "*" + " " + escape(jsonString));
+    System.out.println(jsonString);
     broadcast(jsonString);
   }
 
@@ -198,6 +207,7 @@ public class App extends WebSocketServer
   @Override
   public void onStart() 
   {
+    System.out.println("Server started!");
     setConnectionLostTimeout(0);
   }
 }
