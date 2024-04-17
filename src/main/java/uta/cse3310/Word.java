@@ -99,9 +99,9 @@ public class Word
 
     }
 
-    public static int getLength()
+    public int getLength()
     {
-        return 0;
+        return wordLength;
     }
 
     public static void setOrientation(int ori)
