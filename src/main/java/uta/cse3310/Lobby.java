@@ -129,8 +129,40 @@ public class Lobby
         playerChat.add(message); //Works exactly the same as the chat in game.java
     }
 
-    public void updateState(UserEvent U)
+    public void updateState(LobbyEvent L)
     {
+        for (int i = 0; i < gameList.size(); i++)
+        {
+            if (L.GameID.equals(gameList.get(i)))
+            {
+                //do something
+            }
+        }
+        if (L.nameButton == true)
+        {
+            addPlayer(L.playerName);
+        }
+        if (L.createRoomButton == true)
+        {
+            makeGame();
+        }
+        if (L.joinRoomButton == true)
+        {
+            for (int i = 0; i < gameList.size(); i++)
+            {
+                if (L.GameID.equals(gameList.get(i).getGameID()))
+                {
+                    joinGame(gameList.get(i), L.player);
+                }
+            }
+        }
+        if (L.backButton == true)
+        {
 
+        }
+        if (L.exitGameButton == true)
+        {
+            
+        }
     }
 }

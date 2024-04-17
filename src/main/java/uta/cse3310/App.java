@@ -132,8 +132,8 @@ public class App extends WebSocketServer
 
     // No matches ? Create a new Game.
     LobbyEvent L = new LobbyEvent();
-    L.gameList = new ArrayList<Game>();
-    L.playerList = new ArrayList<Player>();
+    //L.gameList = new ArrayList<Game>();
+    //L.playerList = new ArrayList<Player>();
     // allows the websocket to give us the Game when a message arrives
     conn.setAttachment(L);
 
@@ -157,8 +157,8 @@ public class App extends WebSocketServer
     System.out.println(conn + " has closed");
     // Retrieve the game tied to the websocket connection
     LobbyEvent L = new LobbyEvent();
-    L.gameList = new ArrayList<Game>();
-    L.playerList = new ArrayList<Player>();
+    //L.gameList = new ArrayList<Game>();
+    //L.playerList = new ArrayList<Player>();
     L = conn.getAttachment();
     L = null;
   }
@@ -173,17 +173,17 @@ public class App extends WebSocketServer
     GsonBuilder builder = new GsonBuilder();
     Gson gson = builder.create();
     LobbyEvent L = new LobbyEvent();
-    L.gameList = new ArrayList<Game>();
-    L.playerList = new ArrayList<Player>();
+    //L.gameList = new ArrayList<Game>();
+    //L.playerList = new ArrayList<Player>();
     L = gson.fromJson(message, LobbyEvent.class);
     //System.out.println("Have I got here?");
     System.out.println(L);
 
 
     // Get our Lobby Event data from server
-    LobbyEvent C = conn.getAttachment();
-    //L.updateState(C); we update here
-    
+    Lobby updatedLobby = conn.getAttachment();
+    updatedLobby.updateState(L);
+
     // send out the game state every time
     // to everyone
     String jsonString;
