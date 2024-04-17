@@ -33,5 +33,4 @@ public class PointBoard
             scoreBoard[i].setScore(playerList[i].getScore());
         }
     }
-    
 }

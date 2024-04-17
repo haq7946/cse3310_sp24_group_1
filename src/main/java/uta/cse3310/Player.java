@@ -1,5 +1,7 @@
 package uta.cse3310;
 
+//THIS CLASS IS COMPLETE
+
 public class Player 
 {
     public String username;

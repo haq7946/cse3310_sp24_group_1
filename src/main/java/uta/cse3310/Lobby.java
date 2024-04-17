@@ -129,7 +129,7 @@ public class Lobby
         playerChat.add(message); //Works exactly the same as the chat in game.java
     }
 
-    public void updateState(LobbyEvent L)
+    public void updateState(LobbyEvent L) //this is the worst code i have ever written
     {
         for (int i = 0; i < gameList.size(); i++)
         {
@@ -158,7 +158,7 @@ public class Lobby
         }
         if (L.backButton == true)
         {
-            
+
         }
         if (L.exitGameButton == true)
         {

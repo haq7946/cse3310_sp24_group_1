@@ -204,7 +204,8 @@ public class App extends WebSocketServer
   public void onError(WebSocket conn, Exception ex) 
   {
     ex.printStackTrace();
-    if (conn != null) {
+    if (conn != null) 
+    {
       // some errors like port binding failed may not be assignable to a specific
       // websocket
     }

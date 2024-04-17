@@ -1,6 +1,8 @@
 package uta.cse3310;
 import java.util.Random;
 
+//THIS CLASS IS COMPLETE
+
 public class Word 
 {
     private String word;
@@ -94,9 +96,9 @@ public class Word
         yCoordinate = y;
     }
 
-    public static void setWord(String s)
+    public void setWord(String s)
     {
-
+        word = s;
     }
 
     public int getLength()
@@ -104,9 +106,9 @@ public class Word
         return wordLength;
     }
 
-    public static void setOrientation(int ori)
+    public void setOrientation(Orientation ori)
     {
-
+        orient = ori;
     }
 
     public Orientation getOrientation()
