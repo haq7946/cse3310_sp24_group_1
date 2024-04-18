@@ -19,8 +19,8 @@ public class WordTest extends TestCase
     {
         Random random = new Random(5);
         Random random2 = new Random(5);
-        Word word = new Word("pen", random.nextInt(6));
-        Word word2 = new Word("is", random2.nextInt(6));
+        Word word = new Word("pen", random.nextInt(5), random.nextInt(10));
+        Word word2 = new Word("is", random2.nextInt(5), random2.nextInt(10));
         assertEquals(word.getXCoordinate(), word2.getXCoordinate());
         assertEquals(word.getYCoordinate(), word2.getYCoordinate());
         assertEquals(word.getAvailability(), word2.getAvailability());

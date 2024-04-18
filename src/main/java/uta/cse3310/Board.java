@@ -30,6 +30,8 @@ public class Board
     private double diagonalUpOrientation;
     private double diagonalDownOrientation;
     private int[] randomLetterFrequency;
+    private int linkedWordFrequency;
+    private ArrayList<Word> linkedWords;
     private double boardFormationTime;
     private Random random;
     private int seed;
@@ -40,6 +42,7 @@ public class Board
         boardWidth = 50;
         boardArray = new char[boardLength][boardWidth];
         randomLetterFrequency = new int[26];
+        linkedWords = new ArrayList<Word>();
         seed = -1;
         random = new Random();
     }
@@ -50,6 +53,7 @@ public class Board
         boardWidth = 50;
         boardArray = new char[boardLength][boardWidth];
         randomLetterFrequency = new int[26];
+        linkedWords = new ArrayList<Word>();
         this.seed = seed;
         random = new Random(seed);
     }
@@ -156,6 +160,8 @@ public class Board
         }
         //Update orientation frequencies for board information
         setOrientationValues(wordBank);
+        //Update linked word frequencies for board information
+        setLinkedValues(wordBank);
         double endTimer = System.currentTimeMillis();
         boardFormationTime = endTimer - startTimer;
     }
@@ -183,19 +189,77 @@ public class Board
         xCoordinate = random.nextInt(boardLength);
         yCoordinate = random.nextInt(boardWidth);
         Word placingWord;
+        int indexOfLinkedWord = -1;
         if(seed == -1) //Normal Word
         {
             placingWord = new Word(chosenWord);
+            //If the word is a linked word and the wordbank isn't empty, look for a random word in the wordbank and trail down its letters
+            //If the letter matches the first letter of the linked word, use those coordinates of that letter, break out of the loop, then proceed to the next instructions
+            //Else return 0 (could not link word)
+            if(placingWord.getLinked() == true && wordBank.getWordBank().size() != 0)
+            {
+                int index = random.nextInt(wordBank.getWordBank().size());
+                Word tempWord = wordBank.getWordBank().get(index);
+                //Save index of tempWord to change link status to true if word is accepted
+                indexOfLinkedWord = index;
+                boolean tempCheck = false;
+                int offset = 0;
+                for(int i = 0; i < tempWord.getLength(); i++)
+                {
+                    if(tempWord.getWord().substring(i,i+1).equals(placingWord.getWord().substring(0,1)))
+                    {
+                        tempCheck = true;
+                        offset = i;
+                        break;
+                    }
+                }
+                if(tempCheck == false)
+                {
+                    return 0;
+                }
+                else
+                {
+                    //Getting coordinates of linked letter
+                    switch(tempWord.getOrientation())
+                    {
+                        case HORIZONTAL:
+                            placingWord.setXCoordinate(tempWord.getXCoordinate() + offset);
+                            placingWord.setYCoordinate(tempWord.getYCoordinate());
+                            break;
+                        case VERTICALUP:
+                            placingWord.setXCoordinate(tempWord.getXCoordinate());
+                            placingWord.setYCoordinate(tempWord.getYCoordinate() + offset);
+                            break;
+                        case VERTICALDOWN:
+                            placingWord.setXCoordinate(tempWord.getXCoordinate());
+                            placingWord.setYCoordinate(tempWord.getYCoordinate() - offset);
+                            break;
+                        case DIAGONALUP:
+                            placingWord.setXCoordinate(tempWord.getXCoordinate() + offset);
+                            placingWord.setYCoordinate(tempWord.getYCoordinate() + offset);
+                            break;
+                        case DIAGONALDOWN:
+                            placingWord.setXCoordinate(tempWord.getXCoordinate() + offset);
+                            placingWord.setYCoordinate(tempWord.getYCoordinate() - offset);
+                            break;
+                        default:
+                            System.out.println("Something went wrong");
+                    }                   
+                }
+            }
+            //Else if not a linked word or wordbank is empty, just use normal coordinates
+            else
+            {
             placingWord.setXCoordinate(xCoordinate);
             placingWord.setYCoordinate(yCoordinate);
+            }
         }
         else //Seeded word chosen for testing
         {
-            placingWord = new Word(chosenWord, random.nextInt(5));
+            placingWord = new Word(chosenWord, random.nextInt(5), random.nextInt(10));
             placingWord.setXCoordinate(xCoordinate);
             placingWord.setYCoordinate(yCoordinate);
         }
-        int wordLength = placingWord.getWord().length();
         //Based on the orientation, use the x/y coordinate and move from there to fill in the board
         if(placingWord.getOrientation().name().equals("HORIZONTAL"))
         {
@@ -208,17 +272,22 @@ public class Board
             }
             //Do for loop to see if word will fit in with given x/y coordinates
             //If doesn't fit, return 0 (word doesn't fit, chance that word will NEVER fit, so just choose another word)
-            for(int i = 0; i < wordLength; i++)
+            //If word is linked, then check everything but the first letter
+            for(int i = 0; i < placingWord.getLength(); i++)
             {
-                if( ((xCoordinate + i) >= boardLength) || boardArray[yCoordinate][xCoordinate + i] != '#')
+                if(placingWord.getLinked() == true && i == 0)
+                {
+                    i = 1;
+                }
+                if( ((placingWord.getXCoordinate() + i) >= boardLength) || boardArray[placingWord.getYCoordinate()][placingWord.getXCoordinate() + i] != '#')
                 {
                     return 0;   
                 }
             }
             //Else, do another for loop to place the word in
-            for(int i = 0; i < wordLength; i++)
+            for(int i = 0; i < placingWord.getLength(); i++)
             {
-                boardArray[yCoordinate][xCoordinate + i] = placingWord.getWord().charAt(i);
+                boardArray[placingWord.getYCoordinate()][placingWord.getXCoordinate() + i] = placingWord.getWord().charAt(i);
             }
         }
         //Rinse and repeat for all other orientations
@@ -229,16 +298,20 @@ public class Board
             {
                 return 0;
             }
-            for(int i = 0; i < wordLength; i++)
+            for(int i = 0; i < placingWord.getLength(); i++)
             {
-                if( ((yCoordinate + i) >= boardWidth) || boardArray[yCoordinate + i][xCoordinate] != '#')
+                if(placingWord.getLinked() == true && i == 0)
+                {
+                    i = 1;
+                }
+                if( ((placingWord.getYCoordinate() + i) >= boardWidth) || boardArray[placingWord.getYCoordinate() + i][placingWord.getXCoordinate()] != '#')
                 {
                     return 0;   
                 }
             }
-            for(int i = 0; i < wordLength; i++)
+            for(int i = 0; i < placingWord.getLength(); i++)
             {
-                boardArray[yCoordinate + i][xCoordinate] = placingWord.getWord().charAt(i);
+                boardArray[placingWord.getYCoordinate() + i][placingWord.getXCoordinate()] = placingWord.getWord().charAt(i);
             }
         }
         else if(placingWord.getOrientation().name().equals("VERTICALDOWN"))
@@ -248,16 +321,20 @@ public class Board
             {
                 return 0;
             }
-            for(int i = 0; i < wordLength; i++)
+            for(int i = 0; i < placingWord.getLength(); i++)
             {
-                if( ((yCoordinate - i) < 0) || boardArray[yCoordinate - i][xCoordinate] != '#')
+                if(placingWord.getLinked() == true && i == 0)
+                {
+                    i = 1;
+                }
+                if(((placingWord.getYCoordinate() - i) < 0) || boardArray[placingWord.getYCoordinate() - i][placingWord.getXCoordinate()] != '#')
                 {
                     return 0;   
                 }
             }
-            for(int i = 0; i < wordLength; i++)
+            for(int i = 0; i < placingWord.getLength(); i++)
             {
-                boardArray[yCoordinate - i][xCoordinate] = placingWord.getWord().charAt(i);
+                boardArray[placingWord.getYCoordinate() - i][placingWord.getXCoordinate()] = placingWord.getWord().charAt(i);
             }
         }
         else if(placingWord.getOrientation().name().equals("DIAGONALUP"))
@@ -267,16 +344,20 @@ public class Board
             {
                 return 0;
             }
-            for(int i = 0; i < wordLength; i++)
+            for(int i = 0; i < placingWord.getLength(); i++)
             {
-                if( ((yCoordinate + i) >= boardWidth) || (xCoordinate + i ) >= boardLength || boardArray[yCoordinate + i][xCoordinate + i] != '#')
+                if(placingWord.getLinked() == true && i == 0)
+                {
+                    i = 1;
+                }
+                if( ((placingWord.getYCoordinate() + i) >= boardWidth) || (placingWord.getXCoordinate() + i ) >= boardLength || boardArray[placingWord.getYCoordinate() + i][placingWord.getXCoordinate() + i] != '#')
                 {
                     return 0;   
                 }            
             }
-            for(int i = 0; i < wordLength; i++)
+            for(int i = 0; i < placingWord.getLength(); i++)
             {
-                boardArray[yCoordinate + i][xCoordinate + i] = placingWord.getWord().charAt(i);
+                boardArray[placingWord.getYCoordinate() + i][placingWord.getXCoordinate() + i] = placingWord.getWord().charAt(i);
             }
         }
         else if(placingWord.getOrientation().name().equals("DIAGONALDOWN"))
@@ -286,17 +367,20 @@ public class Board
             {
                 return 0;
             }
-            for(int i = 0; i < wordLength; i++)
+            for(int i = 0; i < placingWord.getLength(); i++)
             {
-                if( ((yCoordinate - i) < 0) || (xCoordinate + i ) >= boardLength || boardArray[yCoordinate - i][xCoordinate + i] != '#')
+                if(placingWord.getLinked() == true && i == 0)
+                {
+                    i = 1;
+                }
+                if( ((placingWord.getYCoordinate() - i) < 0) || (placingWord.getXCoordinate() + i ) >= boardLength || boardArray[placingWord.getYCoordinate() - i][placingWord.getXCoordinate() + i] != '#')
                 {
                     return 0;   
                 }            
             }
-
-            for(int i = 0; i < wordLength; i++)
+            for(int i = 0; i < placingWord.getLength(); i++)
             {
-                boardArray[yCoordinate - i][xCoordinate + i] = placingWord.getWord().charAt(i);
+                boardArray[placingWord.getYCoordinate() - i][placingWord.getXCoordinate() + i] = placingWord.getWord().charAt(i);
             }
         }
         else if(placingWord.getOrientation().name().equals("INVALID"))
@@ -305,6 +389,13 @@ public class Board
         }
         //Add the placed word to the wordbank
         wordBank.getWordBank().add(placingWord);
+        //If linked status of the word was true, since the word managed to get placed
+        //(Index of linked word shouldn't be -1 if this happens)
+        if(placingWord.getLinked() == true && indexOfLinkedWord != -1)
+        {
+            //Make sure the other word linked to it is also link status true
+            wordBank.getWordBank().get(indexOfLinkedWord).setLinked(true);
+        }
         //Return length to update calculatedDensity
         return chosenWord.length();
     }
@@ -360,6 +451,19 @@ public class Board
         return values;
     }
 
+    public int setLinkedValues(WordBank wordBank)
+    {
+        linkedWordFrequency = 0;
+        for(int i = 0; i < wordBank.getWordBank().size(); i++)
+        {
+            if(wordBank.getWordBank().get(i).getLinked() == true)
+            {
+                linkedWordFrequency++;
+                linkedWords.add(wordBank.getWordBank().get(i));
+            }
+        }
+        return linkedWordFrequency;
+    }
     public double getBoardFormationTime()
     {
         return boardFormationTime;
@@ -379,6 +483,14 @@ public class Board
         str.append("Time to generate board: " + boardFormationTime + " milliseconds\n");
         str.append("Orientation %'s: \nHorizontal: " + getOrientationValues()[0] + "\nVerticalUp: " + getOrientationValues()[1]);
         str.append("\nVerticalDown: " + getOrientationValues()[2] + "\nDiagonalUp: " + getOrientationValues()[3] + "\nDiagonalDown: " + getOrientationValues()[4] + "\n");
+        str.append("\nLinked Word Frequency: " + linkedWordFrequency);
+        /* This is for debugging
+        str.append("\n All linked words: \n");
+        for(int i = 0; i < linkedWords.size(); i++)
+        {
+            str.append("\n | " + linkedWords.get(i).getWord() + " |" + linkedWords.get(i).getXCoordinate() + " " + linkedWords.get(i).getYCoordinate());
+        }
+        */
         return str.toString();
     }
 }

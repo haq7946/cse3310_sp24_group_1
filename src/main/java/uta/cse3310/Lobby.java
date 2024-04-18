@@ -36,7 +36,7 @@ public class Lobby
     {
         gameList = new ArrayList<Game>();
         playerList = new ArrayList<Player>();
-        //makeGame(); why is this here
+        //makeGame(); //why is this here
     }
 
     public ArrayList<Game> getGamelist() // return the game list. probably never calling this method but w/e

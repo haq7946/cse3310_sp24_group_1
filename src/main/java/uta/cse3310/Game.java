@@ -47,12 +47,11 @@ public class Game
     {
         isAvailableToJoin = false;
         bank = new WordBank();
-        //bank.initializeWordBank();
         board = new Board();
         board.initializeBoard(bank);
-        //board.printBoardArray();
-        //System.out.println(bank);
-        //System.out.println(board);
+        board.printBoardArray();
+        System.out.println(bank);
+        System.out.println(board);
     }
 
     public void setGameID(int gam) //we are never going to use this method

@@ -11,6 +11,7 @@ public class Word
     private int xCoordinate;
     private int yCoordinate;
     private boolean availability;
+    private boolean linked;
     private Random random;
     public Word(String word) //Regular word constructor
     {
@@ -18,6 +19,7 @@ public class Word
         //When word is created, input the word given into the word field, randomize the orientation
         //Make the availability true so it can be selected
         this.word = word;
+        wordLength = word.length();
         xCoordinate = 0;
         yCoordinate = 0;
         availability = true;
@@ -42,11 +44,21 @@ public class Word
             default:
                 orient = Orientation.INVALID;
         }
+        value = random.nextInt(10);
+        if(value == 9)
+        {
+            linked = true;
+        }
+        else
+        {
+            linked = false;
+        }
     }
 
-    public Word(String word, int orientation) //Using seed for orientation; word constructor for testing
+    public Word(String word, int orientation, int link) //Using seed for orientation; word constructor for testing
     {
         this.word = word;
+        wordLength = word.length();
         this.xCoordinate = 0;
         this.yCoordinate = 0;
         availability = true;
@@ -70,12 +82,28 @@ public class Word
             default:
                 orient = Orientation.INVALID;
         }
+        if(link == 9)
+        {
+            linked = true;
+        }
+        else
+        {
+            linked = false;
+        }
     }
     public String getWord()
     {
         return word;
     }
 
+    public boolean getLinked()
+    {
+        return linked;
+    }
+    public void setLinked(boolean linkStatus)
+    {
+        linked = linkStatus;
+    }
     public int getXCoordinate()
     {
         return xCoordinate;
