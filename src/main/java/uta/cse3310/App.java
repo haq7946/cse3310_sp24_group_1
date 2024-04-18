@@ -98,39 +98,16 @@ public class App extends WebSocketServer
     myApp.setReuseAddr(true);
     myApp.start();
     System.out.println("websocket Server started on port: " + port);
-
-    //code below is for testing only
-    /*myApp.makeGame();
-    myApp.addPlayer("test player 1", 1);
-    myApp.addPlayer("test player 2", 2);
-    for(Game i : gameList)
-    {
-      i.displayInfo();
-    }
-    for(Player i : playerList)
-    {
-      System.out.println("username = " + i.getUsername());
-    }
-    myApp.joinGame(gameList.get(0), playerList.get(0));
-
-    for(Game i : gameList)
-    {
-      i.displayInfo();
-    }
-    for(Player i : playerList)
-    {
-      System.out.println("username = " + i.getUsername());
-    }*/
   }
 
   @Override
   public void onOpen(WebSocket conn, ClientHandshake handshake) 
   {
+    connectionId++;
     System.out.println(conn.getRemoteSocketAddress().getAddress().getHostAddress() + " connected");
 
-    //ServerEvent E = new ServerEvent();  Our server event
+    ServerData SD = new ServerData();
 
-    // No matches ? Create a new Game.
     LobbyEvent L = new LobbyEvent();
     //L.gameList = new ArrayList<Game>();
     //L.playerList = new ArrayList<Player>();
@@ -145,7 +122,7 @@ public class App extends WebSocketServer
 
     // The state of the game has changed, so lets send it to everyone
     String jsonString;
-    jsonString = gson.toJson(L);
+    jsonString = gson.toJson(SD);
 
     System.out.println(jsonString);
     broadcast(jsonString);

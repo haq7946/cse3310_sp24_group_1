@@ -1,30 +1,15 @@
 package uta.cse3310;
 
-import java.util.ArrayList;
-
-public class LobbyEvent 
+public class LobbyEvent extends Event
 {
-    public ArrayList<Player> playerList;
-    public Player player;
-    public String playerName;
-
-    public ArrayList<Game> gameList;
-    public Game game;
-    public String GameID;
-   
-    public boolean nameButton, createRoomButton, joinRoomButton, backButton, exitGameButton;
-    
-    int wordGridX;
-    int wordGridY;
-    ////Board
-    //Chat will go here eventually
+    String button; // must be nameButton, createRoomButton, joinRoomButton, backButton, or exitGameButton
     LobbyEvent()
     {
 
     }
-    LobbyEvent(String _GameID, String _playerName)
+    LobbyEvent(Player p, String button)
     {
-        GameID = _GameID;
-        playerName = _playerName;
+        p = this.p;
+        button = this.button;
     }
 }

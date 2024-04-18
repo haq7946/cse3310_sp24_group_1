@@ -28,6 +28,19 @@ class Game{
     completedWordList;
 }
 
+class GameEvent{
+    player;
+    gameID;
+    x;
+    y;
+    button;
+}
+
+class LobbyEvent{
+    player;
+    button;
+}
+
 
 var connection = null;
 var serverUrl;
@@ -36,9 +49,7 @@ serverUrl = "ws://" + window.location.hostname + ":9101";
 connection = new WebSocket(serverUrl);
 console.log(connection);
 
-globalLobby = new Lobby();
-globalLobby.playerList = new Array();
-globalLobby.gameList = new Array();
+globalLobby = null;
 //globalLobby.playerChat = new Array();
 
 connection.onopen = function (evt) {
@@ -94,17 +105,17 @@ window.onload = function () {
     
 }
 
-function disableRoomButton()
+function disableRoomButton() 
 {
     createRoomButton.style.display = 'none';
 }
 
-function enableRoomButton()
+function enableRoomButton() 
 {
     createRoomButton.style.display = 'block';
 }
 
-function nameFunction()
+function nameFunction() //submit button
 {
     Player.username = document.querySelector("#nick");
     console.log(Player.username.value);
@@ -133,7 +144,8 @@ function nameFunction()
     }
 }
 
-function createRoom() {
+function createRoom() //create room button
+{
     // document.getElementById("room1").textContent = `${Player.nick.value}'s Room`;
     console.log(Player.username.value + " created a room");
     globalLobby.button = "createRoomButton";
