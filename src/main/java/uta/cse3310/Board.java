@@ -396,8 +396,15 @@ public class Board
             //Make sure the other word linked to it is also link status true
             wordBank.getWordBank().get(indexOfLinkedWord).setLinked(true);
         }
-        //Return length to update calculatedDensity
-        return chosenWord.length();
+        //Return length to update calculatedDensity, if letter is linked then subtract one letter since it's already taken
+        if(placingWord.getLinked() == true)
+        {
+            return chosenWord.length() - 1;
+        }
+        else
+        {
+            return chosenWord.length();
+        }
     }
 
     public void setOrientationValues(WordBank wordBank)
