@@ -46,35 +46,40 @@ class Game {
     completedWordList;
 }
 
+class GameEvent
+{
+    GameId;
+    x;
+    y;
+    button;
+}
 
 
 
-var connection = null;
-var serverUrl;
+var connection = null;   //Connection
+var serverUrl;           //url server
 serverUrl = "ws://" + window.location.hostname + ":9101";
 //Create the connection with the server
-connection = new WebSocket(serverUrl);
+connection = new WebSocket(serverUrl);  //connection variable to send and recieve
 console.log(connection);
 //globalLobby.playerChat = new Array();
 
-connection.onopen = function (evt) {
+connection.onopen = function (evt) {    //open function
     console.log("open");
 }
-connection.onclose = function (evt) {
+connection.onclose = function (evt) {   //close function
     console.log("close");
 }
 
-const BoardStatetoDisplay = new Map(); //Eventually will be used for the 50 by 50 grid
-
-globalLobby = null;
+globalLobby = null;                    //A global variable to access events can be changed
 connection.onmessage = function (evt) {
     var msg;
     msg = evt.data;
     console.log("Message received: " + msg);
-    const obj = JSON.parse(msg);
-    globalLobby = obj;
+    const obj = JSON.parse(msg);             //passinf the server data into a variable
+    globalLobby = obj;                       //It can be accessed directly or via a variable
 
-    if(globalLobby.displayLeaderboard == true)
+    if(globalLobby.displayLeaderboard == true)  //Here's where we update stuff that is recieved from the back end
     {
         buildLeaderBoard();
     } 
@@ -82,86 +87,88 @@ connection.onmessage = function (evt) {
 }
 
 ////////////////////////////////////////////////////
+var display = 0;   //This variable controls the pages //0 - namepage   1- lobby  2 - room
 var namePage = document.getElementById("namePage"); //Main page
 var lobbyPage = document.getElementById("lobbyPage"); //Lobby Page
 var roomPage = document.getElementById("roomPage"); //Game Page
 ////////////////////////////////////////////////////
 document.getElementById("rmButton").style.display = 'none'; ///Room button
-var display = 0;                                            //Debug purposes and control
 //////////////////////////////////////////////////
 var createRoomButton = document.getElementById("createRoom");  //Create Room
 
 
-function hideShow() 
+function hideShow()   //This function hides and shows pages
 {
-    if (display == 0) {
-        lobbyPage.style.display = 'none';
-        roomPage.style.display = 'none';
-        namePage.style.display = 'block';
+    if (display == 0) {  //0 to show name page and hide other pages
+        lobbyPage.style.display = 'none';     //Hides the lobby page
+        roomPage.style.display = 'none';      //Hides the room page
+        namePage.style.display = 'block';     //shows the namepage
     }
-    if (display == 1) {
-        namePage.style.display = 'none';
-        roomPage.style.display = 'none';
-        lobbyPage.style.display = 'block';
+    if (display == 1) { //1 to show lobby page and hide other pages
+        namePage.style.display = 'none';      //hides the name page
+        roomPage.style.display = 'none';      //hides the room page
+        lobbyPage.style.display = 'block';    //shows the lobby page
     }
-    if (display == 2) {
-        namePage.style.display = 'none';
-        lobbyPage.style.display = 'none';
-        roomPage.style.display = 'block';
+    if (display == 2) { //2 to show room page and hide other pages
+        namePage.style.display = 'none';      //hides the name page  
+        lobbyPage.style.display = 'none';     //hides the lobbypage
+        roomPage.style.display = 'block';     //shows the roompage
 
     }
 }
 
-function nameFunction() {   //gets the username
-    Player.username = document.querySelector("#nick");
-    console.log(Player.username.value);
+function nameFunction() //This is basically what happens when we press submit (This is submit button)
+{   //gets the username
+    Player.username = document.querySelector("#nick");  //Get the ID from html     //This is for debug
+    console.log(Player.username.value);                 //Show the name that was captured  //This is for debug
 
-    if (Player.username.value != "") 
+    if (Player.username.value != "")  //If the user doesn't put anything 
     {
         //Send data to back-end port 9101
-        P = new Player();
-        P.username = Player.username.value;
+        P = new Player();   //Creates a player variable to store the player name and player attributes
+        P.username = Player.username.value; //Setting the player name that was captured when we click submit
         
-        globalLobby.player = P;
-        globalLobby.nameButton = "true";
-        globalLobby.createRoomButton = "false";
-        globalLobby.joinRoomButton = "false";
-        globalLobby.backButton = "false";
-        globalLobby.exitGameButton = "false";
+        globalLobby.player = P;                  //These will change
+        globalLobby.nameButton = "true";        //These will change
+        globalLobby.createRoomButton = "false"; //These will change
+        globalLobby.joinRoomButton = "false";   //These will change
+        globalLobby.backButton = "false";       //These will change
+        globalLobby.exitGameButton = "false";   //These will change
 
-        connection.send(JSON.stringify(globalLobby));
-        console.log(JSON.stringify(globalLobby))
+        connection.send(JSON.stringify(globalLobby));  //Sending the player back
+        console.log(JSON.stringify(globalLobby))       //Showing what we sent into the console
 
-        display = 1;  //navigates user to next page
-        hideShow();
+        display = 1;  //navigates user to next page    //This is a variable that lets me change the page specifically hide and show pages
+        hideShow();   //Function that hides and shows pages
     }
-    else {
+    else   //Show an error that user didn't put the name
+    {
         document.getElementById("errorMsg").innerHTML = "Error: Please enter a proper username.";
         console.log("User didn't specify name");
     }
 }
 
-function backToNameFunction() { //Navigate to room page
-    console.log(Player.username.value + " left the game");
-    Player.username = 'none';
+function backToNameFunction() { //Navigate to name page
+    console.log(Player.username.value + " left the game");  //Just prints to console that the player left
+    Player.username = 'none';  //This just clear the name
 
     if (display == 2) { // Exit the game/reload the website
-        location.reload();
+        location.reload(); //Reloads the website
     }
-    display = 0;
-    hideShow();
+    display = 0;   //Change the global variable
+    hideShow();    //Change the page
 }
 
-function backToLobbyFunction() { //Navigate to room page
-    display = 1;
+function backToLobbyFunction() { //Navigate back to room page  //go to lobby from room
+    display = 1;    
     console.log(Player.username.value + " left the room");
     globalLobby.button = "backButton";
-    connection.send(JSON.stringify(globalLobby));
+    connection.send(JSON.stringify(globalLobby));  
     console.log(JSON.stringify(globalLobby));
     hideShow();
 }
 
-function roomFunction() { //Navigate to room page
+function roomFunction() { //Navigate to room page  //Go to room from lobby
     display = 2;
     console.log(Player.username.value + " joined the room");
     globalLobby.nameButton = "false";
@@ -174,12 +181,13 @@ function roomFunction() { //Navigate to room page
     hideShow();
 }
 
-window.onload = function () {
+window.onload = function () {  //This function hides and shows the page when the website loads in
     hideShow();
 }
 
 
-function createRoom(evt) {
+function createRoom(evt) //This creates a room and gives an option to join room
+{
     // document.getElementById("room1").textContent = `${Player.nick.value}'s Room`;
     console.log(Player.username.value + " created a room");
 
@@ -192,32 +200,32 @@ function createRoom(evt) {
     connection.send(JSON.stringify(globalLobby));
     console.log(JSON.stringify(globalLobby));
     //Will be eventually moved to on message to update based on what JSON recieves
-    buildRooms();
-    disableRoomButton();
+    buildRooms();   //Builds the rooms
+    disableRoomButton();  //Disables the create room button. once the room is created
 }
 
-function disableRoomButton() {
+function disableRoomButton() {  //disable create room button
     createRoomButton.style.display = 'none';
 }
-
-function enableRoomButton() {
+ 
+function enableRoomButton() {  //enable create rooom button
     createRoomButton.style.display = 'block';
 }
 
-function buildRooms() { //Add player data (will eventually print data based on JSON data)
-    var table = document.getElementById("rmTable")
+function buildRooms() { //This function builds various rooms in the lobby based on how many rooms are created in the lobby
+    var table = document.getElementById("rmTable") //This variable grabs the id from html to specify where we wanna build the room
     for (var i = 0; i < 1; i++) {
         var row = `<tr>
                         <td>Room ${i}<td>
                         <button id ="rmButton" class ="smallbutton button 2" onclick="roomFunction()" >Join room</button>
                   <tr />`
-        table.innerHTML += row;
+        table.innerHTML += row; //This basically adds rooms and makes a list
     }
-    buildLeaderBoard();
+    buildLeaderBoard();  //This builds leaderboard 
     document.getElementById("rmButton").style.display = 'block';  //Display the room button
 }
 
-function buildLeaderBoard() {
+function buildLeaderBoard() {  //This function builds leaderboard
     var leaderboard = document.getElementById("leaderboard");
 
     for (var i = 0; i < globalLobby.leaderboard_size; i++) 
@@ -235,15 +243,17 @@ function buildLeaderBoard() {
 
 //////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////ROOOM//////////////////////////////////////////////////////////////
-
+//This code is used to generate the board in a room
+//This is all just present for now
+//It will be changed to display the board once we send game information
 const WIDTH = 50;
 const HEIGHT = 50;
 const Buttons = new Array(WIDTH * HEIGHT);
 let selected_letters = "";
 for (let index = 0; index < Buttons.length; index++) {
-    let charCode = Math.round(65 + Math.random() * 25);
-    Buttons[index] = String.fromCharCode(charCode);
-    const button = document.createElement("button");
+    let charCode = Math.round(65 + Math.random() * 25);  //This is generating random letters //We will just plop words from the server data
+    Buttons[index] = String.fromCharCode(charCode);      //This is setting the buttons to those random letters
+    const button = document.createElement("button");     //This grabs the html element where we want to add the 50 by 50 grid
     button.setAttribute("id", index);
     button.setAttribute("onclick", "change_color(" + index + ");");
     button.innerHTML = Buttons[index];
@@ -279,7 +289,7 @@ function updateButtons(_Buttons, sButtons) {
         _Buttons[i] = sButtons[i];
 }
 
-function update()
+function updateState() //Will be used later to update the state of the game with server data
 {
 
 }

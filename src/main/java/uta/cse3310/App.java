@@ -146,12 +146,12 @@ public class App extends WebSocketServer {
     Gson gson = builder.create();
     LobbyEvent L = gson.fromJson(message, LobbyEvent.class);
     System.out.println("Have I got here?");
-    System.out.println(L.playerList);
+    System.out.println();
 
     // Get our lobby object
     Lobby LO = conn.getAttachment();
     // Update the lobby as needed //Extract information as needed
-    LO.updateState(L);
+    LO.updateLobby(L);
     //conn.send(gson.toJson(L));
 
 
