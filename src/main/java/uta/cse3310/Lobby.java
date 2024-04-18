@@ -26,11 +26,13 @@ import java.util.ArrayList;
 
 public class Lobby 
 {
-    private static ArrayList<Game> gameList; // list of current games
-    private static ArrayList<Player> playerList; // list of players that are in the lobby (i.e. players not currently in a game)
-    private ArrayList<String> playerChat; //list of message history sent
+    public ArrayList<Game> gameList; // list of current games
+    public ArrayList<Player> playerList; // list of players that are in the lobby (i.e. players not currently in a game)
+    public ArrayList<String> playerChat; //list of message history sent
     // private ArrayList<Player> leaderboardList; this is going to be a PointBoard
     // i'm pretty sure - AE
+    public int leaderboard_size;
+    public int rooms_size;
 
     public Lobby() 
     {
@@ -133,20 +135,36 @@ public class Lobby
     {
         for (int i = 0; i < gameList.size(); i++)
         {
-            if (L.GameID.equals(gameList.get(i)))
-            {
-                //do something
-            }
+            // if (L.GameID.equals(gameList.get(i)))
+            // {
+            //     //do something
+            // }
         }
+
         if (L.nameButton == true)
         {
-            addPlayer(L.playerName);
+            //We will check and error later let's add the player first
+            Player temp = L.player;
+            addPlayer(temp.getUsername());
+            leaderboard_size++;
+            System.out.println("++++++" + playerList.size());
+            L.nameButton = false;
+            L.leaderboard_size = leaderboard_size;
+            L.displayLeaderboard = true;
+
+            //Add players to lobby event as well //To parse data please leave this even tho its wonky -Ashish
+            L.playerList = playerList;
         }
-        if (L.createRoomButton == true)
+        else if (L.createRoomButton == true)
         {
-            makeGame();
+            Game temp = makeGame();
+            L.gameList = gameList;
+            L.GameID = temp.gameID;
+            L.displayRooms = true;
+            rooms_size++;
+            L.rooms_size = rooms_size;
         }
-        if (L.joinRoomButton == true)
+        else if (L.joinRoomButton == true)
         {
             for (int i = 0; i < gameList.size(); i++)
             {
@@ -156,11 +174,11 @@ public class Lobby
                 }
             }
         }
-        if (L.backButton == true)
+        else if (L.backButton == true)
         {
 
         }
-        if (L.exitGameButton == true)
+        else if (L.exitGameButton == true)
         {
 
         }

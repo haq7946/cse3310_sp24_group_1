@@ -13,6 +13,10 @@ public class LobbyEvent
     public String GameID;
    
     public boolean nameButton, createRoomButton, joinRoomButton, backButton, exitGameButton;
+
+    public boolean displayRooms, displayLeaderboard; //Adding more later
+    int rooms_size;
+    int leaderboard_size;
     
     int wordGridX;
     int wordGridY;
@@ -20,7 +24,8 @@ public class LobbyEvent
     //Chat will go here eventually
     LobbyEvent()
     {
-
+        playerList = new ArrayList<>();
+        gameList = new ArrayList<>();
     }
     LobbyEvent(String _GameID, String _playerName)
     {
