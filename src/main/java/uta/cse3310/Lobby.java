@@ -151,7 +151,10 @@ public class Lobby
             }
             else if(S.button.compareTo("joinRoomButton")==0) //This executes when room button is pressed
             {
-                
+                Player P = new Player(S.player.username);
+                System.out.println("||||||||||||||||||||||||| The occurrence is " + S.occurrence);
+                gameList.get(S.occurrence-1).addPlayer(P);
+                System.out.println("Addplayer failed/succeeded");
             }
             else if(S.button.compareTo("backButton")==0)
             {

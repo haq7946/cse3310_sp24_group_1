@@ -163,13 +163,15 @@ function backToLobbyFunction() { //Navigate back to room page  //go to lobby fro
     hideShow();
 }
 
-function roomFunction() { //Navigate to room page  //Go to room from lobby //join room
+function roomFunction(number) { //Navigate to room page  //Go to room from lobby
     display = 2;
+    console.log("join button that was pressed is " + number);
     console.log(Player.username.value + " joined the room");
     S = new ServerEvent();
     S.button = "joinRoomButton";  //What button was pressed
     S.event = "lobbyEvent";       //what kind of event it was
     S.player = P;            //who did it
+    S.occurrence = number;
     connection.send(JSON.stringify(S));//Send player status that player is ready
     console.log(JSON.stringify(S));
     hideShow();
@@ -213,7 +215,7 @@ function buildRooms(evt) { //This function builds various rooms in the lobby bas
     {
         var row = `<tr>
                         <td>${Player.username.value}'s Room<td>
-                        <button id ="rmButton" class ="smallbutton button 2" onclick="roomFunction()" >Join room</button>
+                        <button id ="rmButton" class ="smallbutton button 2" onclick=roomFunction()" >Join room</button>
                   <tr />`
         table.innerHTML += row;
     }
@@ -232,7 +234,7 @@ function buildRooms(evt) { //This function builds various rooms in the lobby bas
         {
             var row = `<tr>
                             <td>${obj.gameMakers[i].username}'s Room<td>
-                            <button id ="rmButton" class ="smallbutton button 2" onclick="roomFunction()" >Join room</button>
+                            <button id ="rmButton" class ="smallbutton button 2" onclick=roomFunction(${i + 1}) >Join roomba</button>
                       <tr />`
             table.innerHTML += row;
         }

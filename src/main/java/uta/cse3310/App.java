@@ -155,8 +155,7 @@ public class App extends WebSocketServer {
     // send out the game state every time
     // to everyone
     String jsonString;
-    jsonString = gson.toJson(myLobby);
-
+    jsonString = gson.toJson(myLobby);      
     // System.out.println("> " + Duration.between(startTime,
     // Instant.now()).toMillis() + " " + "*" + " " + escape(jsonString));
     System.out.println(jsonString);
