@@ -27,6 +27,7 @@ import java.util.ArrayList;
 public class Lobby 
 {
     public ArrayList<Game> gameList; // list of current games
+    public ArrayList<Player> gameMakers; //list that corresponds to makers of each game
     public ArrayList<Player> playerList; // list of players that are in the lobby (i.e. players not currently in a game)
     public ArrayList<String> playerChat; //list of message history sent
     // private ArrayList<Player> leaderboardList; this is going to be a PointBoard
@@ -35,7 +36,9 @@ public class Lobby
     public Lobby() 
     {
         gameList = new ArrayList<Game>();
+        gameMakers = new ArrayList<Player>();
         playerList = new ArrayList<Player>();
+        playerChat = new ArrayList<String>();
         //makeGame(); why is this here
     }
 
@@ -140,7 +143,9 @@ public class Lobby
             }
             else if(S.button.compareTo("createRoomButton")==0)  //This executes when create room button is pressed
             {
-                //makeGame();  //This creates a room commented out for now
+                makeGame();  //This creates a room commented out for now
+                Player p = new Player(S.player.username);
+                gameMakers.add(p);    
                 System.out.println("Made a game");
             }
             else if(S.button.compareTo("joinRoomButton")==0) //This executes when room button is pressed
@@ -159,3 +164,6 @@ public class Lobby
         }
     }
 }
+//TODO: When you create a room it should forcefully put you in that room
+//When room is empty, should immediately kill itself
+//Redirecting people to the same room

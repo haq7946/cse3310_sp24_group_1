@@ -74,8 +74,8 @@ connection.onmessage = function (evt) {
     var msg;
     msg = evt.data;
     console.log("Message received: " + msg);
+    updateRooms(evt);
     const obj = JSON.parse(msg);             //passing the server data into a variable //In this case it is lobby.java
-
     if(gameId == obj.gameList.GameID)
     {
         //We display the game info that is passed from JSON
@@ -91,7 +91,6 @@ var roomPage = document.getElementById("roomPage"); //Game Page
 document.getElementById("rmButton").style.display = 'none'; ///Room button
 //////////////////////////////////////////////////
 var createRoomButton = document.getElementById("createRoom");  //Create Room
-
 
 function hideShow()   //This function hides and shows pages
 {
@@ -189,10 +188,10 @@ function createRoom() //This creates a room and gives an option to join room
     S.event = "lobbyEvent";         //what kind of event
     S.player = P;              //who did it
     connection.send(JSON.stringify(S));  //Send 
-    console.log(JSON.stringify(S));      //Show what was sent into the console
+    console.log("Message sent: " + JSON.stringify(S));      //Show what was sent into the console
 
     buildRooms();
-    disableRoomButton();  //Disables the create room button. once the room is created
+  //  disableRoomButton();  //Disables the create room button. once the room is created
 }
 
 function disableRoomButton() {  //disable create room button
@@ -209,7 +208,7 @@ function buildRooms(evt) { //This function builds various rooms in the lobby bas
     //Write code to build rooms
     //message = new Lobby();
     //message = msg;
-    for(var i = 0; i < 1/*message.gameList.length*/; i++)  //NOTE: This is here for now, without it we would't even have a game screen
+    for(var i = 0; i < 1; i++)  //NOTE: This is here for now, without it we would't even have a game screen
     {
         var row = `<tr>
                         <td>${Player.username.value}'s Room<td>
@@ -217,8 +216,25 @@ function buildRooms(evt) { //This function builds various rooms in the lobby bas
                   <tr />`
         table.innerHTML += row;
     }
- 
-
+}
+//P.S. I know this is probably just logic but if it works it works -Bryan
+    function updateRooms(evt) { //This function updates the rooms for all players
+        var table = document.getElementById("rmTable") 
+        var msg = evt.data;
+        const obj = JSON.parse(evt.data);
+        console.log("The number of roomss in this lobby is " + obj.gameList.length); //Debugging
+        while(table.rows.length != 0) //Empty out the table before updating
+        {
+            table.deleteRow(0);
+        }
+        for(var i = 0; i < obj.gameList.length; i++)  //Iterate through gamelist and gamemaker to create
+        {
+            var row = `<tr>
+                            <td>${obj.gameMakers[i].username}'s Room<td>
+                            <button id ="rmButton" class ="smallbutton button 2" onclick="roomFunction()" >Join room</button>
+                      <tr />`
+            table.innerHTML += row;
+        }
     document.getElementById("rmButton").style.display = 'block';  //Display the room button
 }
 
