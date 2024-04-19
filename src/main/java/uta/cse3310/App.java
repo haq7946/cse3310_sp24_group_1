@@ -128,6 +128,18 @@ public class App extends WebSocketServer {
     System.out.println(conn + " has closed");
     // Retrieve the lobby tied to the websocket connection
     Lobby L = new Lobby();  
+    // Player P = new Player(S.player.username);
+    //             //Remove player from the list
+    //             for(int i = 0; i < playerList.size(); i++)
+    //             {
+    //                 System.out.println(playerList.get(i).username);
+    //                 System.out.println("player username: " + P.username);
+    //                 if(P.username.equals(playerList.get(i).username))
+    //                 {
+    //                     playerList.remove(i);
+    //                     System.out.println("removed" + S.player);
+    //                 }
+    //             }
     L = conn.getAttachment(); //Only close that specific connection not the whole lobby
     L = null;
   }

@@ -10,6 +10,7 @@ class ServerData {
     playerList;
     player;
     playerName;
+    disableResponse;
 
     gameList;
     game;
@@ -93,7 +94,7 @@ document.getElementById("rmButton").style.display = 'none'; ///Room button
 //////////////////////////////////////////////////
 var createRoomButton = document.getElementById("createRoom");  //Create Room
 
-function hideShow()   //This function hides and shows pages
+function hideShow(evt)   //This function hides and shows pages
 {
     if (display == 0) {  //0 to show name page and hide other pages
         lobbyPage.style.display = 'none';     //Hides the lobby page
@@ -142,11 +143,12 @@ function nameFunction() //This is basically what happens when we press submit (T
 
 function backToNameFunction() { //Navigate to name page
     console.log(Player.username.value + " left the game");  //Just prints to console that the player left
-    Player.username = 'none';  //This just clear the name
-
-    if (display == 2) { // Exit the game/reload the website
-        location.reload(); //Reloads the website
-    }
+    S = new ServerEvent();
+    S.event = "lobbyEvent";
+    S.button = "backButton";
+    S.player = P;
+    connection.send(JSON.stringify(S));  //Send 
+    console.log("Message sent: " + JSON.stringify(S));
     display = 0;   //Change the global variable
     hideShow();    //Change the page
 }
@@ -194,7 +196,7 @@ function createRoom() //This creates a room and gives an option to join room
     console.log("Message sent: " + JSON.stringify(S));      //Show what was sent into the console
 
     buildRooms();
-  //  disableRoomButton();  //Disables the create room button. once the room is created
+    disableRoomButton();  //Disables the create room button. once the room is created
 }
 
 function disableRoomButton() {  //disable create room button
@@ -238,6 +240,7 @@ function buildRooms(evt) { //This function builds various rooms in the lobby bas
                       <tr />`
             table.innerHTML += row;
         }
+
     document.getElementById("rmButton").style.display = 'block';  //Display the room button
 }
 
@@ -274,8 +277,9 @@ const HEIGHT = 50;
 const Buttons = new Array(WIDTH * HEIGHT);
 let selected_letters = "";
 for (let index = 0; index < Buttons.length; index++) {
-    let charCode = Math.round(65 + Math.random() * 25);  //This is generating random letters //We will just plop words from the server data
-    Buttons[index] = String.fromCharCode(charCode);      //This is setting the buttons to those random letters
+    //let charCode = Math.round(65 + Math.random() * 25);  //This is generating random letters //We will just plop words from the server data
+    let charCode = "?";  //Read the JSON STRING to initialize //Make a loop and read board
+    Buttons[index] = charCode;//String.fromCharCode(charCode);      //This is setting the buttons to those random letters
     const button = document.createElement("button");     //This grabs the html element where we want to add the 50 by 50 grid
     button.setAttribute("id", index);
     button.setAttribute("onclick", "change_color(" + index + ");");

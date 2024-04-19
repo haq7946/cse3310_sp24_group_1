@@ -30,7 +30,7 @@ public class Lobby
     public ArrayList<Player> gameMakers; //list that corresponds to makers of each game
     public ArrayList<Player> playerList; // list of players that are in the lobby (i.e. players not currently in a game)
     public ArrayList<String> playerChat; //list of message history sent
-    //occurence;  //
+    String disableResponse; //This will be used to broadcast that the specific room is full and the button needs to be disabled
     // private ArrayList<Player> leaderboardList; this is going to be a PointBoard
     // i'm pretty sure - AE
 
@@ -155,10 +155,25 @@ public class Lobby
                 System.out.println("||||||||||||||||||||||||| The occurrence is " + S.occurrence);
                 gameList.get(S.occurrence-1).addPlayer(P);
                 System.out.println("Addplayer failed/succeeded");
+                //Add a check for players
+                //Find a way to link the gameId with occurence
+                
+                //Add a disble button
             }
             else if(S.button.compareTo("backButton")==0)
             {
+                Player P = new Player(S.player.username);
                 //Remove player from the list
+                for(int i = 0; i < playerList.size(); i++)
+                {
+                    System.out.println(playerList.get(i).username);
+                    System.out.println("player username: " + P.username);
+                    if(P.username.equals(playerList.get(i).username))
+                    {
+                        playerList.remove(i);
+                        System.out.println("removed" + S.player);
+                    }
+                }
             }
             
         }
