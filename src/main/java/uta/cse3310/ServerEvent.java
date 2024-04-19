@@ -15,12 +15,13 @@ public class ServerEvent
     // gameEvent -  everything that happens in a game
     
     Player player;  //The player who is doing the clicking
-
-    ServerEvent(String button, String event, Player player)
+    int occurrence; //Mainly for join button; each one is different!
+    ServerEvent(String button, String event, Player player, int occurrence)
     {
         button = this.button;
         event = this.event;
         player = this.player;
+        occurrence = this.occurrence;
     };
 
 
