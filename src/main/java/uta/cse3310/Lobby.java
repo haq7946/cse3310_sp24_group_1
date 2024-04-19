@@ -26,9 +26,9 @@ import java.util.ArrayList;
 
 public class Lobby 
 {
-    private static ArrayList<Game> gameList; // list of current games
-    private static ArrayList<Player> playerList; // list of players that are in the lobby (i.e. players not currently in a game)
-    private ArrayList<String> playerChat; //list of message history sent
+    public ArrayList<Game> gameList; // list of current games
+    public ArrayList<Player> playerList; // list of players that are in the lobby (i.e. players not currently in a game)
+    public ArrayList<String> playerChat; //list of message history sent
     // private ArrayList<Player> leaderboardList; this is going to be a PointBoard
     // i'm pretty sure - AE
 
@@ -129,8 +129,33 @@ public class Lobby
         playerChat.add(message); //Works exactly the same as the chat in game.java
     }
 
-    public void updateState(UserEvent U)
+    public void updateLobby(ServerEvent S) //this is the worst code i have ever written
     {
+        if(S.event.compareTo("lobbyEvent") == 0)  //Execute lobby stuff because it is a lobby event
+        {
+            if(S.button.compareTo("nameButton")==0)  //This executes when nameButton is pressed
+            {
+                addPlayer(S.player.username);  //Adding player to the lobby
+                System.out.println("Added player in the lobby"); //Debug
+            }
+            else if(S.button.compareTo("createRoomButton")==0)  //This executes when create room button is pressed
+            {
+                //makeGame();  //This creates a room commented out for now
+                System.out.println("Made a game");
+            }
+            else if(S.button.compareTo("joinRoomButton")==0) //This executes when room button is pressed
+            {
 
+            }
+            else if(S.button.compareTo("backButton")==0)
+            {
+                //Remove player from the list
+            }
+            
+        }
+        else if(S.event.compareTo("gameEvent") == 0)   //Execute game stuff beacause it is game event
+        {
+            
+        }
     }
 }

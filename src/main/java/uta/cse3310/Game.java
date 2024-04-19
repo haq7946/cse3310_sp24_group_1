@@ -7,20 +7,23 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.lang.Math;
 public class Game 
 {
-    private String gameID;
-    private ArrayList<Player> playerList;
-    private ArrayList<String> playerChat;
-    private int numberOfPlayers;
-    private Board board;
-    private WordBank bank;
-    private boolean isAvailableToJoin;
-    private int gameStatus; //wtf does this do
+    public String gameID;
+    public ArrayList<Player> playerList;
+    public ArrayList<String> playerChat;
+    public int numberOfPlayers;
+    public Board board;
+    public WordBank bank;
+    public boolean isAvailableToJoin;
+    public int gameStatus; //wtf does this do
+    public boolean gameHasStarted;
+    public boolean inDeathmatch;
 
 
-    private String[] wordList;
-    private String[] completedWordList;
+    public String[] wordList;
+    public String[] completedWordList;
 
     public Game()
     {
@@ -46,12 +49,12 @@ public class Game
     {
         isAvailableToJoin = false;
         bank = new WordBank();
-        //bank.initializeWordBank();
         board = new Board();
         board.initializeBoard(bank);
         //board.printBoardArray();
         //System.out.println(bank);
         //System.out.println(board);
+        gameHasStarted = true;
     }
 
     public void setGameID(int gam) //we are never going to use this method
@@ -69,7 +72,7 @@ public class Game
         numberOfPlayers = num;
     }
 
-    public void updateState(UserEvent U)
+    public void updateState(ServerEvent U)
     {
 
     }
@@ -95,9 +98,64 @@ public class Game
         }      
     }
 
-    public String selectWord()
+    public String selectWord(int boardX_1, int boardY_1, int boardX_2, int boardY_2)// (X1, Y1) is first click, (X2, Y2) is second click
     {
-        return "";
+        if (boardX_1 == boardX_2) //word is vertical
+        {
+            if (boardY_1 > boardY_2) //word is vertical up
+            {
+                String wordToBeReturned = "";
+                for (int i = 0; i < (boardY_1 - boardY_2); i++)
+                {
+                    wordToBeReturned = wordToBeReturned + board.getBoardArray()[boardX_1][boardY_1 - i];
+                }
+                return wordToBeReturned;
+            }
+            else if (boardY_1 < boardY_2) //word is vertical down
+            {
+                String wordToBeReturned = "";
+                for (int i = 0; i < (boardY_2 - boardY_1); i++)
+                {
+                    wordToBeReturned = wordToBeReturned + board.getBoardArray()[boardX_1][boardY_1 + i];
+                }
+                return wordToBeReturned;
+            }
+        }
+        else if (boardY_1 == boardY_2) //word is horizontal; words can only be horizontal forwards, so X2 > X1 always
+        {
+            String wordToBeReturned = ""; 
+            for (int i = 0; i < (boardX_2 - boardX_1); i++)
+            {
+                wordToBeReturned = wordToBeReturned + board.getBoardArray()[boardX_1 + i][boardY_1];
+            }
+            return wordToBeReturned;
+        }
+        else if ((boardX_1 - boardX_2) == (boardY_1 - boardY_2)) //word is diagonal
+        {
+            if (boardY_1 > boardY_2) //word is diagonal up
+            {
+                String wordToBeReturned = "";
+                for (int i = 0; i < (boardX_2 - boardX_1); i++)
+                {
+                    wordToBeReturned = wordToBeReturned + board.getBoardArray()[boardX_1 + i][boardY_1 - i];
+                }
+                return wordToBeReturned;
+            }
+            else if (boardY_1 < boardY_2) //word is diagonal down
+            {
+                String wordToBeReturned = "";
+                for (int i = 0; i < (boardX_2 - boardX_1); i++)
+                {
+                    wordToBeReturned = wordToBeReturned + board.getBoardArray()[boardX_1 + i][boardY_1 + i];
+                }
+                return wordToBeReturned;
+            }
+        }
+        else //the two clicks do not form a valid word
+        {
+            return "";
+        }
+        return ""; //this return statement exists because "tHiS mEtHoD mUsT rEtUrN a ReSuLt Of TyPe StRiNg"
     }
 
     public void gameChat(String message)
@@ -178,4 +236,11 @@ public class Game
     {
         return playerList;
     }
+
+    public void updateGame(GameEvent g)
+    {
+        
+    }
+
+
 }
