@@ -67,7 +67,7 @@ public class BoardTest extends TestCase
             assertTrue(time < 1000);
         }
     }
-    /*public void testDensity() THIS TEST IS BROKEN BRYAN
+    public void testDensity() 
     {
         Board b = new Board();
         ArrayList<String> wordsFromFile = new ArrayList<String>();
@@ -91,6 +91,6 @@ public class BoardTest extends TestCase
             //0.1% leeway due to weird double activity
             assertTrue(density + 0.001 > b.getDensity());
         }
-    }*/
+    }
 
 }
