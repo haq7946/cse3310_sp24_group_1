@@ -24,18 +24,6 @@ public class UserInterface{
 
     }
 
-    public void onOpen(){
-        
-    }
-
-    public void onMessage(){
-
-    }
-
-    public void onClose(){
-
-    }
-
     public void playButtonEvent(){
 
     }
