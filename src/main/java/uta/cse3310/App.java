@@ -101,13 +101,12 @@ public class App extends WebSocketServer {
     connectionId++;
     System.out.println(conn.getRemoteSocketAddress().getAddress().getHostAddress() + " connected");
 
-    ServerData SD = new ServerData();
+    ServerData SD = new ServerData();  //DOn't know what to do with this
 
-    LobbyEvent L = new LobbyEvent();
     // Check if an existing lobby is active
 
     // allows the websocket to give us the Game when a message arrives
-    conn.setAttachment(myLobby); // Set the attachment to the lobby
+    conn.setAttachment(myLobby); // Set the attachment to the server
 
     Gson gson = new Gson();
     // Note only send to the single connection
@@ -118,7 +117,7 @@ public class App extends WebSocketServer {
 
     // The state of the game has changed, so lets send it to everyone
     String jsonString;
-    jsonString = gson.toJson(SD);
+    jsonString = gson.toJson(myLobby);
 
     System.out.println(jsonString);
     broadcast(jsonString);
@@ -128,10 +127,8 @@ public class App extends WebSocketServer {
   public void onClose(WebSocket conn, int code, String reason, boolean remote) {
     System.out.println(conn + " has closed");
     // Retrieve the lobby tied to the websocket connection
-    Lobby L = new Lobby();
-    // L.gameList = new ArrayList<Game>();
-    // L.playerList = new ArrayList<Player>();
-    L = conn.getAttachment();
+    Lobby L = new Lobby();  
+    L = conn.getAttachment(); //Only close that specific connection not the whole lobby
     L = null;
   }
 
@@ -144,24 +141,21 @@ public class App extends WebSocketServer {
     // Lobby Event is passed from Json to gson [Web to code]
     GsonBuilder builder = new GsonBuilder();
     Gson gson = builder.create();
-    LobbyEvent L = gson.fromJson(message, LobbyEvent.class);
+    ServerEvent S = gson.fromJson(message, ServerEvent.class);
     System.out.println("Have I got here?");
-    System.out.println();
+    System.out.println(S.event);
 
     // Get our lobby object
-    Lobby LO = conn.getAttachment();
+    myLobby = conn.getAttachment();
     // Update the lobby as needed //Extract information as needed
-    LO.updateLobby(L);
-    //conn.send(gson.toJson(L));
+    myLobby.updateLobby(S);
+    //conn.send(gson.toJson(L));  //Commented this out because we're already broadcasting no need to send data twice
 
-
-
-    // Update Event with players and other information
 
     // send out the game state every time
     // to everyone
     String jsonString;
-    jsonString = gson.toJson(L);
+    jsonString = gson.toJson(myLobby);
 
     // System.out.println("> " + Duration.between(startTime,
     // Instant.now()).toMillis() + " " + "*" + " " + escape(jsonString));

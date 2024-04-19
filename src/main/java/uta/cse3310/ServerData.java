@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 public class ServerData //this class exists to send all data about everything to every game client
 {
+    ServerEvent ev;
     public ArrayList<Player> playerList;
     public Player player;
     public String playerName;

@@ -73,7 +73,7 @@ public class Game
         numberOfPlayers = num;
     }
 
-    public void updateState(UserEvent U)
+    public void updateState(ServerEvent U)
     {
 
     }
