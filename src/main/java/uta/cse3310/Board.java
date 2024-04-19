@@ -33,7 +33,6 @@ public class Board
     private int linkedWordFrequency;
     private ArrayList<Word> linkedWords;
     private double boardFormationTime;
-    private Random random;
     private int seed;
     public Board() //Regular Board
     {
@@ -44,7 +43,6 @@ public class Board
         randomLetterFrequency = new int[26];
         linkedWords = new ArrayList<Word>();
         seed = -1;
-        random = new Random();
     }
     public Board(int seed) //Overloaded board for seed testing
     {
@@ -55,7 +53,6 @@ public class Board
         randomLetterFrequency = new int[26];
         linkedWords = new ArrayList<Word>();
         this.seed = seed;
-        random = new Random(seed);
     }
     public double getBoardLength()
     {
@@ -109,6 +106,7 @@ public class Board
 
     public void initializeBoard(WordBank wordBank)
     {  
+        Random random = new Random();
         double startTimer = System.currentTimeMillis();
         double volume = boardLength * boardWidth;
         double mass = 0;
@@ -168,6 +166,7 @@ public class Board
 
     public int placeWord(WordBank wordBank, ArrayList<String> wordsFromFile)
     {
+        Random random = new Random();
         //Selecting random line number
         double lineNumber = random.nextInt(wordsFromFile.size());
         //Selecting word from that line number that will be placed in the board
