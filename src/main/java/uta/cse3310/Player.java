@@ -1,12 +1,14 @@
 package uta.cse3310;
 
+//THIS CLASS IS COMPLETE
+
 public class Player 
 {
-    private String username;
-    private int score;
-    private int color;
-    private int status;
-    private int numberOfVictores;
+    public String username;
+    public int score;
+    public int color;
+    public int status;
+    public int numberOfVictores;
 
     //Track number of players
     public static int numOfPlayers;

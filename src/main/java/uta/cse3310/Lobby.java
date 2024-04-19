@@ -26,10 +26,9 @@ import java.util.ArrayList;
 
 public class Lobby 
 {
-    private static ArrayList<Game> gameList; // list of current games
-    private static ArrayList<Player> playerList; // list of players that are in the lobby (i.e. players not currently in
-                                                 // a game)
-    private ArrayList<String> playerChat; //list of message history sent
+    public ArrayList<Game> gameList; // list of current games
+    public ArrayList<Player> playerList; // list of players that are in the lobby (i.e. players not currently in a game)
+    public ArrayList<String> playerChat; //list of message history sent
     // private ArrayList<Player> leaderboardList; this is going to be a PointBoard
     // i'm pretty sure - AE
 
@@ -37,7 +36,7 @@ public class Lobby
     {
         gameList = new ArrayList<Game>();
         playerList = new ArrayList<Player>();
-        makeGame();
+        //makeGame(); why is this here
     }
 
     public ArrayList<Game> getGamelist() // return the game list. probably never calling this method but w/e
@@ -60,12 +59,51 @@ public class Lobby
 
     public void addPlayer(String name, int color) // add a new player to the lobby
     {
+        for (int i = 0; i < playerList.size(); i++) //check players in lobby to see if they already have the name
+        {
+            if(name.equals(playerList.get(i).getUsername()))
+            {
+                System.out.println("Error: username already taken (lobby)");
+                return;
+            }
+        }
+        for (int i = 0; i < gameList.size(); i++) //check players in games to see if they already have the name
+        {
+            for (int j = 0; j < gameList.get(i).getPlayerList().size(); j++)
+            {
+                if (name.equals(gameList.get(i).getPlayerList().get(j).getUsername()))
+                {
+                    System.out.println("Error: username already taken(game)");
+                    return;
+                }
+            }
+        }
         Player p = new Player(name, color);
         playerList.add(p);
     }
 
     public void addPlayer(String name) // add a new player to the lobby
     {
+        for (int i = 0; i < playerList.size(); i++) //check players in lobby to see if they already have the name
+        {
+            if(name.equals(playerList.get(i).getUsername()))
+            {
+                System.out.println("Error: username already taken (lobby)");
+                return;
+            }
+        }
+        for (int i = 0; i < gameList.size(); i++) //check players in games to see if they already have the name
+        {
+            for (int j = 0; j < gameList.get(i).getPlayerList().size(); j++)
+            {
+                if (name.equals(gameList.get(i).getPlayerList().get(j).getUsername()))
+                {
+                    System.out.println("Error: username already taken(game)");
+                    return;
+                }
+            }
+        }
+        //nobody else has the same name, go ahead and add the new player
         Player p = new Player(name);
         playerList.add(p);
     }
@@ -91,8 +129,33 @@ public class Lobby
         playerChat.add(message); //Works exactly the same as the chat in game.java
     }
 
-    public void updateState(UserEvent U)
+    public void updateLobby(ServerEvent S) //this is the worst code i have ever written
     {
+        if(S.event.compareTo("lobbyEvent") == 0)  //Execute lobby stuff because it is a lobby event
+        {
+            if(S.button.compareTo("nameButton")==0)  //This executes when nameButton is pressed
+            {
+                addPlayer(S.player.username);  //Adding player to the lobby
+                System.out.println("Added player in the lobby"); //Debug
+            }
+            else if(S.button.compareTo("createRoomButton")==0)  //This executes when create room button is pressed
+            {
+                //makeGame();  //This creates a room commented out for now
+                System.out.println("Made a game");
+            }
+            else if(S.button.compareTo("joinRoomButton")==0) //This executes when room button is pressed
+            {
 
+            }
+            else if(S.button.compareTo("backButton")==0)
+            {
+                //Remove player from the list
+            }
+            
+        }
+        else if(S.event.compareTo("gameEvent") == 0)   //Execute game stuff beacause it is game event
+        {
+            
+        }
     }
 }

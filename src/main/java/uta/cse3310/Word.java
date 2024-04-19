@@ -1,6 +1,8 @@
 package uta.cse3310;
 import java.util.Random;
 
+//THIS CLASS IS COMPLETE
+
 public class Word 
 {
     private String word;
@@ -9,14 +11,16 @@ public class Word
     private int xCoordinate;
     private int yCoordinate;
     private boolean availability;
-    private Random random;
-    public Word(String word, int xCoordinate, int yCoordinate) //Regular word constructor
+    private boolean linked;
+    public Word(String word) //Regular word constructor
     {
-        random = new Random();
+        Random random = new Random();
         //When word is created, input the word given into the word field, randomize the orientation
+        //Make the availability true so it can be selected
         this.word = word;
-        this.xCoordinate = xCoordinate;
-        this.yCoordinate = yCoordinate;
+        wordLength = word.length();
+        xCoordinate = 0;
+        yCoordinate = 0;
         availability = true;
         int value = random.nextInt(5);
         switch(value)
@@ -39,12 +43,23 @@ public class Word
             default:
                 orient = Orientation.INVALID;
         }
+        value = random.nextInt(10);
+        if(value == 9)
+        {
+            linked = true;
+        }
+        else
+        {
+            linked = false;
+        }
     }
-    public Word(String word, int xCoordinate, int yCoordinate, int orientation) //Using seed for orientation; word constructor for testing
+
+    public Word(String word, int orientation, int link) //Using seed for orientation; word constructor for testing
     {
         this.word = word;
-        this.xCoordinate = xCoordinate;
-        this.yCoordinate = yCoordinate;
+        wordLength = word.length();
+        this.xCoordinate = 0;
+        this.yCoordinate = 0;
         availability = true;
         switch(orientation)
         {
@@ -66,12 +81,28 @@ public class Word
             default:
                 orient = Orientation.INVALID;
         }
+        if(link == 9)
+        {
+            linked = true;
+        }
+        else
+        {
+            linked = false;
+        }
     }
     public String getWord()
     {
         return word;
     }
 
+    public boolean getLinked()
+    {
+        return linked;
+    }
+    public void setLinked(boolean linkStatus)
+    {
+        linked = linkStatus;
+    }
     public int getXCoordinate()
     {
         return xCoordinate;
@@ -82,19 +113,29 @@ public class Word
         return yCoordinate;
     }
 
-    public static void setWord(String s)
+    public void setXCoordinate(int x)
     {
-
+        xCoordinate = x;
     }
 
-    public static int getLength()
+    public void setYCoordinate(int y)
     {
-        return 0;
+        yCoordinate = y;
     }
 
-    public static void setOrientation(int ori)
+    public void setWord(String s)
     {
+        word = s;
+    }
 
+    public int getLength()
+    {
+        return wordLength;
+    }
+
+    public void setOrientation(Orientation ori)
+    {
+        orient = ori;
     }
 
     public Orientation getOrientation()

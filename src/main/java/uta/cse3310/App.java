@@ -1,4 +1,3 @@
-
 // This is example code provided to CSE3310 Fall 2022
 // You are free to use as is, or changed, any of the code provided
 
@@ -62,26 +61,22 @@ import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
 
-public class App extends WebSocketServer
-{
-
+public class App extends WebSocketServer {
+  // There will only be one lobby we just keep accesing it
   private int connectionId = 0;
   private Lobby myLobby;
 
-  public App(int port) 
-  {
+  public App(int port) {
     super(new InetSocketAddress(port));
     myLobby = new Lobby();
   }
 
-  public static void main(String[] args) 
-  {
+  public static void main(String[] args) {
     String HttpPort = System.getenv("HTTP_PORT");
     int port = 9001;
-    if (HttpPort!=null) 
-    {
+    if (HttpPort != null) {
       port = Integer.valueOf(HttpPort);
-    } 
+    }
     // Set up the http server
     HttpServer H = new HttpServer(port, "./html");
     H.start();
@@ -90,8 +85,7 @@ public class App extends WebSocketServer
     // create and start the websocket server
     port = 9101;
     String WSPort = System.getenv("WEBSOCKET_PORT");
-    if (WSPort!=null) 
-    {
+    if (WSPort != null) {
       port = Integer.valueOf(WSPort);
     }
 
@@ -99,105 +93,93 @@ public class App extends WebSocketServer
     myApp.setReuseAddr(true);
     myApp.start();
     System.out.println("websocket Server started on port: " + port);
-
-    //code below is for testing only
-    /*myApp.makeGame();
-    myApp.addPlayer("test player 1", 1);
-    myApp.addPlayer("test player 2", 2);
-    for(Game i : gameList)
-    {
-      i.displayInfo();
-    }
-    for(Player i : playerList)
-    {
-      System.out.println("username = " + i.getUsername());
-    }
-    myApp.joinGame(gameList.get(0), playerList.get(0));
-
-    for(Game i : gameList)
-    {
-      i.displayInfo();
-    }
-    for(Player i : playerList)
-    {
-      System.out.println("username = " + i.getUsername());
-    }*/
   }
 
   @Override
   public void onOpen(WebSocket conn, ClientHandshake handshake) 
   {
     connectionId++;
-
     System.out.println(conn.getRemoteSocketAddress().getAddress().getHostAddress() + " connected");
 
-    ServerEvent E = new ServerEvent();
-    
-    //A user has joined, create a new Player object for them
-    try
-    {
-      BufferedReader input = new BufferedReader(new InputStreamReader (System.in));
-      String inputString = input.readLine();
-      //TODO: write code to check if username already exists
-      myLobby.addPlayer(inputString);
-    }
-    catch(IOException e)
-    {
-      System.out.println("Error");
-    }
-  }
-  @Override
-  public void onClose(WebSocket conn, int code, String reason, boolean remote) 
-  {
-    System.out.println(conn + " has closed");
-    // Retrieve the game tied to the websocket connection
-    Lobby L = conn.getAttachment();
-    L = null;
-  }
+    ServerData SD = new ServerData();  //DOn't know what to do with this
 
-  @Override
-  public void onMessage(WebSocket conn, String message) 
-  {
-    //System.out.println("< " + Duration.between(startTime, Instant.now()).toMillis() + " " + "-" + " " + escape(message));
+    // Check if an existing lobby is active
 
-    // Bring in the data from the webpage
-    // A UserEvent is all that is allowed at this point
-    GsonBuilder builder = new GsonBuilder();
-    Gson gson = builder.create();
-    UserEvent U = gson.fromJson(message, UserEvent.class);
+    // allows the websocket to give us the Game when a message arrives
+    conn.setAttachment(myLobby); // Set the attachment to the server
 
-    // Get our Game Object
-    Lobby L = conn.getAttachment();
-    L.updateState(U);
+    Gson gson = new Gson();
+    // Note only send to the single connection
+    // Send the lobby event
+    //conn.send(gson.toJson(L));
+    //System.out.println(gson.toJson(L));
+    System.out.println("This is a test");
 
-    // send out the game state every time
-    // to everyone
+    // The state of the game has changed, so lets send it to everyone
     String jsonString;
-    jsonString = gson.toJson(L);
+    jsonString = gson.toJson(myLobby);
 
-    //System.out.println("> " + Duration.between(startTime, Instant.now()).toMillis() + " " + "*" + " " + escape(jsonString));
+    System.out.println(jsonString);
     broadcast(jsonString);
   }
 
   @Override
-  public void onMessage(WebSocket conn, ByteBuffer message) 
-  {
+  public void onClose(WebSocket conn, int code, String reason, boolean remote) {
+    System.out.println(conn + " has closed");
+    // Retrieve the lobby tied to the websocket connection
+    Lobby L = new Lobby();  
+    L = conn.getAttachment(); //Only close that specific connection not the whole lobby
+    L = null;
+  }
+
+  @Override
+  public void onMessage(WebSocket conn, String message) {
+    // System.out.println("< " + Duration.between(startTime,
+    // Instant.now()).toMillis() + " " + "-" + " " + escape(message));
+
+    // Bring in the data from the webpage
+    // Lobby Event is passed from Json to gson [Web to code]
+    GsonBuilder builder = new GsonBuilder();
+    Gson gson = builder.create();
+    ServerEvent S = gson.fromJson(message, ServerEvent.class);
+    System.out.println("Have I got here?");
+    System.out.println(S.event);
+
+    // Get our lobby object
+    myLobby = conn.getAttachment();
+    // Update the lobby as needed //Extract information as needed
+    myLobby.updateLobby(S);
+    //conn.send(gson.toJson(L));  //Commented this out because we're already broadcasting no need to send data twice
+
+
+    // send out the game state every time
+    // to everyone
+    String jsonString;
+    jsonString = gson.toJson(myLobby);
+
+    // System.out.println("> " + Duration.between(startTime,
+    // Instant.now()).toMillis() + " " + "*" + " " + escape(jsonString));
+    System.out.println(jsonString);
+    broadcast(jsonString);
+  }
+
+  @Override
+  public void onMessage(WebSocket conn, ByteBuffer message) {
     System.out.println(conn + ": " + message);
   }
 
   @Override
-  public void onError(WebSocket conn, Exception ex) 
-  {
+  public void onError(WebSocket conn, Exception ex) {
     ex.printStackTrace();
     if (conn != null) {
       // some errors like port binding failed may not be assignable to a specific
       // websocket
     }
   }
-  
+
   @Override
-  public void onStart() 
-  {
+  public void onStart() {
+    System.out.println("Server started!");
     setConnectionLostTimeout(0);
   }
 }
