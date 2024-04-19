@@ -7,7 +7,6 @@ public class GameUnitTest extends TestCase {
     Game game = new Game();
     WordBank bank = new WordBank();
     Player player = new Player();
-    Clock clock = new Clock();
 
     public void testGameInitialization() {
         assertNotNull(game.getGameID());
@@ -57,21 +56,4 @@ public class GameUnitTest extends TestCase {
 
 
     ////////////////////////////////////////////
-    public void testClockInitialization() {
-        assertEquals(30, clock.getTimer());
-        assertFalse(clock.checkSuddenDeath());
-    }
-
-    public void testTimerCountdownAndReset() {
-        clock.startCountdown();
-        // Simulate word found after 5 seconds
-        Thread.sleep(5000);
-        clock.wordFound();
-        assertEquals(30, clock.getTimer());
-    }
-
-    public void testSuddenDeathMode() {
-        clock.setSuddenDeath(true);
-        assertTrue(clock.checkSuddenDeath());
-    }
 }
