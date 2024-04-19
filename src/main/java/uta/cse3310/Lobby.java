@@ -30,6 +30,7 @@ public class Lobby
     public ArrayList<Player> gameMakers; //list that corresponds to makers of each game
     public ArrayList<Player> playerList; // list of players that are in the lobby (i.e. players not currently in a game)
     public ArrayList<String> playerChat; //list of message history sent
+    //occurence;  //
     // private ArrayList<Player> leaderboardList; this is going to be a PointBoard
     // i'm pretty sure - AE
 
@@ -150,7 +151,7 @@ public class Lobby
             }
             else if(S.button.compareTo("joinRoomButton")==0) //This executes when room button is pressed
             {
-
+                
             }
             else if(S.button.compareTo("backButton")==0)
             {

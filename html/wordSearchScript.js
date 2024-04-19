@@ -75,8 +75,9 @@ connection.onmessage = function (evt) {
     msg = evt.data;
     console.log("Message received: " + msg);
     updateRooms(evt);
+    updateLeaderBoard(evt);
     const obj = JSON.parse(msg);             //passing the server data into a variable //In this case it is lobby.java
-    if(gameId == obj.gameList.GameID)
+    if(gameId == obj)
     {
         //We display the game info that is passed from JSON
     }
@@ -162,7 +163,7 @@ function backToLobbyFunction() { //Navigate back to room page  //go to lobby fro
     hideShow();
 }
 
-function roomFunction() { //Navigate to room page  //Go to room from lobby
+function roomFunction() { //Navigate to room page  //Go to room from lobby //join room
     display = 2;
     console.log(Player.username.value + " joined the room");
     S = new ServerEvent();
@@ -239,10 +240,22 @@ function buildRooms(evt) { //This function builds various rooms in the lobby bas
 }
 
 
-function buildLeaderBoard(evt) {  //This function builds leaderboard
+function updateLeaderBoard(evt) {  //This function builds leaderboard
     var leaderboard = document.getElementById("leaderboard");
-    var size = Object.keys( evt.playerList ).length;
-    //Write code to update leaderboard
+    var msg = evt.data;
+    const obj = JSON.parse(evt.data);
+    console.log("The number of people in this lobby is " + obj.playerList.length); //Debugging
+    while(leaderboard.rows.length != 0) //Empty out the table before updating
+    {
+        leaderboard.deleteRow(0);
+    }
+    for(var i = 0; i < obj.playerList.length; i++)  //Iterate through playerlist to create
+    {
+        var row = `<tr>
+                        <td>${obj.playerList[i].username}  ${obj.playerList[i].score}<td>
+                  <tr />`
+        leaderboard.innerHTML += row;
+    }
 
 }
 
