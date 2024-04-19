@@ -18,6 +18,8 @@ public class Game
     public WordBank bank;
     public boolean isAvailableToJoin;
     public int gameStatus; //wtf does this do
+    public boolean gameHasStarted;
+    public boolean inDeathmatch;
 
 
     public String[] wordList;
@@ -52,6 +54,7 @@ public class Game
         //board.printBoardArray();
         //System.out.println(bank);
         //System.out.println(board);
+        gameHasStarted = true;
     }
 
     public void setGameID(int gam) //we are never going to use this method
@@ -69,7 +72,7 @@ public class Game
         numberOfPlayers = num;
     }
 
-    public void updateState(UserEvent U)
+    public void updateState(ServerEvent U)
     {
 
     }
@@ -143,7 +146,7 @@ public class Game
                 String wordToBeReturned = "";
                 for (int i = 0; i < (boardX_2 - boardX_1); i++)
                 {
-                    wordToBeReturned = wordToBeReturned + board.getBoardArray()[boardX_1 + 1][boardY_1 + i];
+                    wordToBeReturned = wordToBeReturned + board.getBoardArray()[boardX_1 + i][boardY_1 + i];
                 }
                 return wordToBeReturned;
             }
@@ -233,4 +236,11 @@ public class Game
     {
         return playerList;
     }
+
+    public void updateGame(GameEvent g)
+    {
+        
+    }
+
+
 }
