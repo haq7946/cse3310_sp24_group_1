@@ -12,10 +12,9 @@ public class Word
     private int yCoordinate;
     private boolean availability;
     private boolean linked;
-    private Random random;
     public Word(String word) //Regular word constructor
     {
-        random = new Random();
+        Random random = new Random();
         //When word is created, input the word given into the word field, randomize the orientation
         //Make the availability true so it can be selected
         this.word = word;
