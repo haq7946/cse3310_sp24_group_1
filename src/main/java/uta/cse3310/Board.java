@@ -17,7 +17,7 @@ import java.util.Arrays;
 //5. 
 public class Board 
 {
-    private char[][] boardArray;
+    public char[][] boardArray;
     private int boardLength;
     private int boardWidth;
     private int xCoordinate;

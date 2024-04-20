@@ -16,12 +16,14 @@ public class ServerEvent
     
     Player player;  //The player who is doing the clicking
     int occurrence; //Mainly for join button; each one is different!
-    ServerEvent(String button, String event, Player player, int occurrence)
+    String iidd;
+    ServerEvent(String button, String event, Player player, int occurrence, String iidd)
     {
         button = this.button;
         event = this.event;
         player = this.player;
         occurrence = this.occurrence;
+        iidd = this.iidd;
     };
 
 

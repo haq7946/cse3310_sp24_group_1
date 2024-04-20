@@ -101,7 +101,7 @@ public class App extends WebSocketServer {
     connectionId++;
     System.out.println(conn.getRemoteSocketAddress().getAddress().getHostAddress() + " connected");
 
-    ServerData SD = new ServerData();  //DOn't know what to do with this
+    //ServerData SD = new ServerData();  //DOn't know what to do with this
 
     // Check if an existing lobby is active
 
@@ -127,19 +127,7 @@ public class App extends WebSocketServer {
   public void onClose(WebSocket conn, int code, String reason, boolean remote) {
     System.out.println(conn + " has closed");
     // Retrieve the lobby tied to the websocket connection
-    Lobby L = new Lobby();  
-    // Player P = new Player(S.player.username);
-    //             //Remove player from the list
-    //             for(int i = 0; i < playerList.size(); i++)
-    //             {
-    //                 System.out.println(playerList.get(i).username);
-    //                 System.out.println("player username: " + P.username);
-    //                 if(P.username.equals(playerList.get(i).username))
-    //                 {
-    //                     playerList.remove(i);
-    //                     System.out.println("removed" + S.player);
-    //                 }
-    //             }
+    Lobby L = new Lobby(); 
     L = conn.getAttachment(); //Only close that specific connection not the whole lobby
     L = null;
   }

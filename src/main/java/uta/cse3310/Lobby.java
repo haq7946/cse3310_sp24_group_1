@@ -30,17 +30,18 @@ public class Lobby
     public ArrayList<Player> gameMakers; //list that corresponds to makers of each game
     public ArrayList<Player> playerList; // list of players that are in the lobby (i.e. players not currently in a game)
     public ArrayList<String> playerChat; //list of message history sent
-    String disableResponse; //This will be used to broadcast that the specific room is full and the button needs to be disabled
+    //This will be used to broadcast that the specific room is full and the button needs to be disabled
     // private ArrayList<Player> leaderboardList; this is going to be a PointBoard
     // i'm pretty sure - AE
-
+    public String serverResponse;  //This gives us a response when players join the room
+    public String exitResponse;
     public Lobby() 
     {
         gameList = new ArrayList<Game>();
         gameMakers = new ArrayList<Player>();
         playerList = new ArrayList<Player>();
         playerChat = new ArrayList<String>();
-        //makeGame(); why is this here
+
     }
 
     public ArrayList<Game> getGamelist() // return the game list. probably never calling this method but w/e
@@ -156,8 +157,17 @@ public class Lobby
                 gameList.get(S.occurrence-1).addPlayer(P);
                 System.out.println("Addplayer failed/succeeded");
                 //Add a check for players
+                for(int i = 0; i < playerList.size(); i++)
+                {
+                    //Find that player and set their id so everything is filtered for them only
+                    if(P.username.equals(playerList.get(i).username))
+                    {
+                        playerList.get(i).iD = gameList.get(S.occurrence -1).gameID; //ocurrence corresponds to the id of the game in the list (if occurrence = 2 the we pick the game id of the second game )
+                        System.out.println("The game id of " + P.username + " is: " + playerList.get(i).iD);
+                        serverResponse = "gameIdResponse";
+                    }
+                }
                 //Find a way to link the gameId with occurence
-                
                 //Add a disble button
             }
             else if(S.button.compareTo("backButton")==0)
@@ -175,10 +185,32 @@ public class Lobby
                     }
                 }
             }
+            else if(S.button.compareTo("backToLobbyButton")==0)
+            {
+                //Bring them back to the lobby and remove them from the room
+                //So we can assign them a new game ID if they join another room
+
+            }
             
         }
         else if(S.event.compareTo("gameEvent") == 0)   //Execute game stuff beacause it is game event
         {
+            if(S.button.compareTo("startGame")==0)
+            {
+                System.out.println("In start game");
+                for(int i = 0; i < gameList.size(); i++)
+                {
+                    System.out.println("inside for loop");
+                    System.out.println("PLayer ID " + S.iidd);
+                    System.out.println("Game id " + gameList.get(i).gameID);
+                    if(S.iidd.compareTo(gameList.get(i).gameID) == 0)
+                    {
+                        gameList.get(i).startGame();
+                        System.out.println("Started game and response");
+                        gameList.get(i).gameResponse = "start";
+                    }
+                }
+            }
             
         }
     }

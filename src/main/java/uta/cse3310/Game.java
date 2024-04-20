@@ -20,6 +20,7 @@ public class Game
     public int gameStatus; //wtf does this do
     public boolean gameHasStarted;
     public boolean inDeathmatch;
+    public String gameResponse;  //This tells us when the game is started
 
 
     public String[] wordList;
@@ -55,6 +56,7 @@ public class Game
         //System.out.println(bank);
         //System.out.println(board);
         gameHasStarted = true;
+        gameResponse = "start";
     }
 
     public void setGameID(int gam) //we are never going to use this method
