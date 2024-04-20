@@ -9,6 +9,7 @@ public class Player
     public int color;
     public int status;
     public int numberOfVictores;
+    public String iD; //Game id
 
     //Track number of players
     public static int numOfPlayers;

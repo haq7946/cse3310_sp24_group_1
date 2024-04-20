@@ -101,7 +101,7 @@ public class App extends WebSocketServer {
     connectionId++;
     System.out.println(conn.getRemoteSocketAddress().getAddress().getHostAddress() + " connected");
 
-    ServerData SD = new ServerData();  //DOn't know what to do with this
+    //ServerData SD = new ServerData();  //DOn't know what to do with this
 
     // Check if an existing lobby is active
 
@@ -127,7 +127,7 @@ public class App extends WebSocketServer {
   public void onClose(WebSocket conn, int code, String reason, boolean remote) {
     System.out.println(conn + " has closed");
     // Retrieve the lobby tied to the websocket connection
-    Lobby L = new Lobby();  
+    Lobby L = new Lobby(); 
     L = conn.getAttachment(); //Only close that specific connection not the whole lobby
     L = null;
   }
@@ -155,8 +155,7 @@ public class App extends WebSocketServer {
     // send out the game state every time
     // to everyone
     String jsonString;
-    jsonString = gson.toJson(myLobby);
-
+    jsonString = gson.toJson(myLobby);      
     // System.out.println("> " + Duration.between(startTime,
     // Instant.now()).toMillis() + " " + "*" + " " + escape(jsonString));
     System.out.println(jsonString);
