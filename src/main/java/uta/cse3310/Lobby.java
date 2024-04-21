@@ -187,8 +187,16 @@ public class Lobby
             }
             else if(S.button.compareTo("backToLobbyButton")==0)
             {
+                Player P = new Player(S.player.username);
                 //Bring them back to the lobby and remove them from the room
                 //So we can assign them a new game ID if they join another room
+                for(int i = 0; i < playerList.size(); i++)
+                {
+                    if(P.username.equals(playerList.get(i).username))
+                    {
+                        playerList.get(i).iD = "nothing";
+                    }
+                }
 
             }
             
@@ -210,6 +218,10 @@ public class Lobby
                         gameList.get(i).gameResponse = "start";
                     }
                 }
+            }
+            if(S.button.compareTo("boardResponse") == 0)
+            {
+
             }
             
         }
