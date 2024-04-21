@@ -4,12 +4,14 @@ class Player {
     color;
     status;
     numberOfVictories;
+    gameId;
 }   //Players unique nick
 
 class ServerData {
     playerList;
     player;
     playerName;
+    disableResponse;
 
     gameList;
     game;
@@ -65,21 +67,50 @@ connection.onopen = function (evt) {    //open function
 }
 connection.onclose = function (evt) {   //close function
     console.log("close");
+    
 }
 
 //Our specific client
 P = new Player();
-var gameId = -1;  //This is our specific client's gameID
+P.gameId = "nothing";  //This is our specific client's gameID
 connection.onmessage = function (evt) {
     var msg;
     msg = evt.data;
     console.log("Message received: " + msg);
+    updateRooms(evt);
+    updateLeaderBoard(evt);
     const obj = JSON.parse(msg);             //passing the server data into a variable //In this case it is lobby.java
-
-    if(gameId == obj.gameList.GameID)
+    if(obj.serverResponse === "gameIdResponse")
     {
         //We display the game info that is passed from JSON
+        for(var i = 0; i < obj.playerList.length; i++)
+        {
+            console.log(P.username);
+            console.log(P.gameId);
+            if(obj.playerList[i].username === P.username)
+            {
+                P.gameId = obj.playerList[i].iD;
+                console.log(P.gameId);
+            }
+        } 
+        console.log("kinda");
+        for(var i = 0; i < obj.gameList.length; i++)
+        {
+            console.log("We're in");
+            if(P.gameId === obj.gameList[i].gameID)
+            {
+                console.log("hell yeah");
+                console.log(obj.gameList[i].gameResponse);
+                if(obj.gameList[i].gameResponse === "start")
+                {
+                    console.log("fuck yeah");
+                   board(obj.gameList[i].board);
+                }
+
+            }
+        }
     }
+
 }
 
 ////////////////////////////////////////////////////
@@ -92,8 +123,7 @@ document.getElementById("rmButton").style.display = 'none'; ///Room button
 //////////////////////////////////////////////////
 var createRoomButton = document.getElementById("createRoom");  //Create Room
 
-
-function hideShow()   //This function hides and shows pages
+function hideShow(evt)   //This function hides and shows pages
 {
     if (display == 0) {  //0 to show name page and hide other pages
         lobbyPage.style.display = 'none';     //Hides the lobby page
@@ -142,20 +172,21 @@ function nameFunction() //This is basically what happens when we press submit (T
 
 function backToNameFunction() { //Navigate to name page
     console.log(Player.username.value + " left the game");  //Just prints to console that the player left
-    Player.username = 'none';  //This just clear the name
-
-    if (display == 2) { // Exit the game/reload the website
-        location.reload(); //Reloads the website
-    }
+    S = new ServerEvent();
+    S.event = "lobbyEvent";
+    S.button = "backButton";
+    S.player = P;
+    connection.send(JSON.stringify(S));  //Send 
+    console.log("Message sent: " + JSON.stringify(S));
     display = 0;   //Change the global variable
     hideShow();    //Change the page
 }
 
-function backToLobbyFunction() { //Navigate back to room page  //go to lobby from room
+function backToLobbyFunction() { //Kicks players out of the game
     display = 1;    
     console.log(Player.username.value + " left the room");
     S = new ServerEvent();
-    S.button = "backButton";
+    S.button = "backToLobbyButton";
     S.event = "lobbyEvent";
     S.player = P;
     connection.send(JSON.stringify(S));  
@@ -163,13 +194,15 @@ function backToLobbyFunction() { //Navigate back to room page  //go to lobby fro
     hideShow();
 }
 
-function roomFunction() { //Navigate to room page  //Go to room from lobby
+function roomFunction(number) { //Navigate to room page  //Go to room from lobby
     display = 2;
+    console.log("join button that was pressed is " + number);
     console.log(Player.username.value + " joined the room");
     S = new ServerEvent();
     S.button = "joinRoomButton";  //What button was pressed
     S.event = "lobbyEvent";       //what kind of event it was
     S.player = P;            //who did it
+    S.occurrence = number;
     connection.send(JSON.stringify(S));//Send player status that player is ready
     console.log(JSON.stringify(S));
     hideShow();
@@ -189,10 +222,24 @@ function createRoom() //This creates a room and gives an option to join room
     S.event = "lobbyEvent";         //what kind of event
     S.player = P;              //who did it
     connection.send(JSON.stringify(S));  //Send 
-    console.log(JSON.stringify(S));      //Show what was sent into the console
+    console.log("Message sent: " + JSON.stringify(S));      //Show what was sent into the console
 
     buildRooms();
     disableRoomButton();  //Disables the create room button. once the room is created
+}
+
+function startGameFunction()
+{
+    console.log(Player.username.value + " wants to start a game");
+    S = new ServerEvent();   //Creating a server event
+    S.button = "startGame";  //what was pressed
+    S.event = "gameEvent";         //what kind of event
+    console.log(P.gameId);
+    S.player = P;              //who did it
+    S.iidd = P.gameId;
+    connection.send(JSON.stringify(S));  //Send 
+    console.log("Message sent: " + JSON.stringify(S)); 
+
 }
 
 function disableRoomButton() {  //disable create room button
@@ -209,24 +256,54 @@ function buildRooms(evt) { //This function builds various rooms in the lobby bas
     //Write code to build rooms
     //message = new Lobby();
     //message = msg;
-    for(var i = 0; i < 1/*message.gameList.length*/; i++)  //NOTE: This is here for now, without it we would't even have a game screen
+    for(var i = 0; i < 1; i++)  //NOTE: This is here for now, without it we would't even have a game screen
     {
         var row = `<tr>
                         <td>${Player.username.value}'s Room<td>
-                        <button id ="rmButton" class ="smallbutton button 2" onclick="roomFunction()" >Join room</button>
+                        <button id ="rmButton" class ="smallbutton button 2" onclick=roomFunction()" >Join room</button>
                   <tr />`
         table.innerHTML += row;
     }
- 
+}
+//P.S. I know this is probably just logic but if it works it works -Bryan
+    function updateRooms(evt) { //This function updates the rooms for all players
+        var table = document.getElementById("rmTable") 
+        var msg = evt.data;
+        const obj = JSON.parse(evt.data);
+        console.log("The number of roomss in this lobby is " + obj.gameList.length); //Debugging
+        while(table.rows.length != 0) //Empty out the table before updating
+        {
+            table.deleteRow(0);
+        }
+        for(var i = 0; i < obj.gameList.length; i++)  //Iterate through gamelist and gamemaker to create
+        {
+            var row = `<tr>
+                            <td>${obj.gameMakers[i].username}'s Room<td>
+                            <button id ="rmButton" class ="smallbutton button 2" onclick=roomFunction(${i + 1}) >Join room</button>
+                      <tr />`
+            table.innerHTML += row;
+        }
 
     document.getElementById("rmButton").style.display = 'block';  //Display the room button
 }
 
 
-function buildLeaderBoard(evt) {  //This function builds leaderboard
+function updateLeaderBoard(evt) {  //This function builds leaderboard
     var leaderboard = document.getElementById("leaderboard");
-    var size = Object.keys( evt.playerList ).length;
-    //Write code to update leaderboard
+    var msg = evt.data;
+    const obj = JSON.parse(evt.data);
+    console.log("The number of people in this lobby is " + obj.playerList.length); //Debugging
+    while(leaderboard.rows.length != 0) //Empty out the table before updating
+    {
+        leaderboard.deleteRow(0);
+    }
+    for(var i = 0; i < obj.playerList.length; i++)  //Iterate through playerlist to create
+    {
+        var row = `<tr>
+                        <td>${obj.playerList[i].username}  ${obj.playerList[i].score}<td>
+                  <tr />`
+        leaderboard.innerHTML += row;
+    }
 
 }
 
@@ -242,19 +319,39 @@ const WIDTH = 50;
 const HEIGHT = 50;
 const Buttons = new Array(WIDTH * HEIGHT);
 let selected_letters = "";
-for (let index = 0; index < Buttons.length; index++) {
-    let charCode = Math.round(65 + Math.random() * 25);  //This is generating random letters //We will just plop words from the server data
-    Buttons[index] = String.fromCharCode(charCode);      //This is setting the buttons to those random letters
+function board(board)
+{
+let something = 0;
+/////////////////////2500
+let arr = new Array(WIDTH);
+for (let index = 0; index < 50; index++) {
+    //let charCode = Math.round(65 + Math.random() * 25);  //This is generating random letters //We will just plop words from the server data
+    arr = board.boardArray[index];
+    for(let jindex = 0; jindex < 50; jindex++){
+    let charCode = arr[jindex];  //Read the JSON STRING to initialize //Make a loop and read board
+    console.log(arr[jindex]);
+    Buttons[something] = charCode;//String.fromCharCode(charCode);      //This is setting the buttons to those random letters
     const button = document.createElement("button");     //This grabs the html element where we want to add the 50 by 50 grid
-    button.setAttribute("id", index);
-    button.setAttribute("onclick", "change_color(" + index + ");");
-    button.innerHTML = Buttons[index];
-    if (index % 50 == 0) {
+    button.setAttribute("id", something);
+    button.setAttribute("onclick", "change_color(" + something + ");");
+    button.innerHTML = Buttons[something];
+    if (something % 50 == 0) {
         linebreak = document.createElement("br");
         demo.appendChild(linebreak);
     }
     demo.appendChild(button);
+    something = something + 1;
 }
+}
+
+function buildBoard(evt)
+{
+
+}
+
+
+}
+
 function change_color(id) {
     let x = id % WIDTH;
     let y = Math.floor(id / HEIGHT);
