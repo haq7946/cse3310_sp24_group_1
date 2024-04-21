@@ -47,6 +47,7 @@ class ServerEvent {
     button;
     event;
     player;
+    message;
 }
 
 
@@ -98,7 +99,7 @@ connection.onmessage = function (evt) {
             if (P.gameId === obj.gameList[i].gameID) {
                 console.log(obj.gameList[i].gameResponse);
                 if (obj.gameList[i].gameResponse === "start") {
-                    board(obj.gameList[i].board);
+                    fillBoard(obj.gameList[i].board);
                     S = new ServerEvent();   //Creating a server event
                     S.button = "boardResponse";  //what was pressed
                     S.event = "gameEvent";         //what kind of event
@@ -109,7 +110,7 @@ connection.onmessage = function (evt) {
             }
             else if(P.gameId === "nothing")
             {
-                
+                emptyBoard();
             }
         }
     }
@@ -127,7 +128,6 @@ var startButton = document.getElementById("startGameButton"); //Start game butto
 startButton.style.display = 'none';
 //////////////////////////////////////////////////
 var createRoomButton = document.getElementById("createRoom");  //Create Room
-
 function hideShow(evt)   //This function hides and shows pages
 {
     if (display == 0) {  //0 to show name page and hide other pages
@@ -173,6 +173,21 @@ function nameFunction() //This is basically what happens when we press submit (T
         document.getElementById("errorMsg").innerHTML = "Error: Please enter a proper username.";
         console.log("User didn't specify name");
     }
+}
+
+function sendChat()
+{
+    let chat = document.querySelector("#roomChatBox");
+    console.log(chat.value);
+
+    S = new ServerEvent();
+    S.button = "sendChat";
+    S.event = "chatEvent";
+    S.player = P;
+    S.iidd = P.gameId;
+    S.message = chat.value;
+    connection.send(JSON.stringify(S));
+    console.log(JSON.stringify(S));
 }
 
 function backToNameFunction() { //Navigate to name page
@@ -325,44 +340,93 @@ const HEIGHT = 50;
 const Buttons = new Array(WIDTH * HEIGHT);
 let selected_letters = "";
 var placeHolder;
-function board(board) {
+
+let counter = 0;
+for(let i = 0; i < 50; i++)
+{
+    for(let j = 0; j < 50; j++)
+    {
+        let button = document.createElement("button");
+        button.style.width = 5;
+        button.setAttribute("id", counter);
+        console.log(counter);
+        button.setAttribute("onclick", "change_color(" + counter + ");");
+        button.innerHTML = "?";
+        if (counter % 50 == 0) 
+        {
+            linebreak = document.createElement("br");
+            demo.appendChild(linebreak);
+        }
+        demo.appendChild(button);
+        counter = counter + 1;
+    }
+}
+
+function fillBoard(board)
+{
     let something = 0;
-    /////////////////////2500
     let arr = new Array(WIDTH);
-    for (let index = 0; index < 50; index++) {
-        //let charCode = Math.round(65 + Math.random() * 25);  //This is generating random letters //We will just plop words from the server data
+    for(let index = 0; index < 50; index++)
+    {
         arr = board.boardArray[index];
-        for (let jindex = 0; jindex < 50; jindex++) {
-            let charCode = arr[jindex];  //Read the JSON STRING to initialize //Make a loop and read board
-            console.log(arr[jindex]);
-            Buttons[something] = charCode;//String.fromCharCode(charCode);      //This is setting the buttons to those random letters
-            let button = document.createElement("button");     //This grabs the html element where we want to add the 50 by 50 grid
-            placeHolder = button;
-            button.style.width = 5;
-            button.setAttribute("id", something);
-            button.setAttribute("onclick", "change_color(" + something + ");");
-            button.innerHTML = Buttons[something];
-            if (something % 50 == 0) {
-                linebreak = document.createElement("br");
-                demo.appendChild(linebreak);
-            }
-            demo.appendChild(button);
+        for(let jindex = 0; jindex < 50; jindex++)
+        {
+            let charCode = arr[jindex];
+            var buttonid = document.getElementById(something);
+
+            buttonid.innerHTML = charCode; 
             something = something + 1;
         }
     }
-
-    function buildBoard(evt) {
-
-    }
-
 }
+
+function emptyBoard()
+{
+    for (let i = 0; i < 2500; i++)
+    {
+        var buttonid = document.getElementById(i);
+        buttonid.innerHTML = "?";
+    }
+}
+
+
+// function board(board) {
+//     let something = 0;
+//     /////////////////////2500
+//     let arr = new Array(WIDTH);
+//     for (let index = 0; index < 50; index++) {
+//         //let charCode = Math.round(65 + Math.random() * 25);  //This is generating random letters //We will just plop words from the server data
+//         arr = board.boardArray[index];
+//         for (let jindex = 0; jindex < 50; jindex++) {
+//             let charCode = arr[jindex];  //Read the JSON STRING to initialize //Make a loop and read board
+//             console.log(arr[jindex]);
+//             Buttons[something] = charCode;//String.fromCharCode(charCode);      //This is setting the buttons to those random letters
+//             let button = document.createElement("button");     //This grabs the html element where we want to add the 50 by 50 grid
+//             placeHolder = button;
+//             button.style.width = 5;
+//             button.setAttribute("id", something);
+//             button.setAttribute("onclick", "change_color(" + something + ");");
+//             button.innerHTML = Buttons[something];
+//             if (something % 50 == 0) {
+//                 linebreak = document.createElement("br");
+//                 demo.appendChild(linebreak);
+//             }
+//             demo.appendChild(button);
+//             something = something + 1;
+//         }
+//     }
+
+//     function buildBoard(evt) {
+
+//     }
+
+// }
 
 
 function destroyBoard()
 {
-    //let area = document.getElementById("demo");
-
-    $('#demo div').empty();
+    let area = document.getElementById("demo");
+    area.remove();
 }
 
 function change_color(id) {

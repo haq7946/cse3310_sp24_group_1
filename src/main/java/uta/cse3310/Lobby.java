@@ -225,6 +225,21 @@ public class Lobby
             }
             
         }
+        else if(S.event.compareTo("chatEvent") == 0 )
+        {
+            if(S.button.compareTo("sendChat") == 0)
+            {
+                for(int i = 0; i < gameList.size(); i++)
+                {
+                    if(S.iidd.compareTo(gameList.get(i).gameID) == 0)
+                    {
+                        System.out.println(S.message);
+                        gameList.get(i).playerChat.add(S.message);
+                    }
+                }
+
+            }
+        }
     }
 }
 //TODO: When you create a room it should forcefully put you in that room

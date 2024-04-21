@@ -32,6 +32,7 @@ public class Game
         LocalDateTime now = LocalDateTime.now();  
         gameID = dtf.format(now); //GameID uses format yyyy/MM/dd HH:mm:ss
         playerList = new ArrayList<Player>();
+        playerChat = new ArrayList<String>();
         numberOfPlayers = 0;
         board = null;
         bank = null;
