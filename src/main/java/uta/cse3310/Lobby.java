@@ -7,6 +7,8 @@ import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 import org.java_websocket.WebSocket;
 import org.java_websocket.drafts.Draft;
@@ -249,6 +251,23 @@ public class Lobby
         else if(S.event.compareTo("clockEvent") == 0)
         {
             
+        }
+        else if(S.event.compareTo("leaderboardEvent") == 0){
+            if(S.button.compareTo("Show Leaderboard") == 0){
+                
+                Collections.sort(playerList, new Comparator<Player>() {
+                    @Override
+                    public int compare(Player p1, Player p2) {
+                        // Handle null player or score scenarios
+                        if (p1 == null || p2 == null) {
+                            return 0; // Consider how to handle null players in sorting logic
+                        }
+                        return Integer.compare(p2.getScore(), p1.getScore()); // Descending order{
+
+                    }
+                });
+                
+            }
         }
     }
 }
