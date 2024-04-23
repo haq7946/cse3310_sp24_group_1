@@ -37,8 +37,8 @@ public class Board
     public Board() //Regular Board
     {
         density = 0.67;
-        boardLength = 50;
-        boardWidth = 50;
+        boardLength = 35;
+        boardWidth = 35;
         boardArray = new char[boardLength][boardWidth];
         randomLetterFrequency = new int[26];
         linkedWords = new ArrayList<Word>();
@@ -47,8 +47,8 @@ public class Board
     public Board(int seed) //Overloaded board for seed testing
     {
         density = 0.67;
-        boardLength = 50;
-        boardWidth = 50;
+        boardLength = 35;
+        boardWidth = 35;
         boardArray = new char[boardLength][boardWidth];
         randomLetterFrequency = new int[26];
         linkedWords = new ArrayList<Word>();
