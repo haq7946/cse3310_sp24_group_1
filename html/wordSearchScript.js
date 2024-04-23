@@ -98,6 +98,7 @@ connection.onmessage = function (evt) {
                 startButton.style.display = 'block';
             }
             if (P.gameId === obj.gameList[i].gameID) {
+                updateGameChat(obj.gameList[i]);
                 console.log(obj.gameList[i].gameResponse);
                 if (obj.gameList[i].gameResponse === "start") {
                     fillBoard(obj.gameList[i].board);
@@ -108,6 +109,7 @@ connection.onmessage = function (evt) {
                     S.player = P;
                     //connection.send(Json.stringify(S));
                 }
+
 
             }
             else if (P.gameId === "nothing") {
@@ -213,6 +215,7 @@ function backToLobbyFunction() { //Kicks players out of the game
     connection.send(JSON.stringify(S));
     console.log(JSON.stringify(S));
     hideShow();
+    destroyWordBank();
 }
 
 function roomFunction(number) { //Navigate to room page  //Go to room from lobby
@@ -259,7 +262,7 @@ function startGameFunction() {
     S.iidd = P.gameId;
     connection.send(JSON.stringify(S));  //Send 
     console.log("Message sent: " + JSON.stringify(S));
-
+    startButton.style.display = 'none';
 }
 
 function disableRoomButton() {  //disable create room button
@@ -373,6 +376,36 @@ function updateLobbyChat(evt) {
 
 }
 
+function updateGameChat(gamelist)
+{
+    var chat = document.getElementById("gamechatting");
+    console.log("The number of chat in this lobby is: " + gamelist.playerChat.length); //Debugging
+    while (chat.rows.length != 0) //Empty out the table before updating
+    {
+        chat.deleteRow(0);
+    }
+    let length = gamelist.playerChat.length;
+    if (length <= 8) 
+    {
+        for (let i = 0; i < length; i++)  //Iterate through playerlist to create
+        {
+            var row = `<tr>
+                        <td>${gamelist.playerChat[i]}<td>
+                  <tr />`
+            chat.innerHTML += row;
+        }
+    }
+    else 
+    {
+        for (let i = 0; i < 8; i++)  //Iterate through playerlist to create
+        {
+            var row = `<tr>
+                        <td>${gamelist.playerChat[(length - 8) + i]}<td>
+                  <tr />`
+            chat.innerHTML += row;
+        }
+    }
+}
 
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -446,9 +479,19 @@ function fillWordBank(wordbank)
     bank.innerHTML += row;
 }
 function emptyBoard() {
+    let bank = document.getElementById("bank");
     for (let i = 0; i < (WIDTH * HEIGHT); i++) {
         var buttonid = document.getElementById(i);
         buttonid.innerHTML = "?";
+    }
+}
+
+function destroyWordBank()
+{
+
+    while (bank.rows.length != 0) //Empty out the table before updating
+    {
+        bank.deleteRow(0);
     }
 }
 

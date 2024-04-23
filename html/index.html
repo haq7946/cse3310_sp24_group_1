@@ -84,8 +84,12 @@
                     <h2 class="box-group">Score Board</h2>
                     <textarea id="w3review" name="w3review" align="center" text-align="center" rows="4" cols="50">
 </textarea>
-                    <h2 class="box-group">Room Chat</h2>
-                    <textarea id="roomchat" name="roomchat" text-align="center" rows="4" cols="50">
+                    <h2>Room Chat</h2>
+                    <br>
+                    <table class ="chatLob chatting">
+                        <tbody id ="gamechatting" ></tbody>  
+                        <!-- We'll add chats here dynamically -->
+                    </table>
 </textarea>
                     <br /><input id="roomChatBox" placeholder="Enter Message" style="height: 10px;" onfocus="this.value=''"> <br /> <br />
                     <button class = "smallbutton button 4" onclick="sendChat()">send</button> <br /> <br />

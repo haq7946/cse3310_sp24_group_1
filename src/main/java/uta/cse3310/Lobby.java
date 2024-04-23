@@ -53,6 +53,7 @@ public class Lobby
     public Game makeGame() // make a new game. called when a player clicks the "create new game" button
     {
         Game g = new Game();
+        g.playerChat.add("Game created");
         gameList.add(g); // add the new game to the list of games
         return g;
     }
@@ -209,7 +210,6 @@ public class Lobby
                 System.out.println("In start game");
                 for(int i = 0; i < gameList.size(); i++)
                 {
-                    System.out.println("inside for loop");
                     System.out.println("PLayer ID " + S.iidd);
                     System.out.println("Game id " + gameList.get(i).gameID);
                     if(S.iidd.compareTo(gameList.get(i).gameID) == 0)
@@ -235,7 +235,8 @@ public class Lobby
                     if(S.iidd.compareTo(gameList.get(i).gameID) == 0)
                     {
                         System.out.println(S.message);
-                        gameList.get(i).playerChat.add(S.message);
+                        String message = S.player.username + " : " + S.message;
+                        gameList.get(i).playerChat.add(message);
                     }
                 }
 
