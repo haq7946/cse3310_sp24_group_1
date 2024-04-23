@@ -9,7 +9,7 @@ import java.lang.Comparable;
 import java.util.Collections;
 public class WordBank 
 {
-    private ArrayList<Word> wordBank;
+    public ArrayList<Word> wordBank;
 
     public WordBank()
     {
