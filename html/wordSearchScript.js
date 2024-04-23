@@ -335,16 +335,16 @@ function updateLeaderBoard(evt) {  //This function builds leaderboard
 //This code is used to generate the board in a room
 //This is all just present for now
 //It will be changed to display the board once we send game information
-const WIDTH = 50;
-const HEIGHT = 50;
+const WIDTH = 35;
+const HEIGHT = 35;
 const Buttons = new Array(WIDTH * HEIGHT);
 let selected_letters = "";
 var placeHolder;
 
 let counter = 0;
-for(let i = 0; i < 50; i++)
+for(let i = 0; i < WIDTH; i++)
 {
-    for(let j = 0; j < 50; j++)
+    for(let j = 0; j < HEIGHT; j++)
     {
         let button = document.createElement("button");
         button.style.width = 5;
@@ -352,7 +352,7 @@ for(let i = 0; i < 50; i++)
         console.log(counter);
         button.setAttribute("onclick", "change_color(" + counter + ");");
         button.innerHTML = "?";
-        if (counter % 50 == 0) 
+        if (counter % WIDTH == 0) 
         {
             linebreak = document.createElement("br");
             demo.appendChild(linebreak);
@@ -366,10 +366,10 @@ function fillBoard(board)
 {
     let something = 0;
     let arr = new Array(WIDTH);
-    for(let index = 0; index < 50; index++)
+    for(let index = 0; index < WIDTH; index++)
     {
         arr = board.boardArray[index];
-        for(let jindex = 0; jindex < 50; jindex++)
+        for(let jindex = 0; jindex < HEIGHT; jindex++)
         {
             let charCode = arr[jindex];
             var buttonid = document.getElementById(something);
@@ -382,7 +382,7 @@ function fillBoard(board)
 
 function emptyBoard()
 {
-    for (let i = 0; i < 2500; i++)
+    for (let i = 0; i < (WIDTH * HEIGHT); i++)
     {
         var buttonid = document.getElementById(i);
         buttonid.innerHTML = "?";
