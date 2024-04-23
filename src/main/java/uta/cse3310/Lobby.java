@@ -41,6 +41,7 @@ public class Lobby
         gameMakers = new ArrayList<Player>();
         playerList = new ArrayList<Player>();
         playerChat = new ArrayList<String>();
+        playerChat.add("Server started");
 
     }
 
@@ -239,6 +240,14 @@ public class Lobby
                 }
 
             }
+            else if(S.button.compareTo("sendChatLobby") == 0)
+            {
+                playerChat.add(S.message);
+            }
+        }
+        else if(S.event.compareTo("clockEvent") == 0)
+        {
+            
         }
     }
 }
