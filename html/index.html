@@ -32,6 +32,19 @@
                 </table>
             </div>
 
+            <div style = "float: left;" = "Lobby_Chat">
+                <h2>Chat</h2>
+                <!-- <iframe id= "lob_Chat"  title="Lobby Chat"> -->
+                    <table class ="chatLob chatting">
+                        <tbody id ="chatting" ></tbody>  
+                        <!-- We'll add chats here dynamically -->
+                    </table>
+                <!-- </iframe> -->
+                <br>
+                <input id = "chatButtonLobby" placeholder="Message" onfocus="this.value=''" style="float: left;" size="30">
+                <button onclick="sendLobbyChat()" style="height: 22px; text-align: top">send</button> <br /> <br />
+            </div>
+
            <div class="box" >
             <center>
             <h2 class="box-group">List of Rooms</h2>
@@ -74,10 +87,15 @@
                     <h2 class="box-group">Room Chat</h2>
                     <textarea id="roomchat" name="roomchat" text-align="center" rows="4" cols="50">
 </textarea>
-                    <br /><input id="roomChatBox" placeholder="Enter Message" style="height: 10px;"> <br /> <br />
+                    <br /><input id="roomChatBox" placeholder="Enter Message" style="height: 10px;" onfocus="this.value=''"> <br /> <br />
                     <button class = "smallbutton button 4" onclick="sendChat()">send</button> <br /> <br />
-                    <h2 class="box-group">Word Bank</h2>
-                    <iframe src="words.txt" title="Word Bank"></iframe>
+                    <div id ="word bank"> 
+                        <h2>WordBank</h2>
+                        <table class ="scores leaderboard">
+                            <tbody id ="bank" ></tbody>  
+                            
+                        </table>
+                    </div>
                 </center>
             </div>
         </div>

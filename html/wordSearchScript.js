@@ -78,6 +78,7 @@ connection.onmessage = function (evt) {
     console.log("Message received: " + msg);
     updateRooms(evt);
     updateLeaderBoard(evt);
+    updateLobbyChat(evt);
     const obj = JSON.parse(msg);             //passing the server data into a variable //In this case it is lobby.java
 
     if (obj.serverResponse === "gameIdResponse") {
@@ -327,8 +328,57 @@ function updateLeaderBoard(evt) {  //This function builds leaderboard
 
 }
 
+function sendLobbyChat()
+{
+    let chat = document.querySelector("#chatButtonLobby");
+    console.log(chat.value);
 
+    S = new ServerEvent();
+    S.button = "sendChatLobby";
+    S.event = "chatEvent";
+    S.player = P;
+    S.message = chat.value;
+    connection.send(JSON.stringify(S));
+    console.log(JSON.stringify(S));
+}
 
+function updateLobbyChat(evt)
+{
+    var chat = document.getElementById("chatting");
+    var msg = evt.data;
+    const obj = JSON.parse(evt.data);
+    console.log("The number of chat in this lobby is: " + obj.playerChat.length); //Debugging
+    // while (chat.rows.length != 0) //Empty out the table before updating
+    // {
+    //     chat.deleteRow(0);
+    // }
+    for (var i = 0; i < obj.playerChat.length; i++)  //Iterate through playerlist to create
+    {
+        var row = `<tr>
+                        <td>${obj.playerChat[i]}<td>
+                  <tr />`
+        chat.innerHTML += row;
+    }
+
+}
+
+function incrementPlayerScore(playerId){
+    if (Players[playerId]) {
+        Players[playerId].score += 1; // Increment the player's score by 1
+        console.log(Players[playerId].username + " scored a point. Total score: " + Players[playerId].score);
+    
+        let S = new ServerEvent();
+        S.event = "scoreUpdate";
+        S.player = P;
+        S.newScore = P.score;
+
+        connection.send(JSON.stringify(S));
+        console.log("Score update sent: " + JSON.stringify(S));
+    }
+    else{
+        console.log("Player ID not found.");
+    }
+}
 
 //////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////ROOOM//////////////////////////////////////////////////////////////
