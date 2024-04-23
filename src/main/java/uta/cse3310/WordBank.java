@@ -37,6 +37,10 @@ public class WordBank
     {
         wordBank.remove(word);
     }
+    public void addWordToWordBank(Word word)
+    {
+        wordBank.add(word);
+    }
     public String toString()
     {
         Collections.sort(wordBank, new WordComparator());
