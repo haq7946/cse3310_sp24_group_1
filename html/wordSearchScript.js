@@ -101,6 +101,7 @@ connection.onmessage = function (evt) {
                 console.log(obj.gameList[i].gameResponse);
                 if (obj.gameList[i].gameResponse === "start") {
                     fillBoard(obj.gameList[i].board);
+                    fillWordBank(obj.gameList[i].bank);
                     S = new ServerEvent();   //Creating a server event
                     S.button = "boardResponse";  //what was pressed
                     S.event = "gameEvent";         //what kind of event
@@ -391,7 +392,6 @@ for (let i = 0; i < WIDTH; i++) {
         let button = document.createElement("button");
         button.style.width = 5;
         button.setAttribute("id", counter);
-        console.log(counter);
         button.setAttribute("onclick", "change_color(" + counter + ");");
         button.innerHTML = "?";
         if (counter % WIDTH == 0) {
@@ -417,7 +417,34 @@ function fillBoard(board) {
         }
     }
 }
-
+function fillWordBank(wordbank)
+{
+    let arr = new Array(WIDTH);
+    arr = wordbank.wordBank;
+    let bank = document.getElementById("bank");
+    while (bank.rows.length != 0) //Empty out the table before updating
+    {
+        bank.deleteRow(0);
+    }
+    for (var i = 0; i < (arr.length - arr.length %6); i+=6) //Most of the words besides last row
+    {
+        var row = `<tr>
+                            <td>${arr[i].word}<td/><td>${arr[i+1].word}<td/><td>${arr[i+2].word}<td/><td>${arr[i+3].word}<td/><td>${arr[i+4].word}<td/><td>${arr[i+5].word}<td/>
+                    <tr />`
+        console.log("row:  " + row);
+        bank.innerHTML += row;
+    }
+    let remainder = ""; //Last row
+    for(var i = 0; i < (arr.length%6); i++)
+    {
+        remainder += `<td>${arr[arr.length - arr.length%6 + i].word}<td/>`    
+    }
+    console.log("last row remainder: " + remainder);
+    var row = `<tr>
+                    ${remainder}
+            <tr/>`
+    bank.innerHTML += row;
+}
 function emptyBoard() {
     for (let i = 0; i < (WIDTH * HEIGHT); i++) {
         var buttonid = document.getElementById(i);
