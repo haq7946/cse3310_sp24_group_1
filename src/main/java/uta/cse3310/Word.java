@@ -43,8 +43,8 @@ public class Word
             default:
                 orient = Orientation.INVALID;
         }
-        value = random.nextInt(10);
-        if(value == 9)
+        value = random.nextInt(5);
+        if(value == 0)
         {
             linked = true;
         }
@@ -81,7 +81,7 @@ public class Word
             default:
                 orient = Orientation.INVALID;
         }
-        if(link == 9)
+        if(link == 0)
         {
             linked = true;
         }

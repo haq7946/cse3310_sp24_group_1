@@ -57,7 +57,7 @@ public class Game
         //System.out.println(bank);
         //System.out.println(board);
         gameHasStarted = true;
-        gameResponse = "start";
+        //gameResponse = "start"; //Already does that in lobby.java but keeping it just in case -Bryan
     }
 
     public void setGameID(int gam) //we are never going to use this method
