@@ -242,7 +242,8 @@ public class Lobby
             }
             else if(S.button.compareTo("sendChatLobby") == 0)
             {
-                playerChat.add(S.message);
+                String message = S.player.username + " : " + S.message;
+                playerChat.add(message);
             }
         }
         else if(S.event.compareTo("clockEvent") == 0)
