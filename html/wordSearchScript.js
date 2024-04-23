@@ -109,8 +109,7 @@ connection.onmessage = function (evt) {
                 }
 
             }
-            else if(P.gameId === "nothing")
-            {
+            else if (P.gameId === "nothing") {
                 emptyBoard();
             }
         }
@@ -176,8 +175,7 @@ function nameFunction() //This is basically what happens when we press submit (T
     }
 }
 
-function sendChat()
-{
+function sendChat() {
     let chat = document.querySelector("#roomChatBox");
     console.log(chat.value);
 
@@ -328,8 +326,7 @@ function updateLeaderBoard(evt) {  //This function builds leaderboard
 
 }
 
-function sendLobbyChat()
-{
+function sendLobbyChat() {
     let chat = document.querySelector("#chatButtonLobby");
     console.log(chat.value);
 
@@ -342,22 +339,35 @@ function sendLobbyChat()
     console.log(JSON.stringify(S));
 }
 
-function updateLobbyChat(evt)
-{
+function updateLobbyChat(evt) {
     var chat = document.getElementById("chatting");
     var msg = evt.data;
     const obj = JSON.parse(evt.data);
     console.log("The number of chat in this lobby is: " + obj.playerChat.length); //Debugging
-    // while (chat.rows.length != 0) //Empty out the table before updating
-    // {
-    //     chat.deleteRow(0);
-    // }
-    for (var i = 0; i < obj.playerChat.length; i++)  //Iterate through playerlist to create
+    while (chat.rows.length != 0) //Empty out the table before updating
     {
-        var row = `<tr>
+        chat.deleteRow(0);
+    }
+    let length = obj.playerChat.length;
+    if (length <= 8) 
+    {
+        for (let i = 0; i < length; i++)  //Iterate through playerlist to create
+        {
+            var row = `<tr>
                         <td>${obj.playerChat[i]}<td>
                   <tr />`
-        chat.innerHTML += row;
+            chat.innerHTML += row;
+        }
+    }
+    else 
+    {
+        for (let i = 0; i < 8; i++)  //Iterate through playerlist to create
+        {
+            var row = `<tr>
+                        <td>${obj.playerChat[(length - 8) + i]}<td>
+                  <tr />`
+            chat.innerHTML += row;
+        }
     }
 
 }
@@ -376,18 +386,15 @@ let selected_letters = "";
 var placeHolder;
 
 let counter = 0;
-for(let i = 0; i < WIDTH; i++)
-{
-    for(let j = 0; j < HEIGHT; j++)
-    {
+for (let i = 0; i < WIDTH; i++) {
+    for (let j = 0; j < HEIGHT; j++) {
         let button = document.createElement("button");
         button.style.width = 5;
         button.setAttribute("id", counter);
         console.log(counter);
         button.setAttribute("onclick", "change_color(" + counter + ");");
         button.innerHTML = "?";
-        if (counter % WIDTH == 0) 
-        {
+        if (counter % WIDTH == 0) {
             linebreak = document.createElement("br");
             demo.appendChild(linebreak);
         }
@@ -396,28 +403,23 @@ for(let i = 0; i < WIDTH; i++)
     }
 }
 
-function fillBoard(board)
-{
+function fillBoard(board) {
     let something = 0;
     let arr = new Array(WIDTH);
-    for(let index = 0; index < WIDTH; index++)
-    {
+    for (let index = 0; index < WIDTH; index++) {
         arr = board.boardArray[index];
-        for(let jindex = 0; jindex < HEIGHT; jindex++)
-        {
+        for (let jindex = 0; jindex < HEIGHT; jindex++) {
             let charCode = arr[jindex];
             var buttonid = document.getElementById(something);
 
-            buttonid.innerHTML = charCode; 
+            buttonid.innerHTML = charCode;
             something = something + 1;
         }
     }
 }
 
-function emptyBoard()
-{
-    for (let i = 0; i < (WIDTH * HEIGHT); i++)
-    {
+function emptyBoard() {
+    for (let i = 0; i < (WIDTH * HEIGHT); i++) {
         var buttonid = document.getElementById(i);
         buttonid.innerHTML = "?";
     }
@@ -457,8 +459,7 @@ function emptyBoard()
 // }
 
 
-function destroyBoard()
-{
+function destroyBoard() {
     let area = document.getElementById("demo");
     area.remove();
 }

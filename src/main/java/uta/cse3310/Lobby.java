@@ -222,7 +222,7 @@ public class Lobby
             }
             if(S.button.compareTo("boardResponse") == 0)
             {
-
+                
             }
             
         }
