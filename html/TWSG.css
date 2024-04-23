@@ -1,12 +1,19 @@
 .btn-group button {
-  background-color: blue; /* Green background #04AA6D */
+  background-color: red; /* Green background #04AA6D */
   border: 1px solid green; /* Green border */
   color: white; /* White text */
-  width: 18px;
-  padding: 2px 2px; /* Some padding */
+  min-height: 20px;
+  width: 1.8vw;
+  height: 2.5vh;
+  font-size: 20px;
+  text-align: center;
+  vertical-align: top;
+  margin: 0px 0px;
+  line-height: 0px;
+  /*padding: 5px 5px;*/ /* Some padding */
   cursor: pointer; /* Pointer/hand icon */
-  float: left; /* Float the buttons side by side */
-  align:left;
+  float: center; /* Float the buttons side by side */
+  align:center;
 }
 
 /* Clear floats (clearfix hack) */

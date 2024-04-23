@@ -32,6 +32,7 @@ public class Game
         LocalDateTime now = LocalDateTime.now();  
         gameID = dtf.format(now); //GameID uses format yyyy/MM/dd HH:mm:ss
         playerList = new ArrayList<Player>();
+        playerChat = new ArrayList<String>();
         numberOfPlayers = 0;
         board = null;
         bank = null;
@@ -56,7 +57,7 @@ public class Game
         //System.out.println(bank);
         //System.out.println(board);
         gameHasStarted = true;
-        gameResponse = "start";
+        //gameResponse = "start"; //Already does that in lobby.java but keeping it just in case -Bryan
     }
 
     public void setGameID(int gam) //we are never going to use this method

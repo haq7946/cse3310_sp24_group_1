@@ -187,8 +187,16 @@ public class Lobby
             }
             else if(S.button.compareTo("backToLobbyButton")==0)
             {
+                Player P = new Player(S.player.username);
                 //Bring them back to the lobby and remove them from the room
                 //So we can assign them a new game ID if they join another room
+                for(int i = 0; i < playerList.size(); i++)
+                {
+                    if(P.username.equals(playerList.get(i).username))
+                    {
+                        playerList.get(i).iD = "nothing";
+                    }
+                }
 
             }
             
@@ -211,7 +219,26 @@ public class Lobby
                     }
                 }
             }
+            if(S.button.compareTo("boardResponse") == 0)
+            {
+
+            }
             
+        }
+        else if(S.event.compareTo("chatEvent") == 0 )
+        {
+            if(S.button.compareTo("sendChat") == 0)
+            {
+                for(int i = 0; i < gameList.size(); i++)
+                {
+                    if(S.iidd.compareTo(gameList.get(i).gameID) == 0)
+                    {
+                        System.out.println(S.message);
+                        gameList.get(i).playerChat.add(S.message);
+                    }
+                }
+
+            }
         }
     }
 }

@@ -61,6 +61,7 @@
 <label id="topMessage">Top Message</br></br></label>
 -->
         <div id="wrapper">
+            <div class="btn-group" style="float:left;width:65%;overflow:hidden;" id="demo0"></div>
             <div class="btn-group" style="float:left;width:65%;overflow:hidden;" id="demo"></div>
             <div style="overflow:hidden;" id="demo2">
                 <!--
@@ -73,6 +74,8 @@
                     <h2 class="box-group">Room Chat</h2>
                     <textarea id="roomchat" name="roomchat" text-align="center" rows="4" cols="50">
 </textarea>
+                    <br /><input id="roomChatBox" placeholder="Enter Message" style="height: 10px;"> <br /> <br />
+                    <button class = "smallbutton button 4" onclick="sendChat()">send</button> <br /> <br />
                     <h2 class="box-group">Word Bank</h2>
                     <iframe src="words.txt" title="Word Bank"></iframe>
                 </center>
@@ -83,7 +86,7 @@
         <!--
 <button class="button button5" onclick="saveToFile()">Save</button>
 -->
-        <center><button class="button button2" onclick="startGameFunction()">Start Game</button>
+        <center><button id = "startGameButton" class="button button2" onclick="startGameFunction()">Start Game</button>
             <br /><br /><br /><br />
             <button class="button button3" onclick="backToLobbyFunction()">Exit Game</button>
         </center>

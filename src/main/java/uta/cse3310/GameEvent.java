@@ -19,4 +19,6 @@ public class GameEvent extends Event
         y = this.y;
         button = this.button;
     }
+
+
 }
