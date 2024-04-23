@@ -266,7 +266,17 @@ public class Lobby
 
                     }
                 });
+
+                System.out.println("     Leaderboard     ");
+                for(Player P : playerList){
+                    if(P != null){
+                        System.out.println(P.getUsername() + ": " + P.getScore());
+                    }
+                }
                 
+            }
+            else {
+                System.out.println("Leaderboard is empty or not initialized");
             }
         }
     }
