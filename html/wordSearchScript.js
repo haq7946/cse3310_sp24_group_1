@@ -123,6 +123,7 @@ var display = 0;   //This variable controls the pages //0 - namepage   1- lobby 
 var namePage = document.getElementById("namePage"); //Main page
 var lobbyPage = document.getElementById("lobbyPage"); //Lobby Page
 var roomPage = document.getElementById("roomPage"); //Game Page
+var gameClock = document.getElementById(".gameClock"); //Game Clock
 ////////////////////////////////////////////////////
 document.getElementById("rmButton").style.display = 'none'; ///Room button
 var startButton = document.getElementById("startGameButton"); //Start game button
@@ -493,3 +494,32 @@ function updateState() //Will be used later to update the state of the game with
 {
 
 }
+
+// Assuming gameTimer is the element ID where the timer is displayed.
+//var gameTimer = document.getElementById("gameTimer"); // Make sure this ID matches your HTML
+
+function startTimer() {
+    var totalTime = 60; // Total time in seconds for the countdown
+    gameTimer.textContent = "1:00"; // Setting initial timer text
+
+    function updateTimer() {
+        const minutes = Math.floor(totalTime / 60);
+        const seconds = totalTime % 60;
+        gameTimer.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+        totalTime--; // Decrement the total time by one second
+
+        if (totalTime < 0) {
+            clearInterval(timerInterval); // Clear the interval if the total time is less than 0
+            gameTimer.textContent = "Time's up!";
+        } else {
+            setTimeout(updateTimer, 1000); // Otherwise, continue to update the timer every second
+        }
+    }
+
+    var timerInterval = setTimeout(updateTimer, 1000); // Start the timer
+}
+
+}
+
+
+
