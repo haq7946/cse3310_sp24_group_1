@@ -48,6 +48,8 @@ class ServerEvent {
     event;
     player;
     message;
+    x;
+    y;
 }
 
 
@@ -98,15 +100,18 @@ connection.onmessage = function (evt) {
                 startButton.style.display = 'block';
             }
             if (P.gameId === obj.gameList[i].gameID) {
+                updateGameChat(obj.gameList[i]);
                 console.log(obj.gameList[i].gameResponse);
                 if (obj.gameList[i].gameResponse === "start") {
                     fillBoard(obj.gameList[i].board);
+                    fillWordBank(obj.gameList[i].bank);
                     S = new ServerEvent();   //Creating a server event
                     S.button = "boardResponse";  //what was pressed
                     S.event = "gameEvent";         //what kind of event
                     S.player = P;
                     //connection.send(Json.stringify(S));
                 }
+
 
             }
             else if(P.gameId === "nothing")
@@ -123,6 +128,7 @@ var display = 0;   //This variable controls the pages //0 - namepage   1- lobby 
 var namePage = document.getElementById("namePage"); //Main page
 var lobbyPage = document.getElementById("lobbyPage"); //Lobby Page
 var roomPage = document.getElementById("roomPage"); //Game Page
+const gameClock = document.querySelector(".gameClockValue"); //Game clock
 ////////////////////////////////////////////////////
 document.getElementById("rmButton").style.display = 'none'; ///Room button
 var startButton = document.getElementById("startGameButton"); //Start game button
@@ -214,6 +220,7 @@ function backToLobbyFunction() { //Kicks players out of the game
     connection.send(JSON.stringify(S));
     console.log(JSON.stringify(S));
     hideShow();
+    destroyWordBank();
 }
 
 function roomFunction(number) { //Navigate to room page  //Go to room from lobby
@@ -261,7 +268,7 @@ function startGameFunction() {
     resetBGColor();
     connection.send(JSON.stringify(S));  //Send 
     console.log("Message sent: " + JSON.stringify(S));
-
+    startButton.style.display = 'none';
 }
 
 function disableRoomButton() {  //disable create room button
@@ -343,24 +350,68 @@ function sendLobbyChat()
     console.log(JSON.stringify(S));
 }
 
-function updateLobbyChat(evt)
-{
+function updateLobbyChat(evt) {
     var chat = document.getElementById("chatting");
     var msg = evt.data;
     const obj = JSON.parse(evt.data);
     console.log("The number of chat in this lobby is: " + obj.playerChat.length); //Debugging
-    // while (chat.rows.length != 0) //Empty out the table before updating
-    // {
-    //     chat.deleteRow(0);
-    // }
-    for (var i = 0; i < obj.playerChat.length; i++)  //Iterate through playerlist to create
+    while (chat.rows.length != 0) //Empty out the table before updating
     {
-        var row = `<tr>
+        chat.deleteRow(0);
+    }
+    let length = obj.playerChat.length;
+    if (length <= 8) 
+    {
+        for (let i = 0; i < length; i++)  //Iterate through playerlist to create
+        {
+            var row = `<tr>
                         <td>${obj.playerChat[i]}<td>
                   <tr />`
-        chat.innerHTML += row;
+            chat.innerHTML += row;
+        }
+    }
+    else 
+    {
+        for (let i = 0; i < 8; i++)  //Iterate through playerlist to create
+        {
+            var row = `<tr>
+                        <td>${obj.playerChat[(length - 8) + i]}<td>
+                  <tr />`
+            chat.innerHTML += row;
+        }
     }
 
+}
+
+function updateGameChat(gamelist)
+{
+    var chat = document.getElementById("gamechatting");
+    console.log("The number of chat in this lobby is: " + gamelist.playerChat.length); //Debugging
+    while (chat.rows.length != 0) //Empty out the table before updating
+    {
+        chat.deleteRow(0);
+    }
+    let length = gamelist.playerChat.length;
+    if (length <= 8) 
+    {
+        for (let i = 0; i < length; i++)  //Iterate through playerlist to create
+        {
+            var row = `<tr>
+                        <td>${gamelist.playerChat[i]}<td>
+                  <tr />`
+            chat.innerHTML += row;
+        }
+    }
+    else 
+    {
+        for (let i = 0; i < 8; i++)  //Iterate through playerlist to create
+        {
+            var row = `<tr>
+                        <td>${gamelist.playerChat[(length - 8) + i]}<td>
+                  <tr />`
+            chat.innerHTML += row;
+        }
+    }
 }
 
 function incrementPlayerScore(playerId){
@@ -380,6 +431,7 @@ function incrementPlayerScore(playerId){
         console.log("Player ID not found.");
     }
 }
+
 
 //////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////ROOOM//////////////////////////////////////////////////////////////
@@ -418,8 +470,7 @@ for(let i = 0; i < WIDTH; i++)
     }
 }
 
-function fillBoard(board)
-{
+function fillBoard(board) {
     let something = 0;
     let arr = new Array(WIDTH);
     for(let index = 0; index < WIDTH; index++)
@@ -435,11 +486,39 @@ function fillBoard(board)
         }
     }
 }
-
-function emptyBoard()
+function fillWordBank(wordbank)
 {
-    for (let i = 0; i < (WIDTH * HEIGHT); i++)
+    let arr = new Array(WIDTH);
+    arr = wordbank.wordBank;
+    let bank = document.getElementById("bank");
+    while (bank.rows.length != 0) //Empty out the table before updating
     {
+        bank.deleteRow(0);
+    }
+    for (var i = 0; i < (arr.length - arr.length %6); i+=6) //Most of the words besides last row
+    {
+        var row = `<tr>
+                            <td>${arr[i].word}<td/><td>${arr[i+1].word}<td/><td>${arr[i+2].word}<td/><td>${arr[i+3].word}<td/><td>${arr[i+4].word}<td/><td>${arr[i+5].word}<td/>
+                    <tr />`
+        // console.log("row:  " + row);
+        bank.innerHTML += row;
+    }
+    let remainder = ""; //Last row
+    for(var i = 0; i < (arr.length%6); i++)
+    {
+        remainder += `<td>${arr[arr.length - arr.length%6 + i].word}<td/>`    
+    }
+    // console.log("last row remainder: " + remainder);
+    var row = `<tr>
+                    ${remainder}
+            <tr/>`
+    bank.innerHTML += row;
+    
+}
+
+function emptyBoard() {
+    let bank = document.getElementById("bank");
+    for (let i = 0; i < (WIDTH * HEIGHT); i++) {
         var buttonid = document.getElementById(i);
         buttonid.innerHTML = "?";
     }
@@ -451,7 +530,19 @@ function resetBGColor() {
         buttonid.style.backgroundColor = "red";
     }
 
+
 }
+
+function destroyWordBank()
+{
+
+    while (bank.rows.length != 0) //Empty out the table before updating
+    {
+        bank.deleteRow(0);
+    }
+}
+
+
 
 // function board(board) {
 //     let something = 0;
@@ -504,6 +595,7 @@ function change_color(id) {
     if (bcolor == PlayerToColor.get(idx))
         document.getElementById(id).style.backgroundColor = "red";
     else
+
         document.getElementById(id).style.backgroundColor = PlayerToColor.get(idx);
     if(startCoordinate == -1) 
       startCoordinate = id;
@@ -521,6 +613,28 @@ function change_color(id) {
       }
       startCoordinate = endCoordinate = -1;
     }
+
+        document.getElementById(id).style.backgroundColor = "black";
+
+
+    console.log(P.username + " has selected: (" + x +","+ y + ")");
+    console.log("The letter pressed: " + letter);
+    S = new ServerEvent();
+    S.player = P;
+    S.button = "boardClick";
+    S.event = "gameEvent";
+    S.message = letter;
+    S.iidd = P.gameId;
+    S.x = x;
+    S.y = y;
+    connection.send(JSON.stringify(S));
+    console.log(JSON.stringify(S));
+}
+
+function update_colors(id)
+{
+
+
 }
 
 function saveToFile() {
@@ -540,6 +654,7 @@ function updateState() //Will be used later to update the state of the game with
 {
 
 }
+
 
 
     function getDirection(v1, v2) {
@@ -631,4 +746,31 @@ function highlightWord(startCoordinate,endCoordinate,idx) {
 //       StrikethroughWord(word);
 //       word="";
     }
+
+function startTimer() {
+    gameClock.textContent = "1:00";
+    const timeInterval = Date.now() + 300000; 
+    updateTimer(timeInterval);
+}
+
+function updateTimer(timeInterval) {
+    const currentTime = Date.now();
+    const timeLeft = timeInterval - currentTime;
+
+    if (timeLeft <= 0) {
+        gameClock.textContent = "Time's up!";
+    } else {
+        // Make sure that the seconds are displayed properly
+        const secondsLeft = Math.floor((timeLeft / 1000) % 60);
+        const minutesLeft = Math.floor((timeLeft / 1000) / 60);
+        gameClock.textContent = `${minutesLeft}:${secondsLeft < 10 ? '0' : ''}${secondsLeft}`;
+
+        // Make sure that the timer updates every second
+        setTimeout(() => updateTimer(timeInterval), 1000);
+    }
+}
+
+
+
+
 

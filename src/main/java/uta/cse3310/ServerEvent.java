@@ -18,6 +18,9 @@ public class ServerEvent
     int occurrence; //Mainly for join button; each one is different!
     String iidd;
     String message;
+
+    int x; int y; //Coordinates of the button pressed (on the board)
+    
     ServerEvent(String button, String event, Player player, int occurrence, String iidd, String message)
     {
         button = this.button;
