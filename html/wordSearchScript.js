@@ -6,7 +6,7 @@ class Player {
     numberOfVictories;
     gameId;
 }   //Players unique nick
-//fdasfdsafdsa
+
 class ServerData {
     playerList;
     player;
