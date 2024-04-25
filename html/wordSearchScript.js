@@ -48,6 +48,8 @@ class ServerEvent {
     event;
     player;
     message;
+    x;
+    y;
 }
 
 
@@ -436,6 +438,7 @@ for (let i = 0; i < WIDTH; i++) {
     }
 }
 
+
 function fillBoard(board) {
     let something = 0;
     let arr = new Array(WIDTH);
@@ -464,7 +467,7 @@ function fillWordBank(wordbank)
         var row = `<tr>
                             <td>${arr[i].word}<td/><td>${arr[i+1].word}<td/><td>${arr[i+2].word}<td/><td>${arr[i+3].word}<td/><td>${arr[i+4].word}<td/><td>${arr[i+5].word}<td/>
                     <tr />`
-        console.log("row:  " + row);
+        // console.log("row:  " + row);
         bank.innerHTML += row;
     }
     let remainder = ""; //Last row
@@ -472,7 +475,7 @@ function fillWordBank(wordbank)
     {
         remainder += `<td>${arr[arr.length - arr.length%6 + i].word}<td/>`    
     }
-    console.log("last row remainder: " + remainder);
+    // console.log("last row remainder: " + remainder);
     var row = `<tr>
                     ${remainder}
             <tr/>`
@@ -545,6 +548,25 @@ function change_color(id) {
         document.getElementById(id).style.backgroundColor = "blue";
     else
         document.getElementById(id).style.backgroundColor = "black";
+
+
+    console.log(P.username + " has selected: (" + x +","+ y + ")");
+    console.log("The letter pressed: " + letter);
+    S = new ServerEvent();
+    S.player = P;
+    S.button = "boardClick";
+    S.event = "gameEvent";
+    S.message = letter;
+    S.iidd = P.gameId;
+    S.x = x;
+    S.y = y;
+    connection.send(JSON.stringify(S));
+    console.log(JSON.stringify(S));
+}
+
+function update_colors(id)
+{
+
 }
 
 function saveToFile() {

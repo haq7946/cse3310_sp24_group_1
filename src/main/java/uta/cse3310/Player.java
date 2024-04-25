@@ -11,6 +11,13 @@ public class Player
     public int numberOfVictores;
     public String iD; //Game id
 
+    //Storing player board clicks 
+    public int x1; public int y1;
+    public int x2; public int y2;
+
+    //If this is true than we can proceed with game logic
+    public boolean firstClick;
+
     //Track number of players
     public static int numOfPlayers;
 
@@ -30,6 +37,7 @@ public class Player
         setScore(0);
         setStatus(0);
         setVictories(0);
+        firstClick = false;
         numOfPlayers++;
     }
 

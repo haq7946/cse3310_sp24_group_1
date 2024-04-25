@@ -220,9 +220,42 @@ public class Lobby
                     }
                 }
             }
-            if(S.button.compareTo("boardResponse") == 0)
+            else if(S.button.compareTo("boardResponse") == 0)
             {
                 
+            }
+            else if(S.button.compareTo("boardClick") == 0)
+            {
+                System.out.println("Board has been pressed");
+                System.out.println("Player: " + S.player.username);
+                System.out.println( "Coardinates: " +S.x + "," + S.y);
+                for(int i = 0; i < gameList.size(); i++)
+                {
+                    if(S.iidd.compareTo(gameList.get(i).gameID) == 0)  //Finding the specific game using the gameId
+                    {
+                        for(int j = 0; j < gameList.get(i).numberOfPlayers; j++)
+                        {
+                            if(S.player.username.compareTo(gameList.get(i).playerList.get(j).username) == 0) //Finds the player in the specific game
+                            {
+                                if(gameList.get(i).playerList.get(j).firstClick == true) //This means that this is their secind click
+                                {
+                                    System.out.println("Woohoo second click registered"); //We will eventually also store coordinates for the second click
+                                    //Write game logic of what happens after second click
+                                    //We set it to false after
+                                    gameList.get(i).playerList.get(j).firstClick = false;
+                                }
+                                else
+                                {
+                                    gameList.get(i).playerList.get(j).x1 = S.x; //Set the x1 and y1 coordinates for the first click
+                                    gameList.get(i).playerList.get(j).y1 = S.y;
+                                    System.out.println(gameList.get(i).playerList.get(j).x1 +  gameList.get(i).playerList.get(j).y1);
+                                    //We set it to true
+                                    gameList.get(i).playerList.get(j).firstClick = true;
+                                }
+                            }
+                        }
+                    }
+                }
             }
             
         }
