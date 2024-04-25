@@ -102,6 +102,7 @@ connection.onmessage = function (evt) {
                 console.log(obj.gameList[i].gameResponse);
                 if (obj.gameList[i].gameResponse === "start") {
                     fillBoard(obj.gameList[i].board);
+                    fillWordBank(obj.gameList[i].bank);
                     S = new ServerEvent();   //Creating a server event
                     S.button = "boardResponse";  //what was pressed
                     S.event = "gameEvent";         //what kind of event
