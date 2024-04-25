@@ -102,7 +102,6 @@ connection.onmessage = function (evt) {
                 console.log(obj.gameList[i].gameResponse);
                 if (obj.gameList[i].gameResponse === "start") {
                     fillBoard(obj.gameList[i].board);
-                    fillWordBank(obj.gameList[i].bank);
                     S = new ServerEvent();   //Creating a server event
                     S.button = "boardResponse";  //what was pressed
                     S.event = "gameEvent";         //what kind of event
@@ -112,7 +111,8 @@ connection.onmessage = function (evt) {
 
 
             }
-            else if (P.gameId === "nothing") {
+            else if(P.gameId === "nothing")
+            {
                 emptyBoard();
             }
         }
@@ -178,7 +178,8 @@ function nameFunction() //This is basically what happens when we press submit (T
     }
 }
 
-function sendChat() {
+function sendChat()
+{
     let chat = document.querySelector("#roomChatBox");
     console.log(chat.value);
 
@@ -330,7 +331,8 @@ function updateLeaderBoard(evt) {  //This function builds leaderboard
 
 }
 
-function sendLobbyChat() {
+function sendLobbyChat()
+{
     let chat = document.querySelector("#chatButtonLobby");
     console.log(chat.value);
 
@@ -407,6 +409,24 @@ function updateGameChat(gamelist)
     }
 }
 
+function incrementPlayerScore(playerId){
+    if (Players[playerId]) {
+        Players[playerId].score += 1; // Increment the player's score by 1
+        console.log(Players[playerId].username + " scored a point. Total score: " + Players[playerId].score);
+    
+        let S = new ServerEvent();
+        S.event = "scoreUpdate";
+        S.player = P;
+        S.newScore = P.score;
+
+        connection.send(JSON.stringify(S));
+        console.log("Score update sent: " + JSON.stringify(S));
+    }
+    else{
+        console.log("Player ID not found.");
+    }
+}
+
 
 //////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////ROOOM//////////////////////////////////////////////////////////////
@@ -420,14 +440,18 @@ let selected_letters = "";
 var placeHolder;
 
 let counter = 0;
-for (let i = 0; i < WIDTH; i++) {
-    for (let j = 0; j < HEIGHT; j++) {
+for(let i = 0; i < WIDTH; i++)
+{
+    for(let j = 0; j < HEIGHT; j++)
+    {
         let button = document.createElement("button");
         button.style.width = 5;
         button.setAttribute("id", counter);
+        console.log(counter);
         button.setAttribute("onclick", "change_color(" + counter + ");");
         button.innerHTML = "?";
-        if (counter % WIDTH == 0) {
+        if (counter % WIDTH == 0) 
+        {
             linebreak = document.createElement("br");
             demo.appendChild(linebreak);
         }
@@ -436,16 +460,19 @@ for (let i = 0; i < WIDTH; i++) {
     }
 }
 
-function fillBoard(board) {
+function fillBoard(board)
+{
     let something = 0;
     let arr = new Array(WIDTH);
-    for (let index = 0; index < WIDTH; index++) {
+    for(let index = 0; index < WIDTH; index++)
+    {
         arr = board.boardArray[index];
-        for (let jindex = 0; jindex < HEIGHT; jindex++) {
+        for(let jindex = 0; jindex < HEIGHT; jindex++)
+        {
             let charCode = arr[jindex];
             var buttonid = document.getElementById(something);
 
-            buttonid.innerHTML = charCode;
+            buttonid.innerHTML = charCode; 
             something = something + 1;
         }
     }
@@ -529,7 +556,8 @@ function destroyWordBank()
 // }
 
 
-function destroyBoard() {
+function destroyBoard()
+{
     let area = document.getElementById("demo");
     area.remove();
 }
