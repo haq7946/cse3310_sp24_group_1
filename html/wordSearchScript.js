@@ -55,7 +55,6 @@ class ServerEvent {
 
 
 
-
 var connection = null;   //Connection
 var serverUrl;           //url server
 serverUrl = "ws://" + window.location.hostname + ":9101";
@@ -88,10 +87,13 @@ connection.onmessage = function (evt) {
         for (var i = 0; i < obj.playerList.length; i++) {
             console.log(P.username);
             console.log(P.gameId);
+
+            ///////////////////// this sets a players gameId
             if (obj.playerList[i].username === P.username) {
                 P.gameId = obj.playerList[i].iD;
                 console.log(P.gameId);
             }
+            ////////////////
 
         }
 
@@ -103,6 +105,18 @@ connection.onmessage = function (evt) {
                 updateGameChat(obj.gameList[i]);
                 console.log(obj.gameList[i].gameResponse);
                 if (obj.gameList[i].gameResponse === "start") {
+
+                    ////////////// this loop sets a player's color
+                    //game has started so let's also set their color
+                    for(let index = 0; index < obj.gameList[i].playerList.length; index++)
+                    {
+                        if(P.username === obj.gameList[i].playerList[index].username) //find our specific player
+                        {
+                            P.color = obj.gameList[i].playerList[index].color;   //set their color
+                        }
+                    }
+                    //////////////
+
                     fillBoard(obj.gameList[i].board);
                     fillWordBank(obj.gameList[i].bank);
                     S = new ServerEvent();   //Creating a server event
@@ -567,6 +581,14 @@ function destroyBoard()
     area.remove();
 }
 
+const numOfColors = 5;
+const COLORS = new Array(numOfColors);
+COLORS[0] = "red";  //default board color
+COLORS[1] = "black";
+COLORS[2] = "yellow";
+COLORS[3] = "blue";
+COLORS[4] = "green";
+
 function change_color(id) {
     let x = id % WIDTH;
     let y = Math.floor(id / HEIGHT);
@@ -575,9 +597,9 @@ function change_color(id) {
     document.getElementById("w3review").value = "selected " + letter + " at coordinate (" + x + "," + y + ")\nselected letters=" + selected_letters;
     let bcolor = document.getElementById(id).style.backgroundColor;
     if (bcolor == "orange")
-        document.getElementById(id).style.backgroundColor = "blue";
+        document.getElementById(id).style.backgroundColor = "white";
     else
-        document.getElementById(id).style.backgroundColor = "black";
+        document.getElementById(id).style.backgroundColor = COLORS[P.color];
 
 
     console.log(P.username + " has selected: (" + x +","+ y + ")");

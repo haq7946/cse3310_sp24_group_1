@@ -103,62 +103,62 @@ public class Game
 
     public String selectWord(int boardX_1, int boardY_1, int boardX_2, int boardY_2)// (X1, Y1) is first click, (X2, Y2) is second click
     {
-        if (boardX_1 == boardX_2) //word is vertical
-        {
-            if (boardY_1 > boardY_2) //word is vertical up
-            {
-                String wordToBeReturned = "";
-                for (int i = 0; i < (boardY_1 - boardY_2); i++)
-                {
-                    wordToBeReturned = wordToBeReturned + board.getBoardArray()[boardX_1][boardY_1 - i];
-                }
-                return wordToBeReturned;
-            }
-            else if (boardY_1 < boardY_2) //word is vertical down
-            {
-                String wordToBeReturned = "";
-                for (int i = 0; i < (boardY_2 - boardY_1); i++)
-                {
-                    wordToBeReturned = wordToBeReturned + board.getBoardArray()[boardX_1][boardY_1 + i];
-                }
-                return wordToBeReturned;
-            }
-        }
-        else if (boardY_1 == boardY_2) //word is horizontal; words can only be horizontal forwards, so X2 > X1 always
+        // if (boardX_1 == boardX_2) //word is vertical
+        // {
+        //     if (boardY_1 > boardY_2) //word is vertical up
+        //     {
+        //         String wordToBeReturned = "";
+        //         for (int i = 0; i < (boardY_1 - boardY_2); i++)
+        //         {
+        //             wordToBeReturned = wordToBeReturned + board.getBoardArray()[boardX_1][boardY_1 - i];
+        //         }
+        //         return wordToBeReturned;
+        //     }
+        //     else if (boardY_1 < boardY_2) //word is vertical down
+        //     {
+        //         String wordToBeReturned = "";
+        //         for (int i = 0; i < (boardY_2 - boardY_1); i++)
+        //         {
+        //             wordToBeReturned = wordToBeReturned + board.getBoardArray()[boardX_1][boardY_1 + i];
+        //         }
+        //         return wordToBeReturned;
+        //     }
+        // }
+        if (boardX_1 == boardX_2) //word is horizontal; words can only be horizontal forwards, so X2 > X1 always
         {
             String wordToBeReturned = ""; 
-            for (int i = 0; i < (boardX_2 - boardX_1); i++)
+            for (int i = 0; i < (boardX_2 - boardX_1) + 1; i++)
             {
-                wordToBeReturned = wordToBeReturned + board.getBoardArray()[boardX_1 + i][boardY_1];
+                wordToBeReturned = wordToBeReturned + board.boardArray[boardX_1][boardY_1 + i];
             }
             return wordToBeReturned;
         }
-        else if ((boardX_1 - boardX_2) == (boardY_1 - boardY_2)) //word is diagonal
-        {
-            if (boardY_1 > boardY_2) //word is diagonal up
-            {
-                String wordToBeReturned = "";
-                for (int i = 0; i < (boardX_2 - boardX_1); i++)
-                {
-                    wordToBeReturned = wordToBeReturned + board.getBoardArray()[boardX_1 + i][boardY_1 - i];
-                }
-                return wordToBeReturned;
-            }
-            else if (boardY_1 < boardY_2) //word is diagonal down
-            {
-                String wordToBeReturned = "";
-                for (int i = 0; i < (boardX_2 - boardX_1); i++)
-                {
-                    wordToBeReturned = wordToBeReturned + board.getBoardArray()[boardX_1 + i][boardY_1 + i];
-                }
-                return wordToBeReturned;
-            }
-        }
+        // else if ((boardX_1 - boardX_2) == (boardY_1 - boardY_2)) //word is diagonal
+        // {
+        //     if (boardY_1 > boardY_2) //word is diagonal up
+        //     {
+        //         String wordToBeReturned = "";
+        //         for (int i = 0; i < (boardX_2 - boardX_1); i++)
+        //         {
+        //             wordToBeReturned = wordToBeReturned + board.getBoardArray()[boardX_1 + i][boardY_1 - i];
+        //         }
+        //         return wordToBeReturned;
+        //     }
+        //     else if (boardY_1 < boardY_2) //word is diagonal down
+        //     {
+        //         String wordToBeReturned = "";
+        //         for (int i = 0; i < (boardX_2 - boardX_1); i++)
+        //         {
+        //             wordToBeReturned = wordToBeReturned + board.getBoardArray()[boardX_1 + i][boardY_1 + i];
+        //         }
+        //         return wordToBeReturned;
+        //     }
+        // }
         else //the two clicks do not form a valid word
         {
             return "";
         }
-        return ""; //this return statement exists because "tHiS mEtHoD mUsT rEtUrN a ReSuLt Of TyPe StRiNg"
+        // return ""; //this return statement exists because "tHiS mEtHoD mUsT rEtUrN a ReSuLt Of TyPe StRiNg"
     }
 
     public void gameChat(String message)

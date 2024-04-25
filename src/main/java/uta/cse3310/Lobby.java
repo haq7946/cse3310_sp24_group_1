@@ -222,6 +222,14 @@ public class Lobby
                         gameList.get(i).playerChat.add("Game has started.");
                         System.out.println("Started game and response");
                         gameList.get(i).gameResponse = "start";
+                        //each player is assigned a unique color at the start of a game
+                        // 0 is default board color
+                        // 1 - black  2- yellow  3-blue  4-green
+                        for(int c = 0; c < gameList.get(i).playerList.size(); c++)
+                        {
+                            gameList.get(i).playerList.get(c).color = (c + 1); //Assign each player a different color
+                            System.out.println(gameList.get(i).playerList.get(c).color);  //Debug
+                        }
                     }
                 }
             }
@@ -246,6 +254,15 @@ public class Lobby
                                 {
                                     System.out.println("Woohoo second click registered"); //We will eventually also store coordinates for the second click
                                     //Write game logic of what happens after second click
+                                    gameList.get(i).playerList.get(j).x2 = S.x; //Set the x2 and y2 coordinates for the second click click
+                                    gameList.get(i).playerList.get(j).y2 = S.y;
+
+                                    //Check if it is a valid word
+                                    System.out.println("Word Selected: " + gameList.get(i).selectWord(
+                                        gameList.get(i).playerList.get(j).x1, gameList.get(i).playerList.get(j).y1,
+                                        gameList.get(i).playerList.get(j).x2, gameList.get(i).playerList.get(j).y2));
+
+
                                     //We set it to false after
                                     gameList.get(i).playerList.get(j).firstClick = false;
                                 }
