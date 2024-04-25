@@ -449,7 +449,7 @@ var endCoordinate = -1;
 var idx = P.gameId;
 var word = "";
 let counter = 0;
-if(P.gameId === "none") idx = 2;
+if(P.gameId === "none") idx = 1;
 for(let i = 0; i < WIDTH; i++)
 {
     for(let j = 0; j < HEIGHT; j++)
@@ -608,13 +608,14 @@ function change_color(id) {
         document.getElementById(endCoordinate).style.backgroundColor = "red";
       }
       else {
+//        StrikethroughWord(word);
         document.getElementById("w3review").value += "selected word=" + word;
         word = "";
       }
       startCoordinate = endCoordinate = -1;
     }
 
-        document.getElementById(id).style.backgroundColor = "black";
+ //       document.getElementById(id).style.backgroundColor = "black";
 
 
     console.log(P.username + " has selected: (" + x +","+ y + ")");
@@ -745,6 +746,19 @@ function highlightWord(startCoordinate,endCoordinate,idx) {
        }
 //       StrikethroughWord(word);
 //       word="";
+    }
+
+    function StrikethroughWord(word) {
+        var table = document.getElementById("bank");
+        for(let i = 0; i < table.rows.length;i++) {
+          for(let j = 0; j < table.rows[i].cells.length;j++) {
+            let cell = table.rows[i].cells[j];
+            console.log(i,j,cell);
+            if (cell.innerHTML == word) {
+              cell.innerHTML = "<del>"+word+"</del>";
+            }
+          }
+        }
     }
 
 function startTimer() {
