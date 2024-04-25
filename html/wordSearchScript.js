@@ -123,7 +123,7 @@ var display = 0;   //This variable controls the pages //0 - namepage   1- lobby 
 var namePage = document.getElementById("namePage"); //Main page
 var lobbyPage = document.getElementById("lobbyPage"); //Lobby Page
 var roomPage = document.getElementById("roomPage"); //Game Page
-var gameClock = document.getElementById(".gameClock"); //Game Clock
+const gameClock = document.querySelector(".gameClockValue"); //Game clock
 ////////////////////////////////////////////////////
 document.getElementById("rmButton").style.display = 'none'; ///Room button
 var startButton = document.getElementById("startGameButton"); //Start game button
@@ -495,31 +495,29 @@ function updateState() //Will be used later to update the state of the game with
 
 }
 
-// Assuming gameTimer is the element ID where the timer is displayed.
-//var gameTimer = document.getElementById("gameTimer"); // Make sure this ID matches your HTML
-
 function startTimer() {
-    var totalTime = 60; // Total time in seconds for the countdown
-    gameTimer.textContent = "1:00"; // Setting initial timer text
+    gameClock.textContent = "1:00";
+    const timeInterval = Date.now() + 300000; 
+    updateTimer(timeInterval);
+}
 
-    function updateTimer() {
-        const minutes = Math.floor(totalTime / 60);
-        const seconds = totalTime % 60;
-        gameTimer.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-        totalTime--; // Decrement the total time by one second
+function updateTimer(timeInterval) {
+    const currentTime = Date.now();
+    const timeLeft = timeInterval - currentTime;
 
-        if (totalTime < 0) {
-            clearInterval(timerInterval); // Clear the interval if the total time is less than 0
-            gameTimer.textContent = "Time's up!";
-        } else {
-            setTimeout(updateTimer, 1000); // Otherwise, continue to update the timer every second
-        }
+    if (timeLeft <= 0) {
+        gameClock.textContent = "Time's up!";
+    } else {
+        // Make sure that the seconds are displayed properly
+        const secondsLeft = Math.floor((timeLeft / 1000) % 60);
+        const minutesLeft = Math.floor((timeLeft / 1000) / 60);
+        gameClock.textContent = `${minutesLeft}:${secondsLeft < 10 ? '0' : ''}${secondsLeft}`;
+
+        // Make sure that the timer updates every second
+        setTimeout(() => updateTimer(timeInterval), 1000);
     }
-
-    var timerInterval = setTimeout(updateTimer, 1000); // Start the timer
 }
 
-}
 
 
 
