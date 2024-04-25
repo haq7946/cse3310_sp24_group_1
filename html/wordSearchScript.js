@@ -504,7 +504,9 @@ function fillWordBank(wordbank)
                     ${remainder}
             <tr/>`
     bank.innerHTML += row;
+    
 }
+
 function emptyBoard() {
     let bank = document.getElementById("bank");
     for (let i = 0; i < (WIDTH * HEIGHT); i++) {
