@@ -302,11 +302,14 @@ function updateRooms(evt) { //This function updates the rooms for all players
     }
     for (var i = 0; i < obj.gameList.length; i++)  //Iterate through gamelist and gamemaker to create
     {
+        if(obj.gameList[i].numberOfPlayers < 4 && obj.gameList[i].isAvailableToJoin == true)
+        {
         var row = `<tr>
                             <td>${obj.gameMakers[i].username}'s Room<td>
                             <button id ="rmButton" class ="smallbutton button 2" onclick=roomFunction(${i + 1}) >Join room</button>
                       <tr />`
         table.innerHTML += row;
+        }
     }
 
     document.getElementById("rmButton").style.display = 'block';  //Display the room button

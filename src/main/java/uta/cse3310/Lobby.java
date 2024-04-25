@@ -194,6 +194,13 @@ public class Lobby
             else if(S.button.compareTo("backToLobbyButton")==0)
             {
                 Player P = new Player(S.player.username);
+                for(int i = 0; i < gameList.size(); i++)
+                {
+                    if(S.iidd.equals(gameList.get(i).gameID))
+                    {
+                        gameList.get(i).removePlayer(S.player);
+                    }
+                }
                 //Bring them back to the lobby and remove them from the room
                 //So we can assign them a new game ID if they join another room
                 for(int i = 0; i < playerList.size(); i++)
