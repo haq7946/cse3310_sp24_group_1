@@ -7,6 +7,8 @@ import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 import org.java_websocket.WebSocket;
 import org.java_websocket.drafts.Draft;
@@ -30,6 +32,7 @@ public class Lobby
     public ArrayList<Player> gameMakers; //list that corresponds to makers of each game
     public ArrayList<Player> playerList; // list of players that are in the lobby (i.e. players not currently in a game)
     public ArrayList<String> playerChat; //list of message history sent
+    public ArrayList<Player> leaderList; //list of players sorted by earned points
     //This will be used to broadcast that the specific room is full and the button needs to be disabled
     // private ArrayList<Player> leaderboardList; this is going to be a PointBoard
     // i'm pretty sure - AE
@@ -41,6 +44,7 @@ public class Lobby
         gameMakers = new ArrayList<Player>();
         playerList = new ArrayList<Player>();
         playerChat = new ArrayList<String>();
+        leaderList = new ArrayList<Player>();
         playerChat.add("Server started");
 
     }
@@ -215,8 +219,17 @@ public class Lobby
                     if(S.iidd.compareTo(gameList.get(i).gameID) == 0)
                     {
                         gameList.get(i).startGame();
+                        gameList.get(i).playerChat.add("Game has started.");
                         System.out.println("Started game and response");
                         gameList.get(i).gameResponse = "start";
+                        //each player is assigned a unique color at the start of a game
+                        // 0 is default board color
+                        // 1 - black  2- yellow  3-blue  4-green
+                        for(int c = 0; c < gameList.get(i).playerList.size(); c++)
+                        {
+                            gameList.get(i).playerList.get(c).color = (c + 1); //Assign each player a different color
+                            System.out.println(gameList.get(i).playerList.get(c).color);  //Debug
+                        }
                     }
                 }
             }
@@ -241,6 +254,15 @@ public class Lobby
                                 {
                                     System.out.println("Woohoo second click registered"); //We will eventually also store coordinates for the second click
                                     //Write game logic of what happens after second click
+                                    gameList.get(i).playerList.get(j).x2 = S.x; //Set the x2 and y2 coordinates for the second click click
+                                    gameList.get(i).playerList.get(j).y2 = S.y;
+
+                                    //Check if it is a valid word
+                                    System.out.println("Word Selected: " + gameList.get(i).selectWord(
+                                        gameList.get(i).playerList.get(j).x1, gameList.get(i).playerList.get(j).y1,
+                                        gameList.get(i).playerList.get(j).x2, gameList.get(i).playerList.get(j).y2));
+
+
                                     //We set it to false after
                                     gameList.get(i).playerList.get(j).firstClick = false;
                                 }
@@ -283,6 +305,52 @@ public class Lobby
         else if(S.event.compareTo("clockEvent") == 0)
         {
             
+        }
+        else if(S.event.compareTo("leaderboardEvent") == 0){
+            if(S.button.compareTo("Show Leaderboard") == 0){
+                
+                Collections.sort(playerList, new Comparator<Player>() {
+                    @Override
+                    public int compare(Player p1, Player p2) {
+                        // Handle null player or score scenarios
+                        if (p1 == null || p2 == null) {
+                            return 0; // Consider how to handle null players in sorting logic
+                        }
+                        return Integer.compare(p2.getScore(), p1.getScore()); // Descending order{
+
+                    }
+                }); 
+                Collections.sort(gameMakers, new Comparator<Player>() { //Comparison of game players
+                    @Override
+                    public int compare(Player p1, Player p2) {
+                        // Handle null player or score scenarios
+                        if (p1 == null || p2 == null) {
+                            return 0; // Consider how to handle null players in sorting logic
+                        }
+                        return Integer.compare(p2.getScore(), p1.getScore()); // Descending order{
+
+                    }
+                });
+
+
+                System.out.println("     Leaderboard     ");
+                for(Player P : gameMakers){       // Add players sorted by numbers of earned points
+                    if(P != null){
+                       leaderList.add(P); 
+                       System.out.println(P.getUsername() + ": " + P.getScore()); 
+                    }
+                }
+                for(Player P : playerList){        // Add new players at the bottom of the list
+                    if(P != null){
+                       leaderList.add(P); 
+                       System.out.println(P.getUsername() + ": " + P.getScore());
+                    }
+                }
+                
+            }
+            else {
+                System.out.println("Leaderboard is empty or not initialized");
+            }
         }
     }
 }

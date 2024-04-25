@@ -55,7 +55,6 @@ class ServerEvent {
 
 
 
-
 var connection = null;   //Connection
 var serverUrl;           //url server
 serverUrl = "ws://" + window.location.hostname + ":9101";
@@ -88,10 +87,13 @@ connection.onmessage = function (evt) {
         for (var i = 0; i < obj.playerList.length; i++) {
             console.log(P.username);
             console.log(P.gameId);
+
+            ///////////////////// this sets a players gameId
             if (obj.playerList[i].username === P.username) {
                 P.gameId = obj.playerList[i].iD;
                 console.log(P.gameId);
             }
+            ////////////////
 
         }
 
@@ -103,6 +105,18 @@ connection.onmessage = function (evt) {
                 updateGameChat(obj.gameList[i]);
                 console.log(obj.gameList[i].gameResponse);
                 if (obj.gameList[i].gameResponse === "start") {
+
+                    ////////////// this loop sets a player's color
+                    //game has started so let's also set their color
+                    for(let index = 0; index < obj.gameList[i].playerList.length; index++)
+                    {
+                        if(P.username === obj.gameList[i].playerList[index].username) //find our specific player
+                        {
+                            P.color = obj.gameList[i].playerList[index].color;   //set their color
+                        }
+                    }
+                    //////////////
+
                     fillBoard(obj.gameList[i].board);
                     fillWordBank(obj.gameList[i].bank);
                     S = new ServerEvent();   //Creating a server event
@@ -114,7 +128,8 @@ connection.onmessage = function (evt) {
 
 
             }
-            else if (P.gameId === "nothing") {
+            else if(P.gameId === "nothing")
+            {
                 emptyBoard();
             }
         }
@@ -127,6 +142,7 @@ var display = 0;   //This variable controls the pages //0 - namepage   1- lobby 
 var namePage = document.getElementById("namePage"); //Main page
 var lobbyPage = document.getElementById("lobbyPage"); //Lobby Page
 var roomPage = document.getElementById("roomPage"); //Game Page
+const gameClock = document.querySelector(".gameClockValue"); //Game clock
 ////////////////////////////////////////////////////
 document.getElementById("rmButton").style.display = 'none'; ///Room button
 var startButton = document.getElementById("startGameButton"); //Start game button
@@ -180,7 +196,8 @@ function nameFunction() //This is basically what happens when we press submit (T
     }
 }
 
-function sendChat() {
+function sendChat()
+{
     let chat = document.querySelector("#roomChatBox");
     console.log(chat.value);
 
@@ -332,7 +349,8 @@ function updateLeaderBoard(evt) {  //This function builds leaderboard
 
 }
 
-function sendLobbyChat() {
+function sendLobbyChat()
+{
     let chat = document.querySelector("#chatButtonLobby");
     console.log(chat.value);
 
@@ -409,6 +427,24 @@ function updateGameChat(gamelist)
     }
 }
 
+function incrementPlayerScore(playerId){
+    if (Players[playerId]) {
+        Players[playerId].score += 1; // Increment the player's score by 1
+        console.log(Players[playerId].username + " scored a point. Total score: " + Players[playerId].score);
+    
+        let S = new ServerEvent();
+        S.event = "scoreUpdate";
+        S.player = P;
+        S.newScore = P.score;
+
+        connection.send(JSON.stringify(S));
+        console.log("Score update sent: " + JSON.stringify(S));
+    }
+    else{
+        console.log("Player ID not found.");
+    }
+}
+
 
 //////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////ROOOM//////////////////////////////////////////////////////////////
@@ -422,14 +458,18 @@ let selected_letters = "";
 var placeHolder;
 
 let counter = 0;
-for (let i = 0; i < WIDTH; i++) {
-    for (let j = 0; j < HEIGHT; j++) {
+for(let i = 0; i < WIDTH; i++)
+{
+    for(let j = 0; j < HEIGHT; j++)
+    {
         let button = document.createElement("button");
         button.style.width = 5;
         button.setAttribute("id", counter);
+        console.log(counter);
         button.setAttribute("onclick", "change_color(" + counter + ");");
         button.innerHTML = "?";
-        if (counter % WIDTH == 0) {
+        if (counter % WIDTH == 0) 
+        {
             linebreak = document.createElement("br");
             demo.appendChild(linebreak);
         }
@@ -438,17 +478,18 @@ for (let i = 0; i < WIDTH; i++) {
     }
 }
 
-
 function fillBoard(board) {
     let something = 0;
     let arr = new Array(WIDTH);
-    for (let index = 0; index < WIDTH; index++) {
+    for(let index = 0; index < WIDTH; index++)
+    {
         arr = board.boardArray[index];
-        for (let jindex = 0; jindex < HEIGHT; jindex++) {
+        for(let jindex = 0; jindex < HEIGHT; jindex++)
+        {
             let charCode = arr[jindex];
             var buttonid = document.getElementById(something);
 
-            buttonid.innerHTML = charCode;
+            buttonid.innerHTML = charCode; 
             something = something + 1;
         }
     }
@@ -480,7 +521,9 @@ function fillWordBank(wordbank)
                     ${remainder}
             <tr/>`
     bank.innerHTML += row;
+    
 }
+
 function emptyBoard() {
     let bank = document.getElementById("bank");
     for (let i = 0; i < (WIDTH * HEIGHT); i++) {
@@ -532,10 +575,19 @@ function destroyWordBank()
 // }
 
 
-function destroyBoard() {
+function destroyBoard()
+{
     let area = document.getElementById("demo");
     area.remove();
 }
+
+const numOfColors = 5;
+const COLORS = new Array(numOfColors);
+COLORS[0] = "red";  //default board color
+COLORS[1] = "black";
+COLORS[2] = "yellow";
+COLORS[3] = "blue";
+COLORS[4] = "green";
 
 function change_color(id) {
     let x = id % WIDTH;
@@ -545,9 +597,9 @@ function change_color(id) {
     document.getElementById("w3review").value = "selected " + letter + " at coordinate (" + x + "," + y + ")\nselected letters=" + selected_letters;
     let bcolor = document.getElementById(id).style.backgroundColor;
     if (bcolor == "orange")
-        document.getElementById(id).style.backgroundColor = "blue";
+        document.getElementById(id).style.backgroundColor = "white";
     else
-        document.getElementById(id).style.backgroundColor = "black";
+        document.getElementById(id).style.backgroundColor = COLORS[P.color];
 
 
     console.log(P.username + " has selected: (" + x +","+ y + ")");
@@ -586,3 +638,30 @@ function updateState() //Will be used later to update the state of the game with
 {
 
 }
+
+function startTimer() {
+    gameClock.textContent = "1:00";
+    const timeInterval = Date.now() + 300000; 
+    updateTimer(timeInterval);
+}
+
+function updateTimer(timeInterval) {
+    const currentTime = Date.now();
+    const timeLeft = timeInterval - currentTime;
+
+    if (timeLeft <= 0) {
+        gameClock.textContent = "Time's up!";
+    } else {
+        // Make sure that the seconds are displayed properly
+        const secondsLeft = Math.floor((timeLeft / 1000) % 60);
+        const minutesLeft = Math.floor((timeLeft / 1000) / 60);
+        gameClock.textContent = `${minutesLeft}:${secondsLeft < 10 ? '0' : ''}${secondsLeft}`;
+
+        // Make sure that the timer updates every second
+        setTimeout(() => updateTimer(timeInterval), 1000);
+    }
+}
+
+
+
+

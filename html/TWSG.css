@@ -55,7 +55,11 @@ iframe {background-color:powderblue;frameBorder:0;scrolling:auto;}
 th{
   color:red;
 }
-
+span {
+  font-size: 2rem;
+  font-weight: 500;
+  margin: 0;
+}
 .table-room{
   background-color: aqua;
   font-size: medium;
@@ -80,4 +84,17 @@ th{
   font-size: 15px;
   text-align: center;
   background-color:#008CBA;
+}
+.gameClock{
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+.gameClock span{
+  margin: 0 0 4px 0;
+}
+.gameClockValue {
+  font-size: 20px;
+  font-weight: bold;
+  color: #008CBA;
 }

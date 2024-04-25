@@ -26,11 +26,21 @@ public class WordBank
         Collections.sort(wordBank, new WordComparator());
         return wordBank;
     }
-    public static void updateWordBank(Word[] Word)
+    public void updateWordBank(Word[] word)
     {
-
+          for(Word w: word)
+          {
+            wordBank.add(w);
+          }
     }
-
+    public void removeWordFromWordBank(Word word)
+    {
+        wordBank.remove(word);
+    }
+    public void addWordToWordBank(Word word)
+    {
+        wordBank.add(word);
+    }
     public String toString()
     {
         Collections.sort(wordBank, new WordComparator());
