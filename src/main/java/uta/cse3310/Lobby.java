@@ -215,6 +215,7 @@ public class Lobby
                     if(S.iidd.compareTo(gameList.get(i).gameID) == 0)
                     {
                         gameList.get(i).startGame();
+                        gameList.get(i).playerChat.add("Game has started.");
                         System.out.println("Started game and response");
                         gameList.get(i).gameResponse = "start";
                     }
