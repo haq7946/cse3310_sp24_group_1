@@ -283,6 +283,8 @@ public class Lobby
                                     if(is_wordValid == true)
                                     {
                                         System.out.println("Word is valid.");
+                                        //Word found, cross out word
+                                        gameList.get(i).crossOutWord(word, gameList.get(i).bank);
                                         gameList.get(i).boardButtonMessage = "updateBoard";
                                         //How is the word oriented
                                         gameList.get(i).colorOrientation = gameList.get(i).checkOrientation(gameList.get(i).playerList.get(j).x1, gameList.get(i).playerList.get(j).y1,
