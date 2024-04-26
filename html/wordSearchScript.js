@@ -55,6 +55,7 @@ class ServerEvent {
 
 
 
+
 var connection = null;   //Connection
 var serverUrl;           //url server
 serverUrl = "ws://" + window.location.hostname + ":9101";
@@ -124,6 +125,37 @@ connection.onmessage = function (evt) {
                     S.event = "gameEvent";         //what kind of event
                     S.player = P;
                     //connection.send(Json.stringify(S));
+                }
+
+                if(obj.gameList[i].boardButtonMessage === "updateBoard")
+                {
+                    console.log("Valid Word");
+                    //Broadcast to everyone that word has been found
+
+                    update_colors(obj.gameList[i].x1, obj.gameList[i].y1,
+                        obj.gameList[i].x2, obj.gameList[i].y2, 
+                        obj.gameList[i].colorToShow, obj.gameList[i].colorOrientation);
+
+                        obj.gameList[i].boardButtonMessage = "";
+                }
+                else if(obj.gameList[i].boardButtonMessage === "resetBoard")
+                {
+                    console.log("Word not Valid");
+                    for(let index = 0; index < obj.gameList[i].playerList.length; index++)
+                    {
+                        if(P.username === obj.gameList[i].playerList[index].username) //find our specific player
+                        {
+                           reset_color(obj.gameList[i].playerList[index].x1, obj.gameList[i].playerList[index].y1,
+                            obj.gameList[i].playerList[index].x2, obj.gameList[i].playerList[index].y2);   //set their color
+                        }
+                    }
+
+                    obj.gameList[i].boardButtonMessage = "";
+                }
+                else if(obj.gameList[i].boardButtonMessage === "firstClick")
+                {
+                    //Here we tell on message to chill and don't do anything
+                    console.log("firstClick");
                 }
 
 
@@ -235,6 +267,13 @@ function backToLobbyFunction() { //Kicks players out of the game
     console.log(JSON.stringify(S));
     hideShow();
     destroyWordBank();
+    
+    for(let i = 0; i < WIDTH * HEIGHT; i++)
+    {
+        let buttons = document.getElementById(i);
+        buttons.disabled = false;
+        buttons.style.backgroundColor = COLORS[0];
+    }
 }
 
 function roomFunction(number) { //Navigate to room page  //Go to room from lobby
@@ -465,7 +504,7 @@ for(let i = 0; i < WIDTH; i++)
         let button = document.createElement("button");
         button.style.width = 5;
         button.setAttribute("id", counter);
-        console.log(counter);
+        //console.log(counter);
         button.setAttribute("onclick", "change_color(" + counter + ");");
         button.innerHTML = "?";
         if (counter % WIDTH == 0) 
@@ -616,9 +655,71 @@ function change_color(id) {
     console.log(JSON.stringify(S));
 }
 
-function update_colors(id)
+function update_colors(x1, y1, x2, y2, color, orientation)
 {
 
+    if(orientation === "vertical")
+    {
+        if (y1 > y2) //word is vertical up
+            {
+                
+                for (let i = 0; i < (y1 - y2) + 1; i++)
+                {
+                    //[boardY_1 - i][boardX_1]
+                    let button = document.getElementById(((x1) + (HEIGHT * y1)) - (HEIGHT * i));
+                    button.style.backgroundColor = COLORS[color];
+                    button.disabled = true;
+                    
+                }
+                
+            }
+            else if (y1 < y2) //word is vertical down
+            {
+                
+                for (let i = 0; i < (y2 - y1) + 1; i++)
+                {
+                    //[boardY_1 + i][boardX_1]
+                    let button = document.getElementById((x1) + (HEIGHT * y1) + (HEIGHT * i));
+                    button.style.backgroundColor = COLORS[color];
+                    button.disabled = true;
+                }
+               
+            }
+    }
+    else if(orientation === "horizontal")
+    {
+
+        for (let i = 0; i < (x2 - x1) + 1; i++)
+        {
+            //[boardY_1][boardX_1 + i]
+            let button = document.getElementById((x1 + i) + (HEIGHT * y1));
+            button.style.backgroundColor = COLORS[color];
+            button.disabled = true;
+        }
+
+    }
+    else if(orientation === "diagonal")
+    {
+
+    }
+
+
+}
+
+function reset_color(x1, y1, x2, y2)
+{
+    let firstClick = x1 + (HEIGHT * y1);
+    let secondClick = x2 +  (HEIGHT * y2);
+
+
+    let button1 = document.getElementById(firstClick);
+    let button2 = document.getElementById(secondClick);
+
+    if(button1.disabled != true || button2.disabled != true)
+    {
+    button1.style.backgroundColor = COLORS[0];
+    button2.style.backgroundColor = COLORS[0];
+    }
 }
 
 function saveToFile() {
