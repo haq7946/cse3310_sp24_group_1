@@ -38,6 +38,7 @@ public class Lobby
     // i'm pretty sure - AE
     public String serverResponse;  //This gives us a response when players join the room
     public String exitResponse;
+     
     public Lobby() 
     {
         gameList = new ArrayList<Game>();
@@ -246,6 +247,11 @@ public class Lobby
                 {
                     if(S.iidd.compareTo(gameList.get(i).gameID) == 0)  //Finding the specific game using the gameId
                     {
+                        if(gameList.get(i).gameHasStarted == false)
+                        {
+                            System.out.println("Game has not started. Board click ignored.");
+                            break;
+                        }
                         for(int j = 0; j < gameList.get(i).numberOfPlayers; j++)
                         {
                             if(S.player.username.compareTo(gameList.get(i).playerList.get(j).username) == 0) //Finds the player in the specific game
@@ -258,21 +264,52 @@ public class Lobby
                                     gameList.get(i).playerList.get(j).y2 = S.y;
 
                                     //Check if it is a valid word
-                                    System.out.println("Word Selected: " + gameList.get(i).selectWord(
-                                        gameList.get(i).playerList.get(j).x1, gameList.get(i).playerList.get(j).y1,
-                                        gameList.get(i).playerList.get(j).x2, gameList.get(i).playerList.get(j).y2));
+                                    String word = gameList.get(i).selectWord(
+                                    gameList.get(i).playerList.get(j).x1, gameList.get(i).playerList.get(j).y1,
+                                    gameList.get(i).playerList.get(j).x2, gameList.get(i).playerList.get(j).y2);
+                                    //Printing the word to console
+                                    System.out.println("Word Selected: " + word);
+                                    //Checking the word
+                                    Boolean is_wordValid = gameList.get(i).checkValidWord(word, gameList.get(i).bank);
 
+                                    //If the word is valid we broadcast that the word is valid set the cordinates to the player colors
+                                    if(is_wordValid == true)
+                                    {
+                                        System.out.println("Word is valid.");
+                                        gameList.get(i).boardButtonMessage = "updateBoard";
+                                        //How is the word oriented
+                                        gameList.get(i).colorOrientation = gameList.get(i).checkOrientation(gameList.get(i).playerList.get(j).x1, gameList.get(i).playerList.get(j).y1,
+                                        gameList.get(i).playerList.get(j).x2, gameList.get(i).playerList.get(j).y2);
+
+                                        //color to broadcast
+                                        gameList.get(i).colorToShow = gameList.get(i).playerList.get(j).color;
+                                        System.out.println(gameList.get(i).colorOrientation);
+                                        System.out.println("Color to broadcast: " + gameList.get(i).colorToShow);
+
+                                        //Send the cords
+                                        gameList.get(i).x1 = gameList.get(i).playerList.get(j).x1;
+                                        gameList.get(i).x2 = gameList.get(i).playerList.get(j).x2;
+                                        gameList.get(i).y1 = gameList.get(i).playerList.get(j).y1;
+                                        gameList.get(i).y2 = gameList.get(i).playerList.get(j).y2;
+                                    }
+                                    //If the word is not valid reset the color to default
+                                    if(is_wordValid == false)
+                                    {
+                                        System.out.println("Word is not valid.");
+                                        gameList.get(i).boardButtonMessage = "resetBoard";
+                                    }
 
                                     //We set it to false after
                                     gameList.get(i).playerList.get(j).firstClick = false;
                                 }
-                                else
+                                else if (gameList.get(i).playerList.get(j).firstClick == false)
                                 {
                                     gameList.get(i).playerList.get(j).x1 = S.x; //Set the x1 and y1 coordinates for the first click
                                     gameList.get(i).playerList.get(j).y1 = S.y;
                                     System.out.println(gameList.get(i).playerList.get(j).x1 +  gameList.get(i).playerList.get(j).y1);
                                     //We set it to true
                                     gameList.get(i).playerList.get(j).firstClick = true;
+                                    gameList.get(i).boardButtonMessage = "firstClick";
                                 }
                             }
                         }

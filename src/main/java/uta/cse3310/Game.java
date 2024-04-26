@@ -21,6 +21,11 @@ public class Game
     public boolean gameHasStarted;
     public boolean inDeathmatch;
     public String gameResponse;  //This tells us when the game is started
+    public String boardButtonMessage; //This will tell the board to update the button with that players color //Message will say "updateBoard" or "resetBoard"
+    public String colorOrientation;  //The orientation of the color(horizontal, vertical, diagonal)
+    public int colorToShow;
+    int x1; int y1;
+    int x2; int y2;
 
 
     public String[] wordList;
@@ -103,62 +108,88 @@ public class Game
 
     public String selectWord(int boardX_1, int boardY_1, int boardX_2, int boardY_2)// (X1, Y1) is first click, (X2, Y2) is second click
     {
-        // if (boardX_1 == boardX_2) //word is vertical
-        // {
-        //     if (boardY_1 > boardY_2) //word is vertical up
-        //     {
-        //         String wordToBeReturned = "";
-        //         for (int i = 0; i < (boardY_1 - boardY_2); i++)
-        //         {
-        //             wordToBeReturned = wordToBeReturned + board.getBoardArray()[boardX_1][boardY_1 - i];
-        //         }
-        //         return wordToBeReturned;
-        //     }
-        //     else if (boardY_1 < boardY_2) //word is vertical down
-        //     {
-        //         String wordToBeReturned = "";
-        //         for (int i = 0; i < (boardY_2 - boardY_1); i++)
-        //         {
-        //             wordToBeReturned = wordToBeReturned + board.getBoardArray()[boardX_1][boardY_1 + i];
-        //         }
-        //         return wordToBeReturned;
-        //     }
-        // }
-        if (boardX_1 == boardX_2) //word is horizontal; words can only be horizontal forwards, so X2 > X1 always
+        //Since the board Array in java is flipped
+        //Board array x[y,y,y,y]
+        //Website x,y
+        
+        if (boardX_1 == boardX_2) //word is vertical
+        {
+            if (boardY_1 > boardY_2) //word is vertical up
+            {
+                String wordToBeReturned = "";
+                for (int i = 0; i < (boardY_1 - boardY_2) + 1; i++)
+                {
+                    wordToBeReturned = wordToBeReturned + board.getBoardArray()[boardY_1 - i][boardX_1];
+                }
+                return wordToBeReturned;
+            }
+            else if (boardY_1 < boardY_2) //word is vertical down
+            {
+                String wordToBeReturned = "";
+                for (int i = 0; i < (boardY_2 - boardY_1) + 1; i++)
+                {
+                    wordToBeReturned = wordToBeReturned + board.getBoardArray()[boardY_1 + i][boardX_1];
+                }
+                return wordToBeReturned;
+            }
+        }
+        else if (boardY_1 == boardY_2) //word is horizontal; words can only be horizontal forwards, so X2 > X1 always
         {
             String wordToBeReturned = ""; 
             for (int i = 0; i < (boardX_2 - boardX_1) + 1; i++)
             {
-                wordToBeReturned = wordToBeReturned + board.boardArray[boardX_1][boardY_1 + i];
+                wordToBeReturned = wordToBeReturned + board.boardArray[boardY_1][boardX_1 + i];
             }
             return wordToBeReturned;
         }
-        // else if ((boardX_1 - boardX_2) == (boardY_1 - boardY_2)) //word is diagonal
-        // {
-        //     if (boardY_1 > boardY_2) //word is diagonal up
-        //     {
-        //         String wordToBeReturned = "";
-        //         for (int i = 0; i < (boardX_2 - boardX_1); i++)
-        //         {
-        //             wordToBeReturned = wordToBeReturned + board.getBoardArray()[boardX_1 + i][boardY_1 - i];
-        //         }
-        //         return wordToBeReturned;
-        //     }
-        //     else if (boardY_1 < boardY_2) //word is diagonal down
-        //     {
-        //         String wordToBeReturned = "";
-        //         for (int i = 0; i < (boardX_2 - boardX_1); i++)
-        //         {
-        //             wordToBeReturned = wordToBeReturned + board.getBoardArray()[boardX_1 + i][boardY_1 + i];
-        //         }
-        //         return wordToBeReturned;
-        //     }
-        // }
+        else if ((boardX_1 - boardX_2) == (boardY_1 - boardY_2)) //word is diagonal
+        {
+            if (boardY_1 > boardY_2) //word is diagonal up
+            {
+                String wordToBeReturned = "";
+                for (int i = 0; i < (boardX_2 - boardX_1) + 1; i++)
+                {
+                    wordToBeReturned = wordToBeReturned + board.getBoardArray()[boardY_1 - i][boardX_1 + i];
+                }
+                return wordToBeReturned;
+            }
+            else if (boardY_1 < boardY_2) //word is diagonal down
+            {
+                String wordToBeReturned = "";
+                for (int i = 0; i < (boardX_2 - boardX_1) + 1; i++)
+                {
+                    wordToBeReturned = wordToBeReturned + board.getBoardArray()[boardY_1 + i][boardX_1 + i];
+                }
+                return wordToBeReturned;
+            }
+        }
         else //the two clicks do not form a valid word
         {
             return "";
         }
-        // return ""; //this return statement exists because "tHiS mEtHoD mUsT rEtUrN a ReSuLt Of TyPe StRiNg"
+        return ""; //this return statement exists because "tHiS mEtHoD mUsT rEtUrN a ReSuLt Of TyPe StRiNg"
+    }
+
+    public String checkOrientation(int boardX_1, int boardY_1, int boardX_2, int boardY_2)
+    {
+        if (boardX_1 == boardX_2) //word is vertical
+        {
+            return "vertical";
+        }
+        else if (boardY_1 == boardY_2) //word is horizontal; words can only be horizontal forwards, so X2 > X1 always
+        {
+            return "horizontal";
+        }
+        else if ((boardX_1 - boardX_2) == (boardY_1 - boardY_2)) //word is diagonal
+        {
+            
+           return "diagonal";
+        }
+        else //the two clicks do not form a valid word
+        {
+            return "";
+        }
+
     }
 
     public void gameChat(String message)
