@@ -105,6 +105,7 @@ connection.onmessage = function (evt) {
             if (P.gameId === obj.gameList[i].gameID) {
                 updateGameChat(obj.gameList[i]);
                 console.log(obj.gameList[i].gameResponse);
+                fillScoreboard(obj.gameList[i].playerList);
                 if (obj.gameList[i].gameResponse === "start") {
 
                     ////////////// this loop sets a player's color
@@ -120,7 +121,6 @@ connection.onmessage = function (evt) {
 
                     fillBoard(obj.gameList[i].board);
                     fillWordBank(obj.gameList[i].bank);
-                    fillScoreboard(obj.gameList[i].playerList);
                     S = new ServerEvent();   //Creating a server event
                     S.button = "boardResponse";  //what was pressed
                     S.event = "gameEvent";         //what kind of event
@@ -359,11 +359,14 @@ function updateRooms(evt) { //This function updates the rooms for all players
     }
     for (var i = 0; i < obj.gameList.length; i++)  //Iterate through gamelist and gamemaker to create
     {
+        if(obj.gameList[i].numberOfPlayers < 4 && obj.gameList[i].isAvailableToJoin == true)
+        {
         var row = `<tr>
                             <td>${obj.gameMakers[i].username}'s Room<td>
                             <button id ="rmButton" class ="smallbutton button 2" onclick=roomFunction(${i + 1}) >Join room</button>
                       <tr />`
         table.innerHTML += row;
+        }
     }
 
     document.getElementById("rmButton").style.display = 'block';  //Display the room button
@@ -527,7 +530,6 @@ function fillBoard(board) {
         {
             let charCode = arr[jindex];
             var buttonid = document.getElementById(something);
-
             buttonid.innerHTML = charCode; 
             something = something + 1;
         }
@@ -542,43 +544,32 @@ function fillWordBank(wordbank)
     {
         bank.deleteRow(0);
     }
-    for (var i = 0; i < (arr.length - arr.length %6); i+=6) //Most of the words besides last row
+    let rowValue = ""; //Forming rows 
+    for (var i = 0; i < arr.length; i++)
     {
-        var row = `<tr>
-                            <td>${arr[i].word}<td/><td>${arr[i+1].word}<td/><td>${arr[i+2].word}<td/><td>${arr[i+3].word}<td/><td>${arr[i+4].word}<td/><td>${arr[i+5].word}<td/>
-                    <tr />`
-        // console.log("row:  " + row);
-        bank.innerHTML += row;
+        if(arr[i].availability === true) //If the word is available add it normally
+        {
+            rowValue += `<td>${arr[i].word}</td>` 
+        }
+        else //Else put a slash through it
+        {
+            rowValue += `<td><s>${arr[i].word}<s></td>` 
+        }
+
+        if((i % 6) == 5 || i == (arr.length - 1))//Every 6th word or at the very last row, put the row into the wordbank and reset rowvalue
+        {
+            var row = `<tr>
+                            ${rowValue}
+                        <tr/>`
+            bank.innerHTML += row;
+            rowValue = "";
+        } 
+
     }
-    let remainder = ""; //Last row
-    for(var i = 0; i < (arr.length%6); i++)
-    {
-        remainder += `<td>${arr[arr.length - arr.length%6 + i].word}<td/>`    
-    }
-    // console.log("last row remainder: " + remainder);
-    var row = `<tr>
-                    ${remainder}
-            <tr/>`
-    bank.innerHTML += row;
+
     
 }
-function fillScoreboard(playerList)
-{
-    console.log("FILLING UP LEADERBOARD");
-    let scoreboard = document.getElementById("scoreboard");
-    while (scoreboard.rows.length != 0) //Empty out the table before updating
-    {
-        scoreboard.deleteRow(0);
-    }
-    for (var i = 0; i < playerList.length; i++)  //Iterate through playerlist to create
-    {
-        var row = `<tr>
-                        <td>${playerList[i].username}  ${playerList[i].score}<td>
-                  <tr />`
-       scoreboard.innerHTML += row;
-    }   
 
-}
 function emptyBoard() {
     let bank = document.getElementById("bank");
     for (let i = 0; i < (WIDTH * HEIGHT); i++) {
@@ -641,7 +632,7 @@ function destroyBoard()
 const numOfColors = 5;
 const COLORS = new Array(numOfColors);
 COLORS[0] = "red";  //default board color
-COLORS[1] = "black";
+COLORS[1] = "purple";
 COLORS[2] = "yellow";
 COLORS[3] = "blue";
 COLORS[4] = "green";
@@ -651,8 +642,6 @@ function change_color(id) {
     let y = Math.floor(id / HEIGHT);
     const letter = document.getElementById(id).innerHTML;
     selected_letters += letter
-    document.getElementById("w3review").value = "selected " + letter + " at coordinate (" + y + "," + x + 
-    ")\n";
 
     let bcolor = document.getElementById(id).style.backgroundColor;
     if (bcolor == "orange")
@@ -674,7 +663,21 @@ function change_color(id) {
     connection.send(JSON.stringify(S));
     console.log(JSON.stringify(S));
 }
-
+function fillScoreboard(playerList)
+{
+    let scoreboard = document.getElementById("scoreboard");
+    while (scoreboard.rows.length != 0) //Empty out the table before updating
+    {
+        scoreboard.deleteRow(0);
+    }
+    for (var i = 0; i < playerList.length; i++)  //Iterate through playerlist to create
+    {
+        var row = `<tr>
+                        <td style = "background-color:${COLORS[i+1]};">${playerList[i].username}</td> <td style = "background-color:${COLORS[i+1]};">${playerList[i].score}</td>
+                  <tr />`
+       scoreboard.innerHTML += row;            
+    }
+}   
 function update_colors(x1, y1, x2, y2, color, orientation)
 {
 

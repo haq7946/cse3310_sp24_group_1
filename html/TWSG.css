@@ -89,6 +89,20 @@ span {
 .wordbank{
   background-color:#008CBA;
 }
+.score{
+  background-color:#04AA6D;
+  font-size: 25px;
+  border-collapse: collapse;
+  border: 1px solid red;
+}
+.score td{
+  padding-left: 50px;
+  padding-right: 40px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid blue;
+}
+
 .gameClock{
   display: flex;
   flex-direction: column;

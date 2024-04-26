@@ -10,7 +10,7 @@ public class Word
     private Orientation orient;
     private int xCoordinate;
     private int yCoordinate;
-    private boolean availability;
+    public boolean availability;
     private boolean linked;
     public Word(String word) //Regular word constructor
     {
