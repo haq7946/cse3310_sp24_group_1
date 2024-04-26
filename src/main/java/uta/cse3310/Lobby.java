@@ -38,7 +38,7 @@ public class Lobby
     // i'm pretty sure - AE
     public String serverResponse;  //This gives us a response when players join the room
     public String exitResponse;
-     
+    
     public Lobby() 
     {
         gameList = new ArrayList<Game>();
@@ -345,12 +345,26 @@ public class Lobby
                 {
                     if(S.iidd.compareTo(gameList.get(i).gameID) == 0)
                     {
-                        Player P = gameList.get(i).playerList.get(0);
+                    //Using an arraylist to check for potential multiple winners (No sudden death, too much work)
+                        gameList.get(i).winners.clear();
+                        gameList.get(i).winners.add(gameList.get(i).playerList.get(0)); //Putting first player in by default
                         for(int j = 1; j < gameList.get(i).playerList.size(); j++)
                         {
-                            
+                            if(gameList.get(i).winners.get(0).score < gameList.get(i).playerList.get(j).score)//If current winner(s) are less than next player
+                            {
+                                gameList.get(i).winners.clear();                                
+                                gameList.get(i).winners.add(gameList.get(i).playerList.get(j));
+                            }//TODO:
+                            if(gameList.get(i).winners.get(0).score == gameList.get(i).playerList.get(j).score && !gameList.get(i).winners.get(0).username.equals(gameList.get(i).playerList.get(j).score)) //If current winner(s) are equal and winner then next player
+                            {
+                                gameList.get(i).winners.add(gameList.get(i).playerList.get(j)); //Add the equally winning player in
+                            } //Else don't add any player since winners are already higher
                         }
-                        gameList.get(i).gameResponse = "end";
+                        for(int j = 0; j < gameList.get(i).winners.size(); j++)
+                        {
+                            System.out.println("Winner " + j + " is" + gameList.get(i).winners.get(j).username);
+                        }
+                        gameList.get(i).gameResponse = "end"; //Game is JOEVER
                     }
                 }
             }

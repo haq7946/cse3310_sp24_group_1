@@ -1,6 +1,6 @@
 package uta.cse3310;
 
-public class Clock implements Runnable
+public class Clock
 {
     public long countdown;
     private final int INITIAL_TIME = 30;  // 30 seconds for the timer

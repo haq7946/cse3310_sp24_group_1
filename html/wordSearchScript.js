@@ -76,6 +76,7 @@ connection.onclose = function (evt) {   //close function
 //Our specific client
 P = new Player();
 P.gameId = "none";  //This is our specific client's gameID
+var timer = 0;
 connection.onmessage = function (evt) {
     var msg;
     msg = evt.data;
@@ -102,7 +103,7 @@ connection.onmessage = function (evt) {
 
         for (var i = 0; i < obj.gameList.length; i++) {
             if (P.username === obj.gameMakers[i].username) {
-                startButton.style.display = 'block';
+                //startButton.style.display = 'block';
             }
             fillScoreboard(obj.gameList[i].playerList);
             if (P.gameId === obj.gameList[i].gameID) {
@@ -110,7 +111,8 @@ connection.onmessage = function (evt) {
                 document.getElementById("winners").style.display = 'none';
                 console.log(obj.gameList[i].gameResponse);
                 if (obj.gameList[i].gameResponse === "start") {
-
+                    var startButton = document.getElementById("startGameButton"); //Start game button
+                    startButton.style.display = 'none';
                     ////////////// this loop sets a player's color
                     //game has started so let's also set their color
                     for(let index = 0; index < obj.gameList[i].playerList.length; index++)
@@ -125,17 +127,23 @@ connection.onmessage = function (evt) {
                     fillBoard(obj.gameList[i].board);
                     fillWordBank(obj.gameList[i].bank);
                     var countdown = obj.gameList[i].clock.countdown;
-                    var intervalid = setInterval(function(){displayTimer(countdown); countdown--;
-                    if(countdown == -1){
-                    S = new ServerEvent();
-                    S.button = "victoryCheck";
-                    S.event = "gameEvent";
-                    S.player = P;
-                    S.iidd = P.gameId;
-                    connection.send(JSON.stringify(S));
-                    clearInterval(intervalid);
+                    if(timer == 0)
+                    {
+                        var intervalid = setInterval(function(){displayTimer(countdown); countdown--;
+                            if(countdown == -1){
+                            S = new ServerEvent();
+                            S.button = "victoryCheck";
+                            S.event = "gameEvent";
+                            S.player = P;
+                            S.iidd = P.gameId;
+                            connection.send(JSON.stringify(S));
+                            clearInterval(intervalid);
+                            }
+                            }
+                            , 1000);   
+                            timer = 1;                  
                     }
-                    }, 1000);
+
                     //Countdown reaches -1, send it over, decide the victors
 
                     // S = new ServerEvent();   //Creating a server event
@@ -148,6 +156,7 @@ connection.onmessage = function (evt) {
                 {
                     //Thing to show the winner
                     document.getElementById("winners").style.display = "block";
+                    document.getElementById("startGameButton").style.display = 'block';
                     fillWinners(obj.gameList[i].winners);
                 }
                 if(obj.gameList[i].boardButtonMessage === "updateBoard")
@@ -202,7 +211,7 @@ const gameClock = document.querySelector(".gameClockValue"); //Game clock
 ////////////////////////////////////////////////////
 document.getElementById("rmButton").style.display = 'none'; ///Room button
 var startButton = document.getElementById("startGameButton"); //Start game button
-startButton.style.display = 'none';
+startButton.style.display = 'block';
 //////////////////////////////////////////////////
 var createRoomButton = document.getElementById("createRoom");  //Create Room
 function hideShow(evt)   //This function hides and shows pages
@@ -285,6 +294,7 @@ function backToLobbyFunction() { //Kicks players out of the game
     console.log(Player.username.value + " left the room");
     S = new ServerEvent();
     S.button = "backToLobbyButton";
+    timer = 0;
     S.event = "lobbyEvent";
     S.player = P;
     S.iidd = P.gameId;
@@ -340,6 +350,7 @@ function startGameFunction() {
     S = new ServerEvent();   //Creating a server event
     S.button = "startGame";  //what was pressed
     S.event = "gameEvent";         //what kind of event
+    timer = 0;
     console.log(P.gameId);
     S.player = P;              //who did it
     S.iidd = P.gameId;
@@ -603,8 +614,21 @@ function displayTimer(countdown) //Formatting timer
     clock.innerHTML = minutes + ":" + seconds;
 }
 
-// function fillWinners(winners)
-//     let winnerList = document.get
+ function fillWinners(winners)
+ {
+ let winnerlist = document.getElementById("winnerList");
+     while (winnerList.rows.length != 0) //Empty out the table before updating
+     {
+         winnerlist.deleteRow(0);
+     }
+     for (var i = 0; i < winners.length; i++)  //Iterate through playerlist to create
+     {
+         var row = `<tr>
+                         <td style = "background-color:${COLORS[winners[i].color]};">${winners[i].username}</td> <td style = "background-color:${COLORS[winners[i].color]};">${winners[i].score}</td>
+                   <tr />`
+        winnerlist.innerHTML += row;            
+     }
+ }
 function emptyBoard() {
     let bank = document.getElementById("bank");
     for (let i = 0; i < (WIDTH * HEIGHT); i++) {

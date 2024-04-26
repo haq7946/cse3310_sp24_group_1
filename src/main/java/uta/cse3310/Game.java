@@ -15,6 +15,7 @@ public class Game
     public String gameID;
     public ArrayList<Player> playerList;
     public ArrayList<String> playerChat;
+    public ArrayList<Player> winners;
     public int numberOfPlayers;
     public Board board;
     public WordBank bank;
@@ -30,7 +31,6 @@ public class Game
     int x1; int y1;
     int x2; int y2;
 
-
     public String[] wordList;
     public String[] completedWordList;
 
@@ -41,6 +41,7 @@ public class Game
         gameID = dtf.format(now); //GameID uses format yyyy/MM/dd HH:mm:ss
         playerList = new ArrayList<Player>();
         playerChat = new ArrayList<String>();
+        winners = new ArrayList<Player>();
         numberOfPlayers = 0;
         board = null;
         bank = null;
@@ -64,12 +65,10 @@ public class Game
         board = new Board();
         board.initializeBoard(bank);
         clock = new Clock(10);
-        Thread t = new Thread(clock);
         //board.printBoardArray();
         //System.out.println(bank);
         //System.out.println(board);
         gameHasStarted = true;
-        t.start();
         //gameResponse = "start"; //Already does that in lobby.java but keeping it just in case -Bryan
     }
 
