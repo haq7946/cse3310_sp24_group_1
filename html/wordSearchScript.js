@@ -102,10 +102,12 @@ connection.onmessage = function (evt) {
             if (P.username === obj.gameMakers[i].username) {
                 startButton.style.display = 'block';
             }
+            fillScoreboard(obj.gameList[i].playerList);
+            console.log("UPDATING SCOREBOARD");
+            console.log("number of players in game is " + obj.gameList[i].playerList.length);
             if (P.gameId === obj.gameList[i].gameID) {
                 updateGameChat(obj.gameList[i]);
                 console.log(obj.gameList[i].gameResponse);
-                fillScoreboard(obj.gameList[i].playerList);
                 if (obj.gameList[i].gameResponse === "start") {
 
                     ////////////// this loop sets a player's color
@@ -556,7 +558,7 @@ function fillWordBank(wordbank)
             rowValue += `<td><s>${arr[i].word}<s></td>` 
         }
 
-        if((i % 6) == 5 || i == (arr.length - 1))//Every 6th word or at the very last row, put the row into the wordbank and reset rowvalue
+        if((i % 8) == 7 || i == (arr.length - 1))//Every 8th word or at the very last row, put the row into the wordbank and reset rowvalue
         {
             var row = `<tr>
                             ${rowValue}

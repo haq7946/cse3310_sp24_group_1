@@ -88,6 +88,12 @@ span {
 
 .wordbank{
   background-color:#008CBA;
+  font-size: 15px;
+}
+
+.wordbank td
+{
+  padding-bottom:5px;
 }
 .score{
   background-color:#04AA6D;

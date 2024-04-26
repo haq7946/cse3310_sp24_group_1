@@ -196,8 +196,19 @@ public class Lobby
             {
                 Player P = new Player(S.player.username);
                 for(int i = 0; i < gameList.size(); i++)
-                {
-                    if(S.iidd.equals(gameList.get(i).gameID))
+                {   
+                    //If the player left during the game, shame them with -1 points
+                    //If the player left before the game, remove them as well
+                    for(int j = 0; j < gameList.get(i).numberOfPlayers; j++)
+                    {
+
+                        if(S.player.username.compareTo(gameList.get(i).playerList.get(j).username) == 0) //Finds the player in the specific game
+                        {
+                            gameList.get(i).playerList.get(j).score = -1;
+                        }
+                    }
+                    if(S.iidd.equals(gameList.get(i).gameID) && gameList.get(i).gameHasStarted == false)
+
                     {
                         gameList.get(i).removePlayer(S.player);
                     }
@@ -285,6 +296,8 @@ public class Lobby
                                         System.out.println("Word is valid.");
                                         //Word found, cross out word
                                         gameList.get(i).crossOutWord(word, gameList.get(i).bank);
+                                        //Add a point to the corersponding player
+                                        gameList.get(i).playerList.get(j).score++;
                                         gameList.get(i).boardButtonMessage = "updateBoard";
                                         //How is the word oriented
                                         gameList.get(i).colorOrientation = gameList.get(i).checkOrientation(gameList.get(i).playerList.get(j).x1, gameList.get(i).playerList.get(j).y1,

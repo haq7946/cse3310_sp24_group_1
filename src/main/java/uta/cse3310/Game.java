@@ -249,8 +249,15 @@ public class Game
 
     public void removePlayer(Player p)
     {
-        playerList.remove(p);
-        numberOfPlayers--;
+        for(int i = 0; i < playerList.size(); i++)
+        {
+            if(playerList.get(i).username.equals(p.username))
+            {
+                playerList.remove(i);
+                numberOfPlayers--;
+            }
+        }
+
     }
 
     public void displayInfo()
