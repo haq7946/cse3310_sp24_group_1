@@ -25,6 +25,7 @@ class Game {
     gameID;
     playerList;
     playerChat;
+    winners;
     numberOfPlayers;
     board;
     bank;
@@ -106,6 +107,7 @@ connection.onmessage = function (evt) {
             fillScoreboard(obj.gameList[i].playerList);
             if (P.gameId === obj.gameList[i].gameID) {
                 updateGameChat(obj.gameList[i]);
+                document.getElementById("winners").style.display = 'none';
                 console.log(obj.gameList[i].gameResponse);
                 if (obj.gameList[i].gameResponse === "start") {
 
@@ -122,23 +124,31 @@ connection.onmessage = function (evt) {
 
                     fillBoard(obj.gameList[i].board);
                     fillWordBank(obj.gameList[i].bank);
-                    if(obj.gameList[i].clock.countdown > 0)
-                    {
-                        displayTimer(obj.gameList[i].clock.countdown);
-                    }
-                    else
-                    {
-                        S = new ServerEvent();
-                        S.button = "victoryCheck";
-                        S.event = "gameEvent";
-                        S.player = P;
-                        S.iidd = P.iD;
-                    }
-                    S = new ServerEvent();   //Creating a server event
-                    S.button = "boardResponse";  //what was pressed
-                    S.event = "gameEvent";         //what kind of event
+                    var countdown = obj.gameList[i].clock.countdown;
+                    var intervalid = setInterval(function(){displayTimer(countdown); countdown--;
+                    if(countdown == -1){
+                    S = new ServerEvent();
+                    S.button = "victoryCheck";
+                    S.event = "gameEvent";
                     S.player = P;
+                    S.iidd = P.gameId;
+                    connection.send(JSON.stringify(S));
+                    clearInterval(intervalid);
+                    }
+                    }, 1000);
+                    //Countdown reaches -1, send it over, decide the victors
+
+                    // S = new ServerEvent();   //Creating a server event
+                    // S.button = "boardResponse";  //what was pressed
+                    // S.event = "gameEvent";         //what kind of event
+                    // S.player = P;
                     //connection.send(Json.stringify(S));
+                }
+                else if(obj.gameList[i].gameResponse === "end")
+                {
+                    //Thing to show the winner
+                    document.getElementById("winners").style.display = "block";
+                    fillWinners(obj.gameList[i].winners);
                 }
                 if(obj.gameList[i].boardButtonMessage === "updateBoard")
                 {
@@ -182,7 +192,6 @@ connection.onmessage = function (evt) {
 
 }
 //Used to constantly send requests to the server so that the timer is always updated
-setInterval(function(){S = new ServerEvent(); S.event = "nothingatall"; connection.send(JSON.stringify(S));}, 1000);
 
 ////////////////////////////////////////////////////
 var display = 0;   //This variable controls the pages //0 - namepage   1- lobby  2 - room
@@ -594,6 +603,8 @@ function displayTimer(countdown) //Formatting timer
     clock.innerHTML = minutes + ":" + seconds;
 }
 
+// function fillWinners(winners)
+//     let winnerList = document.get
 function emptyBoard() {
     let bank = document.getElementById("bank");
     for (let i = 0; i < (WIDTH * HEIGHT); i++) {

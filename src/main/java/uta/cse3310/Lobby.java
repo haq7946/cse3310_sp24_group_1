@@ -340,15 +340,17 @@ public class Lobby
             }
             else if(S.button.compareTo("victoryCheck") == 0)
             {
-               for(int i = 0; i < gameList.size(); i++)
+                System.out.println("Received victorycheck");
+                for(int i = 0; i < gameList.size(); i++)
                 {
                     if(S.iidd.compareTo(gameList.get(i).gameID) == 0)
                     {
                         Player P = gameList.get(i).playerList.get(0);
                         for(int j = 1; j < gameList.get(i).playerList.size(); j++)
                         {
-                            System.out.println("fdafdas");
+                            
                         }
+                        gameList.get(i).gameResponse = "end";
                     }
                 }
             }

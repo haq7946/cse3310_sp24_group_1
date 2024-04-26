@@ -10,6 +10,7 @@ public class Player
     public int status;
     public int numberOfVictores;
     public String iD; //Game id
+    public String gameId; //Idk why we have two id's in the code but putting here just in case
 
     //Storing player board clicks 
     public int x1; public int y1;

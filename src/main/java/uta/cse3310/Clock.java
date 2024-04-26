@@ -11,21 +11,7 @@ public class Clock implements Runnable
         this.countdown = end;
         //this.suddenDeathMode = suddenDeath;
     }
-    public void run(){
-        try
-        {
-            while(countdown > 0)
-            {
-            Thread.sleep(1000);
-            System.out.println("Countdown value: " + countdown);
-            countdown--;
-            }
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
-    }
+
     //Dunno how to use this, sorry -Bryan
     public void startCountdown(Runnable gameEnd) {
         new Thread(() -> {
