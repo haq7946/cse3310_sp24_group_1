@@ -318,7 +318,6 @@ function startGameFunction() {
     console.log(P.gameId);
     S.player = P;              //who did it
     S.iidd = P.gameId;
-    resetBGColor();
     connection.send(JSON.stringify(S));  //Send 
     console.log("Message sent: " + JSON.stringify(S));
     startButton.style.display = 'none';
@@ -494,15 +493,9 @@ function incrementPlayerScore(playerId){
 const WIDTH = 35;
 const HEIGHT = 35;
 const Buttons = new Array(WIDTH * HEIGHT);
-const PlayerToColor = new Map([[0,"royalblue"],[1,"black"],[2,"brown"],[3,"green"],[4,"blue"],[5,"orange"]]);
 let selected_letters = "";
 var placeHolder;
-var startCoordinate = -1;
-var endCoordinate = -1;
-var idx = P.gameId;
-var word = "";
 let counter = 0;
-if(P.gameId === "none") idx = 1;
 for(let i = 0; i < WIDTH; i++)
 {
     for(let j = 0; j < HEIGHT; j++)
@@ -576,15 +569,7 @@ function emptyBoard() {
         buttonid.innerHTML = "?";
     }
 }
-function resetBGColor() {
-    for (let i = 0; i < (WIDTH * HEIGHT); i++)
-    {
-        var buttonid = document.getElementById(i);
-        buttonid.style.backgroundColor = "red";
-    }
 
-
-}
 
 function destroyWordBank()
 {
@@ -760,108 +745,6 @@ function updateState() //Will be used later to update the state of the game with
 
 
 
-    function getDirection(v1, v2) {
-       let x = v1 % WIDTH;
-       let y = Math.floor(v1 / WIDTH);
-       let x2 = v2 % HEIGHT;
-       let y2 = Math.floor(v2 / HEIGHT);
-       if((v1<0) || (v2<0)) return -2;
-       if(y==y2)
-       {
-         if(x2-x>0)
-           return 1;
-         else
-           return 2;
-       }
-       else if (x==x2)
-       {
-         if(y-y2>0)
-           return 3;
-         else
-           return 4;
-       } 
-       else if(Math.abs(x2-x) == Math.abs(y2-y))
-       {
-         if((x2-x)>0 && (y-y2)>0)
-           return 5;
-         else if((x2-x)<0 && (y-y2)>0)
-           return 6;
-         else if((x2-x)>0 && (y-y2)<0)
-           return 7;
-         else if((x2-x)<0 && (y-y2)<0)
-           return 8;
-       }
-       else
-         return -1;
-    }
-
-function highlightWord(startCoordinate,endCoordinate,idx) {
-       direction = getDirection(startCoordinate,endCoordinate);
-       if(direction==-1) return -1;
-       if(direction==1) {
-         for(let i=startCoordinate;i<=endCoordinate;i++) {
-           document.getElementById(i).style.backgroundColor = PlayerToColor.get(idx);
-           word += document.getElementById(i).innerHTML;
-         }
-       }    
-       else if(direction==2) {      
-         for(let i=startCoordinate;i>=endCoordinate;i--) {
-           document.getElementById(i).style.backgroundColor = PlayerToColor.get(idx);
-           word += document.getElementById(i).innerHTML;
-           }
-       }
-       else if(direction==3) {    
-         for(let i=startCoordinate;i>=endCoordinate;i -=HEIGHT) {
-           document.getElementById(i).style.backgroundColor = PlayerToColor.get(idx);
-           word += document.getElementById(i).innerHTML;
-           }
-       }
-       else if(direction==4) {     
-         for(let i=startCoordinate;i<=endCoordinate;i +=HEIGHT) {
-           document.getElementById(i).style.backgroundColor = PlayerToColor.get(idx);
-           word += document.getElementById(i).innerHTML;
-           }
-       }
-       else if(direction==5) {     
-         for(let i=startCoordinate;i>=endCoordinate;i -=HEIGHT-1) {
-           document.getElementById(i).style.backgroundColor = PlayerToColor.get(idx);
-           word += document.getElementById(i).innerHTML;
-           }
-       }
-       else if(direction==6) {     
-         for(let i=startCoordinate;i>=endCoordinate;i -=HEIGHT+1) {
-           document.getElementById(i).style.backgroundColor = PlayerToColor.get(idx);
-           word += document.getElementById(i).innerHTML;
-           }
-       }
-       else if(direction==7) {     
-         for(let i=startCoordinate;i<=endCoordinate;i +=HEIGHT+1) {
-           document.getElementById(i).style.backgroundColor = PlayerToColor.get(idx);
-           word += document.getElementById(i).innerHTML;
-           }
-       }
-       else if(direction==8) {     
-         for(let i=startCoordinate;i<=endCoordinate;i +=HEIGHT-1) {
-           document.getElementById(i).style.backgroundColor = PlayerToColor.get(idx);
-           word += document.getElementById(i).innerHTML;
-           }
-       }
-//       StrikethroughWord(word);
-//       word="";
-    }
-
-    function StrikethroughWord(word) {
-        var table = document.getElementById("bank");
-        for(let i = 0; i < table.rows.length;i++) {
-          for(let j = 0; j < table.rows[i].cells.length;j++) {
-            let cell = table.rows[i].cells[j];
-            console.log(i,j,cell);
-            if (cell.innerHTML == word) {
-              cell.innerHTML = "<del>"+word+"</del>";
-            }
-          }
-        }
-    }
 
 function startTimer() {
     gameClock.textContent = "1:00";
