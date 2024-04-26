@@ -85,6 +85,10 @@ span {
   text-align: center;
   background-color:#008CBA;
 }
+
+.wordbank{
+  background-color:#008CBA;
+}
 .gameClock{
   display: flex;
   flex-direction: column;

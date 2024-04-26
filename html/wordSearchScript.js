@@ -120,6 +120,7 @@ connection.onmessage = function (evt) {
 
                     fillBoard(obj.gameList[i].board);
                     fillWordBank(obj.gameList[i].bank);
+                    fillScoreboard(obj.gameList[i].playerList);
                     S = new ServerEvent();   //Creating a server event
                     S.button = "boardResponse";  //what was pressed
                     S.event = "gameEvent";         //what kind of event
@@ -561,7 +562,23 @@ function fillWordBank(wordbank)
     bank.innerHTML += row;
     
 }
+function fillScoreboard(playerList)
+{
+    console.log("FILLING UP LEADERBOARD");
+    let scoreboard = document.getElementById("scoreboard");
+    while (scoreboard.rows.length != 0) //Empty out the table before updating
+    {
+        scoreboard.deleteRow(0);
+    }
+    for (var i = 0; i < playerList.length; i++)  //Iterate through playerlist to create
+    {
+        var row = `<tr>
+                        <td>${playerList[i].username}  ${playerList[i].score}<td>
+                  <tr />`
+       scoreboard.innerHTML += row;
+    }   
 
+}
 function emptyBoard() {
     let bank = document.getElementById("bank");
     for (let i = 0; i < (WIDTH * HEIGHT); i++) {
