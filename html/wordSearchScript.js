@@ -28,6 +28,7 @@ class Game {
     numberOfPlayers;
     board;
     bank;
+    clock;
     isAvailableToJoin;
     gameStatus; //wtf does this do
 
@@ -103,8 +104,6 @@ connection.onmessage = function (evt) {
                 startButton.style.display = 'block';
             }
             fillScoreboard(obj.gameList[i].playerList);
-            console.log("UPDATING SCOREBOARD");
-            console.log("number of players in game is " + obj.gameList[i].playerList.length);
             if (P.gameId === obj.gameList[i].gameID) {
                 updateGameChat(obj.gameList[i]);
                 console.log(obj.gameList[i].gameResponse);
@@ -123,13 +122,24 @@ connection.onmessage = function (evt) {
 
                     fillBoard(obj.gameList[i].board);
                     fillWordBank(obj.gameList[i].bank);
+                    if(obj.gameList[i].clock.countdown > 0)
+                    {
+                        displayTimer(obj.gameList[i].clock.countdown);
+                    }
+                    else
+                    {
+                        S = new ServerEvent();
+                        S.button = "victoryCheck";
+                        S.event = "gameEvent";
+                        S.player = P;
+                        S.iidd = P.iD;
+                    }
                     S = new ServerEvent();   //Creating a server event
                     S.button = "boardResponse";  //what was pressed
                     S.event = "gameEvent";         //what kind of event
                     S.player = P;
                     //connection.send(Json.stringify(S));
                 }
-
                 if(obj.gameList[i].boardButtonMessage === "updateBoard")
                 {
                     console.log("Valid Word");
@@ -171,6 +181,8 @@ connection.onmessage = function (evt) {
     }
 
 }
+//Used to constantly send requests to the server so that the timer is always updated
+setInterval(function(){S = new ServerEvent(); S.event = "nothingatall"; connection.send(JSON.stringify(S));}, 1000);
 
 ////////////////////////////////////////////////////
 var display = 0;   //This variable controls the pages //0 - namepage   1- lobby  2 - room
@@ -230,6 +242,7 @@ function nameFunction() //This is basically what happens when we press submit (T
         console.log("User didn't specify name");
     }
 }
+
 
 function sendChat()
 {
@@ -568,8 +581,17 @@ function fillWordBank(wordbank)
         } 
 
     }
+}
 
-    
+function displayTimer(countdown) //Formatting timer
+{
+    let clock = document.getElementById("clock");
+    let minutes = countdown/60;
+    let seconds = countdown % 60;
+
+    minutes = Math.trunc(minutes).toString().padStart(2, '0');
+    seconds = seconds.toString().padStart(2, '0');
+    clock.innerHTML = minutes + ":" + seconds;
 }
 
 function emptyBoard() {

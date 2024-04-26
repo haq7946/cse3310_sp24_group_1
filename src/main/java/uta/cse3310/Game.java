@@ -8,6 +8,8 @@ import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.lang.Math;
+import java.lang.Thread;
+
 public class Game 
 {
     public String gameID;
@@ -24,6 +26,7 @@ public class Game
     public String boardButtonMessage; //This will tell the board to update the button with that players color //Message will say "updateBoard" or "resetBoard"
     public String colorOrientation;  //The orientation of the color(horizontal, vertical, diagonal)
     public int colorToShow;
+    public Clock clock;
     int x1; int y1;
     int x2; int y2;
 
@@ -41,6 +44,7 @@ public class Game
         numberOfPlayers = 0;
         board = null;
         bank = null;
+        clock = null;
         isAvailableToJoin = true;
         //startGame();
 
@@ -53,15 +57,19 @@ public class Game
     }
 
     public void startGame() //starts the game and makes the game unavailable to join
+    //Additionally, starts the timer
     {
         isAvailableToJoin = false;
         bank = new WordBank();
         board = new Board();
         board.initializeBoard(bank);
+        clock = new Clock(300);
+        Thread t = new Thread(clock);
         //board.printBoardArray();
         //System.out.println(bank);
         //System.out.println(board);
         gameHasStarted = true;
+        t.start();
         //gameResponse = "start"; //Already does that in lobby.java but keeping it just in case -Bryan
     }
 

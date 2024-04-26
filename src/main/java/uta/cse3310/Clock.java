@@ -1,7 +1,8 @@
 package uta.cse3310;
 
-public class Clock {
-    private long countdown;
+public class Clock implements Runnable
+{
+    public long countdown;
     private final int INITIAL_TIME = 30;  // 30 seconds for the timer
     //private boolean suddenDeathMode;
 
@@ -10,12 +11,30 @@ public class Clock {
         this.countdown = end;
         //this.suddenDeathMode = suddenDeath;
     }
-
+    public void run(){
+        try
+        {
+            while(countdown > 0)
+            {
+            Thread.sleep(1000);
+            System.out.println("Countdown value: " + countdown);
+            countdown--;
+            }
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+    //Dunno how to use this, sorry -Bryan
     public void startCountdown(Runnable gameEnd) {
         new Thread(() -> {
             try {
-                    Thread.sleep(countdown * 60 * 1000); // 60 seconds * 1000 ms/sec
+                    while(countdown > 0)
+                    {
+                    Thread.sleep(countdown * 1000); //  1000 ms/sec
                     gameEnd.run(); // end the game
+                    }
             } catch (InterruptedException e) {
                 System.out.println("Timer was interrupted.");
             }
@@ -27,7 +46,7 @@ public class Clock {
     public void wordFound() {
         this.resetTimer();
     }
-
+}
     // public static void main(String[] args) {
     //     Clock clock = new Clock();
     
@@ -48,5 +67,3 @@ public class Clock {
     //         e.printStackTrace();
     //     }
     // }
-
-}
