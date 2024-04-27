@@ -722,8 +722,8 @@ function destroyBoard()
 const numOfColors = 5;
 const COLORS = new Array(numOfColors);
 COLORS[0] = "rgb(68, 0, 255)";  //default board color
-COLORS[1] = "purple";
-COLORS[2] = "yellow";
+COLORS[1] = "red";
+COLORS[2] = "orange";
 COLORS[3] = "blue";
 COLORS[4] = "green";
 
