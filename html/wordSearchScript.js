@@ -194,13 +194,6 @@ connection.onmessage = function (evt) {
                     document.getElementById("winners").style.display = "block";
                     document.getElementById("startGameButton").style.display = 'block';
                     fillWinners(obj.gameList[i].winners);
-                    for(let j = 0; j < obj.gameList[i].winners.length; j++) //Updating P.numberofvictories to have updated victory count if applicable
-                    {
-                        if(P.username === obj.gameList[i].winners[j].username)
-                        {
-                            P.numberOfVictores = obj.gameList[i].winners[j].numberOfVictores;
-                        }
-                    }
                     gameEnded = 1; //Game has ended
                 }
                 if(obj.gameList[i].boardButtonMessage === "updateBoard")

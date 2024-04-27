@@ -356,7 +356,7 @@ public class Lobby
                             {
                                 gameList.get(i).winners.clear();                                
                                 gameList.get(i).winners.add(gameList.get(i).playerList.get(j));
-                            }//TODO:
+                            }
                             if(gameList.get(i).winners.get(0).score == gameList.get(i).playerList.get(j).score && !gameList.get(i).winners.get(0).username.equals(gameList.get(i).playerList.get(j).username)) //If current winner(s) are equal and winner then next player
                             {
                                 gameList.get(i).winners.add(gameList.get(i).playerList.get(j)); //Add the equally winning player in
@@ -373,13 +373,21 @@ public class Lobby
                             System.out.println("player " + gameList.get(i).playerList.get(j).username + "now has " + gameList.get(i).playerList.get(j).numberOfVictores + " victories");
                         }
                     }
+                    for(int j = 0; j < gameList.get(i).winners.size(); j++)
+                    {
+                        if(P.username.equals(gameList.get(i).winners.get(j).username)) //Iterate through the winners list, if the names match, update player with the +1
+                        {
+                            P.numberOfVictores = gameList.get(i).winners.get(j).numberOfVictores; 
+                        }
+                    }   
                     for(int j = 0; j < playerList.size(); j++)
                     {
-                        if(P.username.equals(playerList.get(j).username))
+                        if(P.username.equals(playerList.get(j).username)) //Now iterate through the winners list, if the names match, slap it on leaderboard
                         {
-                            playerList.get(j).numberOfVictores = Integer.parseInt(S.victores); //Update leaderboard with current scores of clients
+                            playerList.get(j).numberOfVictores = P.numberOfVictores; //Update leaderboard with current scores of clients
+                            System.out.println("number of victories of player " + playerList.get(j).username + " updated with " + P.numberOfVictores);
                         }
-                    }    
+                    }     
                     Collections.sort(playerList, new Comparator<Player>() { //Also organize the leaderboard while you're at it
                         @Override
                         public int compare(Player p1, Player p2) {
