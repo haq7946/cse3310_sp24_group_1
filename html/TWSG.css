@@ -1,6 +1,6 @@
 .btn-group button {
-  background-color: red; /* Green background #04AA6D */
-  border: 1px solid green; /* Green border */
+  background-color: rgb(68, 0, 255); /* Green background #04AA6D */
+  border: 1px solid black; /* Green border */
   color: white; /* White text */
   min-height: 20px;
   width: 1.8vw;
@@ -85,6 +85,30 @@ span {
   text-align: center;
   background-color:#008CBA;
 }
+
+.wordbank{
+  background-color:#008CBA;
+  font-size: 15px;
+}
+
+.wordbank td
+{
+  padding-bottom:5px;
+}
+.score{
+  background-color:#04AA6D;
+  font-size: 25px;
+  border-collapse: collapse;
+  border: 1px solid red;
+}
+.score td{
+  padding-left: 50px;
+  padding-right: 40px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid blue;
+}
+
 .gameClock{
   display: flex;
   flex-direction: column;

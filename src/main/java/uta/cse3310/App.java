@@ -158,7 +158,8 @@ public class App extends WebSocketServer {
     jsonString = gson.toJson(myLobby);      
     // System.out.println("> " + Duration.between(startTime,
     // Instant.now()).toMillis() + " " + "*" + " " + escape(jsonString));
-    System.out.println(jsonString);
+    //Uncommented for now but this displays everything
+    //System.out.println(jsonString);
     broadcast(jsonString);
   }
 

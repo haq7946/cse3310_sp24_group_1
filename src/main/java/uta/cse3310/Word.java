@@ -5,12 +5,12 @@ import java.util.Random;
 
 public class Word 
 {
-    private String word;
+    public String word;
     private int wordLength;
     private Orientation orient;
     private int xCoordinate;
     private int yCoordinate;
-    private boolean availability;
+    public boolean availability;
     private boolean linked;
     public Word(String word) //Regular word constructor
     {
