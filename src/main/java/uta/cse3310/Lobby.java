@@ -38,6 +38,7 @@ public class Lobby
     // i'm pretty sure - AE
     public String serverResponse;  //This gives us a response when players join the room
     public String exitResponse;
+    
     public Lobby() 
     {
         gameList = new ArrayList<Game>();
@@ -195,8 +196,19 @@ public class Lobby
             {
                 Player P = new Player(S.player.username);
                 for(int i = 0; i < gameList.size(); i++)
-                {
-                    if(S.iidd.equals(gameList.get(i).gameID))
+                {   
+                    //If the player left during the game, shame them with -1 points
+                    //If the player left before the game, remove them as well
+                    for(int j = 0; j < gameList.get(i).numberOfPlayers; j++)
+                    {
+
+                        if(S.player.username.compareTo(gameList.get(i).playerList.get(j).username) == 0) //Finds the player in the specific game
+                        {
+                            gameList.get(i).playerList.get(j).score = -1;
+                        }
+                    }
+                    if(S.iidd.equals(gameList.get(i).gameID) && gameList.get(i).gameHasStarted == false)
+
                     {
                         gameList.get(i).removePlayer(S.player);
                     }
@@ -229,14 +241,133 @@ public class Lobby
                         gameList.get(i).playerChat.add("Game has started.");
                         System.out.println("Started game and response");
                         gameList.get(i).gameResponse = "start";
+                        //each player is assigned a unique color at the start of a game
+                        // 0 is default board color
+                        // 1 - black  2- yellow  3-blue  4-green
+                        for(int c = 0; c < gameList.get(i).playerList.size(); c++)
+                        {
+                            gameList.get(i).playerList.get(c).color = (c + 1); //Assign each player a different color
+                            System.out.println(gameList.get(i).playerList.get(c).color);  //Debug
+                        }
                     }
                 }
             }
-            if(S.button.compareTo("boardResponse") == 0)
+            else if(S.button.compareTo("boardResponse") == 0)
             {
                 
             }
-            
+            else if(S.button.compareTo("boardClick") == 0)
+            {
+                System.out.println("Board has been pressed");
+                System.out.println("Player: " + S.player.username);
+                System.out.println( "Coardinates: " +S.x + "," + S.y);
+                for(int i = 0; i < gameList.size(); i++)
+                {
+                    if(S.iidd.compareTo(gameList.get(i).gameID) == 0)  //Finding the specific game using the gameId
+                    {
+                        if(gameList.get(i).gameHasStarted == false || gameList.get(i).gameResponse.compareTo("end") == 0)
+                        {
+                            System.out.println("Game has not started. Board click ignored.");
+                            break;
+                        }
+                        for(int j = 0; j < gameList.get(i).numberOfPlayers; j++)
+                        {
+                            if(S.player.username.compareTo(gameList.get(i).playerList.get(j).username) == 0) //Finds the player in the specific game
+                            {
+                                if(gameList.get(i).playerList.get(j).firstClick == true) //This means that this is their secind click
+                                {
+                                    System.out.println("Woohoo second click registered"); //We will eventually also store coordinates for the second click
+                                    //Write game logic of what happens after second click
+                                    gameList.get(i).playerList.get(j).x2 = S.x; //Set the x2 and y2 coordinates for the second click click
+                                    gameList.get(i).playerList.get(j).y2 = S.y;
+
+                                    //Check if it is a valid word
+                                    String word = gameList.get(i).selectWord(
+                                    gameList.get(i).playerList.get(j).x1, gameList.get(i).playerList.get(j).y1,
+                                    gameList.get(i).playerList.get(j).x2, gameList.get(i).playerList.get(j).y2);
+                                    //Printing the word to console
+                                    System.out.println("Word Selected: " + word);
+                                    //Checking the word
+                                    Boolean is_wordValid = gameList.get(i).checkValidWord(word, gameList.get(i).bank);
+
+                                    //If the word is valid we broadcast that the word is valid set the cordinates to the player colors
+                                    if(is_wordValid == true)
+                                    {
+                                        System.out.println("Word is valid.");
+                                        //Word found, cross out word
+                                        gameList.get(i).crossOutWord(word, gameList.get(i).bank);
+                                        //Add a point to the corersponding player
+                                        gameList.get(i).playerList.get(j).score++;
+                                        gameList.get(i).boardButtonMessage = "updateBoard";
+                                        //How is the word oriented
+                                        gameList.get(i).colorOrientation = gameList.get(i).checkOrientation(gameList.get(i).playerList.get(j).x1, gameList.get(i).playerList.get(j).y1,
+                                        gameList.get(i).playerList.get(j).x2, gameList.get(i).playerList.get(j).y2);
+
+                                        //color to broadcast
+                                        gameList.get(i).colorToShow = gameList.get(i).playerList.get(j).color;
+                                        System.out.println(gameList.get(i).colorOrientation);
+                                        System.out.println("Color to broadcast: " + gameList.get(i).colorToShow);
+
+                                        //Send the cords
+                                        gameList.get(i).x1 = gameList.get(i).playerList.get(j).x1;
+                                        gameList.get(i).x2 = gameList.get(i).playerList.get(j).x2;
+                                        gameList.get(i).y1 = gameList.get(i).playerList.get(j).y1;
+                                        gameList.get(i).y2 = gameList.get(i).playerList.get(j).y2;
+                                    }
+                                    //If the word is not valid reset the color to default
+                                    if(is_wordValid == false)
+                                    {
+                                        System.out.println("Word is not valid.");
+                                        gameList.get(i).boardButtonMessage = "resetBoard";
+                                    }
+
+                                    //We set it to false after
+                                    gameList.get(i).playerList.get(j).firstClick = false;
+                                }
+                                else if (gameList.get(i).playerList.get(j).firstClick == false)
+                                {
+                                    gameList.get(i).playerList.get(j).x1 = S.x; //Set the x1 and y1 coordinates for the first click
+                                    gameList.get(i).playerList.get(j).y1 = S.y;
+                                    System.out.println(gameList.get(i).playerList.get(j).x1 +  gameList.get(i).playerList.get(j).y1);
+                                    //We set it to true
+                                    gameList.get(i).playerList.get(j).firstClick = true;
+                                    gameList.get(i).boardButtonMessage = "firstClick";
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            else if(S.button.compareTo("victoryCheck") == 0)
+            {
+                System.out.println("Received victorycheck");
+                for(int i = 0; i < gameList.size(); i++)
+                {
+                    if(S.iidd.compareTo(gameList.get(i).gameID) == 0)
+                    {
+                    //Using an arraylist to check for potential multiple winners (No sudden death, too much work)
+                        gameList.get(i).winners.clear();
+                        gameList.get(i).winners.add(gameList.get(i).playerList.get(0)); //Putting first player in by default
+                        for(int j = 1; j < gameList.get(i).playerList.size(); j++)
+                        {
+                            if(gameList.get(i).winners.get(0).score < gameList.get(i).playerList.get(j).score)//If current winner(s) are less than next player
+                            {
+                                gameList.get(i).winners.clear();                                
+                                gameList.get(i).winners.add(gameList.get(i).playerList.get(j));
+                            }//TODO:
+                            if(gameList.get(i).winners.get(0).score == gameList.get(i).playerList.get(j).score && !gameList.get(i).winners.get(0).username.equals(gameList.get(i).playerList.get(j).score)) //If current winner(s) are equal and winner then next player
+                            {
+                                gameList.get(i).winners.add(gameList.get(i).playerList.get(j)); //Add the equally winning player in
+                            } //Else don't add any player since winners are already higher
+                        }
+                        for(int j = 0; j < gameList.get(i).winners.size(); j++)
+                        {
+                            System.out.println("Winner " + j + " is" + gameList.get(i).winners.get(j).username);
+                        }
+                        gameList.get(i).gameResponse = "end"; //Game is JOEVER
+                    }
+                }
+            }
         }
         else if(S.event.compareTo("chatEvent") == 0 )
         {

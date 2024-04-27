@@ -25,9 +25,11 @@ class Game {
     gameID;
     playerList;
     playerChat;
+    winners;
     numberOfPlayers;
     board;
     bank;
+    clock;
     isAvailableToJoin;
     gameStatus; //wtf does this do
 
@@ -48,6 +50,8 @@ class ServerEvent {
     event;
     player;
     message;
+    x;
+    y;
 }
 
 
@@ -72,10 +76,13 @@ connection.onclose = function (evt) {   //close function
 //Our specific client
 P = new Player();
 P.gameId = "none";  //This is our specific client's gameID
+var timer = 0;
+var gameEnded = 0; //1 if the game has ended 0 if the game has started
+var resetTimer = document.getElementById("clock");
 connection.onmessage = function (evt) {
     var msg;
     msg = evt.data;
-    console.log("Message received: " + msg);
+//    console.log("Message received: " + msg);
     updateRooms(evt);
     updateLeaderBoard(evt);
     updateLobbyChat(evt);
@@ -86,28 +93,141 @@ connection.onmessage = function (evt) {
         for (var i = 0; i < obj.playerList.length; i++) {
             console.log(P.username);
             console.log(P.gameId);
+
+            ///////////////////// this sets a players gameId
             if (obj.playerList[i].username === P.username) {
                 P.gameId = obj.playerList[i].iD;
                 console.log(P.gameId);
             }
+            ////////////////
 
         }
 
         for (var i = 0; i < obj.gameList.length; i++) {
             if (P.username === obj.gameMakers[i].username) {
-                startButton.style.display = 'block';
+                //startButton.style.display = 'block';
             }
+            fillScoreboard(obj.gameList[i].playerList);
             if (P.gameId === obj.gameList[i].gameID) {
                 updateGameChat(obj.gameList[i]);
+                document.getElementById("winners").style.display = 'none';
                 console.log(obj.gameList[i].gameResponse);
                 if (obj.gameList[i].gameResponse === "start") {
+                    var startButton = document.getElementById("startGameButton"); //Start game button
+                    startButton.style.display = 'none';
+                    ////////////// this loop sets a player's color
+                    //game has started so let's also set their color
+                    for(let index = 0; index < obj.gameList[i].playerList.length; index++)
+                    {
+                        if(P.username === obj.gameList[i].playerList[index].username) //find our specific player
+                        {
+                            P.color = obj.gameList[i].playerList[index].color;   //set their color
+                        }
+                    }
+                    //////////////
+
+                    //clear board if a new game has started
+                    if(gameEnded == 1)
+                    {
+                        for(let i = 0; i < WIDTH * HEIGHT; i++)
+                        {
+                            let buttons = document.getElementById(i);
+                            buttons.disabled = false;
+                            buttons.style.backgroundColor = COLORS[0];
+                        }
+
+                        for(let i = 0; i < WIDTH * HEIGHT; i++)
+                        {
+                            let buttons = document.getElementById(i);
+                            buttons.disabled = false;
+                            buttons.style.backgroundColor = COLORS[0];
+                        }
+
+                        gameEnded = 0;
+                    }
+
                     fillBoard(obj.gameList[i].board);
                     fillWordBank(obj.gameList[i].bank);
-                    S = new ServerEvent();   //Creating a server event
-                    S.button = "boardResponse";  //what was pressed
-                    S.event = "gameEvent";         //what kind of event
-                    S.player = P;
+                    var countdown = obj.gameList[i].clock.countdown;
+                    if(timer == 0)
+                    {
+                        var intervalid = setInterval(function(){displayTimer(countdown); countdown--;
+                            if(countdown == -1){
+                            S = new ServerEvent();
+                            S.button = "victoryCheck";
+                            S.event = "gameEvent";
+                            S.player = P;
+                            S.iidd = P.gameId;
+                            timer = 0;  //once the game ends
+                            connection.send(JSON.stringify(S));
+                            clearInterval(intervalid);
+                            }
+                            else if(display == 1)
+                            {
+                                clearInterval(intervalid);
+                                document.getElementById("startGameButton").style.display = 'block';
+                                let clock = document.getElementById("clock");
+                                clock.innerHTML = 'Prepare Yourselves';
+                            }
+                            }
+                            , 1000);   
+                            timer = 1;                  
+                    }
+
+                    //Countdown reaches -1, send it over, decide the victors
+
+                    // S = new ServerEvent();   //Creating a server event
+                    // S.button = "boardResponse";  //what was pressed
+                    // S.event = "gameEvent";         //what kind of event
+                    // S.player = P;
                     //connection.send(Json.stringify(S));
+                }
+                else if(obj.gameList[i].gameResponse === "end")
+                {
+                    //Thing to show the winner
+                    for(let i = 0; i < WIDTH * HEIGHT; i++)
+                    {
+                        let buttons = document.getElementById(i);
+                        buttons.disabled = true;
+                    }
+
+                    document.getElementById("winners").style.display = "block";
+                    document.getElementById("startGameButton").style.display = 'block';
+                    fillWinners(obj.gameList[i].winners);
+                    gameEnded = 1; //Game has ended
+                }
+                if(obj.gameList[i].boardButtonMessage === "updateBoard")
+                {
+                    console.log("Valid Word");
+                    //Broadcast to everyone that word has been found
+                    if(gameEnded == 0)  //update board if the game has not eneded
+                    {
+                    update_colors(obj.gameList[i].x1, obj.gameList[i].y1,
+                        obj.gameList[i].x2, obj.gameList[i].y2, 
+                        obj.gameList[i].colorToShow, obj.gameList[i].colorOrientation);
+
+                        obj.gameList[i].boardButtonMessage = "";
+                    }
+                    
+                }
+                else if(obj.gameList[i].boardButtonMessage === "resetBoard")
+                {
+                    console.log("Word not Valid");
+                    for(let index = 0; index < obj.gameList[i].playerList.length; index++)
+                    {
+                        if(P.username === obj.gameList[i].playerList[index].username) //find our specific player
+                        {
+                           reset_color(obj.gameList[i].playerList[index].x1, obj.gameList[i].playerList[index].y1,
+                            obj.gameList[i].playerList[index].x2, obj.gameList[i].playerList[index].y2);   //set their color
+                        }
+                    }
+
+                    obj.gameList[i].boardButtonMessage = "";
+                }
+                else if(obj.gameList[i].boardButtonMessage === "firstClick")
+                {
+                    //Here we tell on message to chill and don't do anything
+                    console.log("firstClick");
                 }
 
 
@@ -120,16 +240,18 @@ connection.onmessage = function (evt) {
     }
 
 }
+//Used to constantly send requests to the server so that the timer is always updated
 
 ////////////////////////////////////////////////////
 var display = 0;   //This variable controls the pages //0 - namepage   1- lobby  2 - room
 var namePage = document.getElementById("namePage"); //Main page
 var lobbyPage = document.getElementById("lobbyPage"); //Lobby Page
 var roomPage = document.getElementById("roomPage"); //Game Page
+const gameClock = document.querySelector(".gameClockValue"); //Game clock
 ////////////////////////////////////////////////////
 document.getElementById("rmButton").style.display = 'none'; ///Room button
 var startButton = document.getElementById("startGameButton"); //Start game button
-startButton.style.display = 'none';
+startButton.style.display = 'block';
 //////////////////////////////////////////////////
 var createRoomButton = document.getElementById("createRoom");  //Create Room
 function hideShow(evt)   //This function hides and shows pages
@@ -179,6 +301,7 @@ function nameFunction() //This is basically what happens when we press submit (T
     }
 }
 
+
 function sendChat()
 {
     let chat = document.querySelector("#roomChatBox");
@@ -211,6 +334,7 @@ function backToLobbyFunction() { //Kicks players out of the game
     console.log(Player.username.value + " left the room");
     S = new ServerEvent();
     S.button = "backToLobbyButton";
+    timer = 0;
     S.event = "lobbyEvent";
     S.player = P;
     S.iidd = P.gameId;
@@ -218,6 +342,16 @@ function backToLobbyFunction() { //Kicks players out of the game
     console.log(JSON.stringify(S));
     hideShow();
     destroyWordBank();
+    
+    for(let i = 0; i < WIDTH * HEIGHT; i++)
+    {
+        let buttons = document.getElementById(i);
+        buttons.disabled = false;
+        buttons.style.backgroundColor = COLORS[0];
+    }
+    createRoomButton.style.display = 'block';
+    resetTimer.innerHTML = "Prepare Yourself";
+    
 }
 
 function roomFunction(number) { //Navigate to room page  //Go to room from lobby
@@ -259,6 +393,7 @@ function startGameFunction() {
     S = new ServerEvent();   //Creating a server event
     S.button = "startGame";  //what was pressed
     S.event = "gameEvent";         //what kind of event
+    timer = 0;
     console.log(P.gameId);
     S.player = P;              //who did it
     S.iidd = P.gameId;
@@ -442,7 +577,6 @@ const HEIGHT = 35;
 const Buttons = new Array(WIDTH * HEIGHT);
 let selected_letters = "";
 var placeHolder;
-
 let counter = 0;
 for(let i = 0; i < WIDTH; i++)
 {
@@ -451,7 +585,7 @@ for(let i = 0; i < WIDTH; i++)
         let button = document.createElement("button");
         button.style.width = 5;
         button.setAttribute("id", counter);
-        console.log(counter);
+        //console.log(counter);
         button.setAttribute("onclick", "change_color(" + counter + ");");
         button.innerHTML = "?";
         if (counter % WIDTH == 0) 
@@ -464,8 +598,7 @@ for(let i = 0; i < WIDTH; i++)
     }
 }
 
-function fillBoard(board)
-{
+function fillBoard(board) {
     let something = 0;
     let arr = new Array(WIDTH);
     for(let index = 0; index < WIDTH; index++)
@@ -475,7 +608,6 @@ function fillBoard(board)
         {
             let charCode = arr[jindex];
             var buttonid = document.getElementById(something);
-
             buttonid.innerHTML = charCode; 
             something = something + 1;
         }
@@ -490,26 +622,59 @@ function fillWordBank(wordbank)
     {
         bank.deleteRow(0);
     }
-    for (var i = 0; i < (arr.length - arr.length %6); i+=6) //Most of the words besides last row
+    let rowValue = ""; //Forming rows 
+    for (var i = 0; i < arr.length; i++)
     {
-        var row = `<tr>
-                            <td>${arr[i].word}<td/><td>${arr[i+1].word}<td/><td>${arr[i+2].word}<td/><td>${arr[i+3].word}<td/><td>${arr[i+4].word}<td/><td>${arr[i+5].word}<td/>
-                    <tr />`
-        console.log("row:  " + row);
-        bank.innerHTML += row;
+        if(arr[i].availability === true) //If the word is available add it normally
+        {
+            rowValue += `<td>${arr[i].word}</td>` 
+        }
+        else //Else put a slash through it
+        {
+            rowValue += `<td><s>${arr[i].word}<s></td>` 
+        }
+
+        if((i % 8) == 7 || i == (arr.length - 1))//Every 8th word or at the very last row, put the row into the wordbank and reset rowvalue
+        {
+            var row = `<tr>
+                            ${rowValue}
+                        <tr/>`
+            bank.innerHTML += row;
+            rowValue = "";
+        } 
+
     }
-    let remainder = ""; //Last row
-    for(var i = 0; i < (arr.length%6); i++)
-    {
-        remainder += `<td>${arr[arr.length - arr.length%6 + i].word}<td/>`    
-    }
-    console.log("last row remainder: " + remainder);
-    var row = `<tr>
-                    ${remainder}
-            <tr/>`
-    bank.innerHTML += row;
-    
 }
+
+function displayTimer(countdown) //Formatting timer
+{
+    let clock = document.getElementById("clock");
+    let minutes = countdown/60;
+    let seconds = countdown % 60;
+
+    minutes = Math.trunc(minutes).toString().padStart(2, '0');
+    seconds = seconds.toString().padStart(2, '0');
+    clock.innerHTML = minutes + ":" + seconds;
+}
+
+ function fillWinners(winners)
+ {
+ let winnerlist = document.getElementById("winnerList");
+     while (winnerList.rows.length != 0) //Empty out the table before updating
+     {
+         winnerlist.deleteRow(0);
+     }
+     for (var i = 0; i < winners.length; i++)  //Iterate through playerlist to create
+     {
+         var row = `<tr>
+                         <td style = "background-color:${COLORS[winners[i].color]};">${winners[i].username}</td> <td style = "background-color:${COLORS[winners[i].color]};">${winners[i].score}</td>
+                   <tr />`
+        winnerlist.innerHTML += row;            
+     }
+
+     timer = 0; //reset the timer
+     gameEnded = 1; //game has ended
+ }
 
 function emptyBoard() {
     let bank = document.getElementById("bank");
@@ -519,6 +684,7 @@ function emptyBoard() {
     }
 }
 
+
 function destroyWordBank()
 {
 
@@ -527,6 +693,7 @@ function destroyWordBank()
         bank.deleteRow(0);
     }
 }
+
 
 
 // function board(board) {
@@ -568,17 +735,143 @@ function destroyBoard()
     area.remove();
 }
 
+const numOfColors = 5;
+const COLORS = new Array(numOfColors);
+COLORS[0] = "rgb(68, 0, 255)";  //default board color
+COLORS[1] = "red";
+COLORS[2] = "orange";
+COLORS[3] = "blue";
+COLORS[4] = "green";
+
 function change_color(id) {
     let x = id % WIDTH;
     let y = Math.floor(id / HEIGHT);
     const letter = document.getElementById(id).innerHTML;
     selected_letters += letter
-    document.getElementById("w3review").value = "selected " + letter + " at coordinate (" + x + "," + y + ")\nselected letters=" + selected_letters;
+
     let bcolor = document.getElementById(id).style.backgroundColor;
     if (bcolor == "orange")
-        document.getElementById(id).style.backgroundColor = "blue";
+        document.getElementById(id).style.backgroundColor = "white";
     else
-        document.getElementById(id).style.backgroundColor = "black";
+        document.getElementById(id).style.backgroundColor = COLORS[P.color];
+
+
+    console.log(P.username + " has selected: (" + x +","+ y + ")");
+    console.log("The letter pressed: " + letter);
+    S = new ServerEvent();
+    S.player = P;
+    S.button = "boardClick";
+    S.event = "gameEvent";
+    S.message = letter;
+    S.iidd = P.gameId;
+    S.x = x;
+    S.y = y;
+    connection.send(JSON.stringify(S));
+    console.log(JSON.stringify(S));
+}
+function fillScoreboard(playerList)
+{
+    let scoreboard = document.getElementById("scoreboard");
+    while (scoreboard.rows.length != 0) //Empty out the table before updating
+    {
+        scoreboard.deleteRow(0);
+    }
+    for (var i = 0; i < playerList.length; i++)  //Iterate through playerlist to create
+    {
+        var row = `<tr>
+                        <td style = "background-color:${COLORS[i+1]};">${playerList[i].username}</td> <td style = "background-color:${COLORS[i+1]};">${playerList[i].score}</td>
+                  <tr />`
+       scoreboard.innerHTML += row;            
+    }
+}   
+function update_colors(x1, y1, x2, y2, color, orientation)
+{
+
+    if(orientation === "vertical")
+    {
+        if (y1 > y2) //word is vertical up
+            {
+                
+                for (let i = 0; i < (y1 - y2) + 1; i++)
+                {
+                    //[boardY_1 - i][boardX_1]
+                    let button = document.getElementById(((x1) + (HEIGHT * y1)) - (HEIGHT * i));
+                    button.style.backgroundColor = COLORS[color];
+                    button.disabled = true;
+                    
+                }
+                
+            }
+            else if (y1 < y2) //word is vertical down
+            {
+                
+                for (let i = 0; i < (y2 - y1) + 1; i++)
+                {
+                    //[boardY_1 + i][boardX_1]
+                    let button = document.getElementById((x1) + (HEIGHT * y1) + (HEIGHT * i));
+                    button.style.backgroundColor = COLORS[color];
+                    button.disabled = true;
+                }
+               
+            }
+    }
+    else if(orientation === "horizontal")
+    {
+
+        for (let i = 0; i < (x2 - x1) + 1; i++)
+        {
+            //[boardY_1][boardX_1 + i]
+            let button = document.getElementById((x1 + i) + (HEIGHT * y1));
+            button.style.backgroundColor = COLORS[color];
+            button.disabled = true;
+        }
+
+    }
+    else if(orientation === "diagonal")
+    {
+        if (y1 > y2) //word is diagonal up
+        {
+            
+            for (let i = 0; i < (x2 - x1) + 1; i++)
+            {
+                //[boardY_1 - i][boardX_1 + i]
+                let button = document.getElementById((x1 + i) + (HEIGHT * y1) -(HEIGHT * i));
+                button.style.backgroundColor = COLORS[color];
+                button.disabled = true;
+            }
+            
+        }
+        else if (y1 < y2) //word is diagonal down
+        {
+            
+            for (let i = 0; i < (x2 - x1) + 1; i++)
+            {
+                //[boardY_1 + i][boardX_1 + i]
+                let button = document.getElementById((x1 + i) + (HEIGHT * y1) + (HEIGHT * i));
+                button.style.backgroundColor = COLORS[color];
+                button.disabled = true;
+            }
+            
+        }
+    }
+
+
+}
+
+function reset_color(x1, y1, x2, y2)
+{
+    let firstClick = x1 + (HEIGHT * y1);
+    let secondClick = x2 +  (HEIGHT * y2);
+
+
+    let button1 = document.getElementById(firstClick);
+    let button2 = document.getElementById(secondClick);
+
+    if(button1.disabled != true || button2.disabled != true)
+    {
+    button1.style.backgroundColor = COLORS[0];
+    button2.style.backgroundColor = COLORS[0];
+    }
 }
 
 function saveToFile() {
@@ -598,3 +891,34 @@ function updateState() //Will be used later to update the state of the game with
 {
 
 }
+
+
+
+
+function startTimer() {
+    gameClock.textContent = "1:00";
+    const timeInterval = Date.now() + 300000; 
+    updateTimer(timeInterval);
+}
+
+function updateTimer(timeInterval) {
+    const currentTime = Date.now();
+    const timeLeft = timeInterval - currentTime;
+
+    if (timeLeft <= 0) {
+        gameClock.textContent = "Time's up!";
+    } else {
+        // Make sure that the seconds are displayed properly
+        const secondsLeft = Math.floor((timeLeft / 1000) % 60);
+        const minutesLeft = Math.floor((timeLeft / 1000) / 60);
+        gameClock.textContent = `${minutesLeft}:${secondsLeft < 10 ? '0' : ''}${secondsLeft}`;
+
+        // Make sure that the timer updates every second
+        setTimeout(() => updateTimer(timeInterval), 1000);
+    }
+}
+
+
+
+
+

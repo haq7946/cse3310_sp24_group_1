@@ -68,8 +68,22 @@
     </div>
 <!-- ///////////////////////////////////////////////////////////////// -->
     <div id="roomPage">
-        <center><label style="color:Tomato;background-color:yellow;display:block;font-size:60px;">The World Search
-                Game</label></center>
+        <center>
+            <label style="color:Tomato;background-color:yellow;display:block;font-size:60px;">The World Search Game</label>
+            <!-- Timer Display -->
+            <div class="gameClock">
+                <p>Time Left:</p>
+                <div class="gameClockValue">
+                    <h1 id=clock>Prepare Yourselves</h1>
+                </div>
+            </div>
+            <div id = "winners">
+                <h1>THE WINNERS ARE</h1>
+                <table>
+                    <tbody id="winnerList"></tbody>
+                </table>
+            </div>
+        </center>
         <!--
 <label id="topMessage">Top Message</br></br></label>
 -->
@@ -82,7 +96,10 @@
 -->
                 <center>
                     <h2 class="box-group">Score Board</h2>
-                    <textarea id="w3review" name="w3review" align="center" text-align="center" rows="4" cols="50">
+                    <table class = "score">
+                        <tbody id ="scoreboard" ></tbody>  
+                            
+                    </table>    
 </textarea>
                     <h2>Room Chat</h2>
                     <br>
@@ -95,7 +112,7 @@
                     <button class = "smallbutton button 4" onclick="sendChat()">send</button> <br /> <br />
                     <div id ="word bank"> 
                         <h2>WordBank</h2>
-                        <table class ="scores leaderboard">
+                        <table class ="wordbank">
                             <tbody id ="bank" ></tbody>  
                             
                         </table>
