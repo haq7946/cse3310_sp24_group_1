@@ -22,13 +22,19 @@ public class Player
     //Track number of players
     public static int numOfPlayers;
 
-    public Player(String nick, int colorP)
+    public Player(String nick, String numberOfVictores)
     {
         setUsername(nick);
-        setColor(colorP);
-        setScore(0);
+        if(numberOfVictores == null)
+        {
+            setVictories(0);
+        }
+        else
+        {
+        setVictories(Integer.parseInt(numberOfVictores));
+        }
         setStatus(0);
-        setVictories(0);
+        setScore(0);
         numOfPlayers++;
     }
 

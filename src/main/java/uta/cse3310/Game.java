@@ -64,10 +64,14 @@ public class Game
         bank = new WordBank();
         board = new Board();
         board.initializeBoard(bank);
-        clock = new Clock(60);
+        clock = new Clock(10);
         //board.printBoardArray();
         //System.out.println(bank);
         //System.out.println(board);
+        for(int i = 0; i < playerList.size(); i++) //Set everyone's score to 0
+        {
+            playerList.get(i).score = 0;
+        }
         gameHasStarted = true;
         //gameResponse = "start"; //Already does that in lobby.java but keeping it just in case -Bryan
     }
@@ -240,7 +244,7 @@ public class Game
     {
         return null;
     }
-
+/*
     public void addPlayer(Player newPlayer)
     {
         if (numberOfPlayers < 4) //check that game has less than 4 players
@@ -253,7 +257,38 @@ public class Game
             System.out.println("Error: too many players in that game");
         }
     }
+    */
 
+    public void addPlayer(String name, String victories) // add a new player to the lobby
+    {
+        for (int i = 0; i < playerList.size(); i++) //check players in lobby to see if they already have the name
+        {
+            if(name.equals(playerList.get(i).getUsername()))
+            {
+                System.out.println("Error: username already taken (lobby)");
+                return;
+            }
+        }
+            for (int j = 0; j < getPlayerList().size(); j++)
+            {
+                if (name.equals(getPlayerList().get(j).getUsername()))
+                {
+                    System.out.println("Error: username already taken(game)");
+                    return;
+                }
+            }
+        //nobody else has the same name, go ahead and add the new player
+        Player p = new Player(name, victories);
+        if (numberOfPlayers < 4) //check that game has less than 4 players
+        {
+            playerList.add(p);
+            numberOfPlayers++;
+        }
+        else
+        {
+            System.out.println("Error: too many players in that game");
+        }
+    }
     public void removePlayer(Player p)
     {
         for(int i = 0; i < playerList.size(); i++)

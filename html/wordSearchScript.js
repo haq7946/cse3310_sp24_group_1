@@ -3,7 +3,7 @@ class Player {
     score;
     color;
     status;
-    numberOfVictories;
+    numberOfVictores;
     gameId;
 }   //Players unique nick
 
@@ -50,6 +50,7 @@ class ServerEvent {
     event;
     player;
     message;
+    victores;
     x;
     y;
 }
@@ -67,22 +68,21 @@ console.log(connection);
 
 connection.onopen = function (evt) {    //open function
     console.log("open");
+    
 }
 connection.onclose = function (evt) {   //close function
     console.log("close");
-
 }
-
 //Our specific client
 P = new Player();
 P.gameId = "none";  //This is our specific client's gameID
+P.numberOfVictores = 0; //Everyone starts with 0 wins!
 var timer = 0;
 var gameEnded = 0; //1 if the game has ended 0 if the game has started
 var resetTimer = document.getElementById("clock");
 connection.onmessage = function (evt) {
     var msg;
     msg = evt.data;
-//    console.log("Message received: " + msg);
     updateRooms(evt);
     updateLeaderBoard(evt);
     updateLobbyChat(evt);
@@ -93,7 +93,6 @@ connection.onmessage = function (evt) {
         for (var i = 0; i < obj.playerList.length; i++) {
             console.log(P.username);
             console.log(P.gameId);
-
             ///////////////////// this sets a players gameId
             if (obj.playerList[i].username === P.username) {
                 P.gameId = obj.playerList[i].iD;
@@ -158,6 +157,7 @@ connection.onmessage = function (evt) {
                             S.event = "gameEvent";
                             S.player = P;
                             S.iidd = P.gameId;
+                            S.victores = P.numberOfVictores;
                             timer = 0;  //once the game ends
                             connection.send(JSON.stringify(S));
                             clearInterval(intervalid);
@@ -194,6 +194,13 @@ connection.onmessage = function (evt) {
                     document.getElementById("winners").style.display = "block";
                     document.getElementById("startGameButton").style.display = 'block';
                     fillWinners(obj.gameList[i].winners);
+                    for(let j = 0; j < obj.gameList[i].winners.length; j++) //Updating P.numberofvictories to have updated victory count if applicable
+                    {
+                        if(P.username === obj.gameList[i].winners[j].username)
+                        {
+                            P.numberOfVictores = obj.gameList[i].winners[j].numberOfVictores;
+                        }
+                    }
                     gameEnded = 1; //Game has ended
                 }
                 if(obj.gameList[i].boardButtonMessage === "updateBoard")
@@ -287,7 +294,7 @@ function nameFunction() //This is basically what happens when we press submit (T
         S.button = "nameButton";
         S.event = "lobbyEvent";
         S.player = P;
-
+        S.victores = P.numberOfVictores;
         connection.send(JSON.stringify(S));  //Sending the Event back back ServerEvent(nameButton, lobbyEvent, Player)
         console.log(JSON.stringify(S));       //Showing what we sent into the console
 
@@ -313,6 +320,7 @@ function sendChat()
     S.player = P;
     S.iidd = P.gameId;
     S.message = chat.value;
+    S.victores = P.numberOfVictores;
     connection.send(JSON.stringify(S));
     console.log(JSON.stringify(S));
 }
@@ -323,6 +331,7 @@ function backToNameFunction() { //Navigate to name page
     S.event = "lobbyEvent";
     S.button = "backButton";
     S.player = P;
+    S.victores = P.numberOfVictores;
     connection.send(JSON.stringify(S));  //Send 
     console.log("Message sent: " + JSON.stringify(S));
     display = 0;   //Change the global variable
@@ -338,8 +347,12 @@ function backToLobbyFunction() { //Kicks players out of the game
     S.event = "lobbyEvent";
     S.player = P;
     S.iidd = P.gameId;
+    S.victores = P.numberOfVictores;
     connection.send(JSON.stringify(S));
     console.log(JSON.stringify(S));
+    S.button = "Show Leaderboard";
+    S.event = "leaderboardEvent";
+    connection.send(JSON.stringify(S));
     hideShow();
     destroyWordBank();
     
@@ -362,6 +375,7 @@ function roomFunction(number) { //Navigate to room page  //Go to room from lobby
     S.button = "joinRoomButton";  //What button was pressed
     S.event = "lobbyEvent";       //what kind of event it was
     S.player = P;            //who did it
+    S.victores = P.numberOfVictores;
     S.occurrence = number;
     connection.send(JSON.stringify(S));//Send player status that player is ready
     console.log(JSON.stringify(S));
@@ -381,6 +395,7 @@ function createRoom() //This creates a room and gives an option to join room
     S.button = "createRoomButton";  //what was pressed
     S.event = "lobbyEvent";         //what kind of event
     S.player = P;              //who did it
+    S.victores = P.numberOfVictores;
     connection.send(JSON.stringify(S));  //Send 
     console.log("Message sent: " + JSON.stringify(S));      //Show what was sent into the console
 
@@ -397,6 +412,7 @@ function startGameFunction() {
     console.log(P.gameId);
     S.player = P;              //who did it
     S.iidd = P.gameId;
+    S.victores = P.numberOfVictores;
     connection.send(JSON.stringify(S));  //Send 
     console.log("Message sent: " + JSON.stringify(S));
     startButton.style.display = 'none';
@@ -455,6 +471,13 @@ function updateLeaderBoard(evt) {  //This function builds leaderboard
     var leaderboard = document.getElementById("leaderboard");
     var msg = evt.data;
     const obj = JSON.parse(evt.data);
+    for (var i = 0; i < obj.playerList.length; i++)  //Update the leaderboard when players return from a game
+    {
+        if(P.username === obj.playerList[i].username)
+        {
+            obj.playerList[i].numberOfVictores = P.numberOfVictores;
+        }
+    }
     console.log("The number of people in this lobby is " + obj.playerList.length); //Debugging
     while (leaderboard.rows.length != 0) //Empty out the table before updating
     {
@@ -463,7 +486,7 @@ function updateLeaderBoard(evt) {  //This function builds leaderboard
     for (var i = 0; i < obj.playerList.length; i++)  //Iterate through playerlist to create
     {
         var row = `<tr>
-                        <td>${obj.playerList[i].username}  ${obj.playerList[i].score}<td>
+                        <td>${obj.playerList[i].username}  ${obj.playerList[i].numberOfVictores}<td>
                   <tr />`
         leaderboard.innerHTML += row;
     }
@@ -480,6 +503,7 @@ function sendLobbyChat()
     S.event = "chatEvent";
     S.player = P;
     S.message = chat.value;
+    S.victores = P.numberOfVictores;
     connection.send(JSON.stringify(S));
     console.log(JSON.stringify(S));
 }
@@ -556,7 +580,7 @@ function incrementPlayerScore(playerId){
         let S = new ServerEvent();
         S.event = "scoreUpdate";
         S.player = P;
-        S.newScore = P.score;
+        S.victores = P.numberOfVictores;
 
         connection.send(JSON.stringify(S));
         console.log("Score update sent: " + JSON.stringify(S));
@@ -764,6 +788,7 @@ function change_color(id) {
     S.event = "gameEvent";
     S.message = letter;
     S.iidd = P.gameId;
+    S.victores = P.numberOfVictores;
     S.x = x;
     S.y = y;
     connection.send(JSON.stringify(S));

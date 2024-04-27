@@ -62,7 +62,7 @@ public class Lobby
         gameList.add(g); // add the new game to the list of games
         return g;
     }
-
+/*
     public void joinGame(Game g, Player p) // adds a player to a game and removes them from the lobby
     {
         g.addPlayer(p);
@@ -93,8 +93,8 @@ public class Lobby
         Player p = new Player(name, color);
         playerList.add(p);
     }
-
-    public void addPlayer(String name) // add a new player to the lobby
+*/
+    public void addPlayer(String name, String victories) // add a new player to the lobby
     {
         for (int i = 0; i < playerList.size(); i++) //check players in lobby to see if they already have the name
         {
@@ -116,7 +116,7 @@ public class Lobby
             }
         }
         //nobody else has the same name, go ahead and add the new player
-        Player p = new Player(name);
+        Player p = new Player(name, victories);
         playerList.add(p);
     }
 
@@ -147,22 +147,21 @@ public class Lobby
         {
             if(S.button.compareTo("nameButton")==0)  //This executes when nameButton is pressed
             {
-                addPlayer(S.player.username);  //Adding player to the lobby
+                addPlayer(S.player.username, S.victores);  //Adding player to the lobby with 0 victories
                 System.out.println("Added player in the lobby"); //Debug
             }
             else if(S.button.compareTo("createRoomButton")==0)  //This executes when create room button is pressed
             {
                 makeGame();  //This creates a room commented out for now
-                Player p = new Player(S.player.username);
+                Player p = new Player(S.player.username, S.victores);
                 gameMakers.add(p);    
                 System.out.println("Made a game");
             }
             else if(S.button.compareTo("joinRoomButton")==0) //This executes when room button is pressed
             {
-                Player P = new Player(S.player.username);
+                Player P = new Player(S.player.username, S.victores);
                 System.out.println("||||||||||||||||||||||||| The occurrence is " + S.occurrence);
-                gameList.get(S.occurrence-1).addPlayer(P);
-                System.out.println("Addplayer failed/succeeded");
+                gameList.get(S.occurrence-1).addPlayer(S.player.username, S.victores); //Add player to room with their current number of victories
                 //Add a check for players
                 for(int i = 0; i < playerList.size(); i++)
                 {
@@ -179,7 +178,7 @@ public class Lobby
             }
             else if(S.button.compareTo("backButton")==0)
             {
-                Player P = new Player(S.player.username);
+                Player P = new Player(S.player.username, S.victores);
                 //Remove player from the list
                 for(int i = 0; i < playerList.size(); i++)
                 {
@@ -194,7 +193,7 @@ public class Lobby
             }
             else if(S.button.compareTo("backToLobbyButton")==0)
             {
-                Player P = new Player(S.player.username);
+                Player P = new Player(S.player.username, S.victores);
                 for(int i = 0; i < gameList.size(); i++)
                 {   
                     //If the player left during the game, shame them with -1 points
@@ -340,12 +339,15 @@ public class Lobby
             }
             else if(S.button.compareTo("victoryCheck") == 0)
             {
+                Player P = new Player(S.player.username, S.victores);
                 System.out.println("Received victorycheck");
                 for(int i = 0; i < gameList.size(); i++)
                 {
                     if(S.iidd.compareTo(gameList.get(i).gameID) == 0)
                     {
-                    //Using an arraylist to check for potential multiple winners (No sudden death, too much work)
+                    if(!gameList.get(i).gameResponse.equals("end")) //Need this condition to prevent multiple requests to add victories
+                    {
+                        //Using an arraylist to check for potential multiple winners (No sudden death, too much work)
                         gameList.get(i).winners.clear();
                         gameList.get(i).winners.add(gameList.get(i).playerList.get(0)); //Putting first player in by default
                         for(int j = 1; j < gameList.get(i).playerList.size(); j++)
@@ -355,7 +357,7 @@ public class Lobby
                                 gameList.get(i).winners.clear();                                
                                 gameList.get(i).winners.add(gameList.get(i).playerList.get(j));
                             }//TODO:
-                            if(gameList.get(i).winners.get(0).score == gameList.get(i).playerList.get(j).score && !gameList.get(i).winners.get(0).username.equals(gameList.get(i).playerList.get(j).score)) //If current winner(s) are equal and winner then next player
+                            if(gameList.get(i).winners.get(0).score == gameList.get(i).playerList.get(j).score && !gameList.get(i).winners.get(0).username.equals(gameList.get(i).playerList.get(j).username)) //If current winner(s) are equal and winner then next player
                             {
                                 gameList.get(i).winners.add(gameList.get(i).playerList.get(j)); //Add the equally winning player in
                             } //Else don't add any player since winners are already higher
@@ -363,8 +365,33 @@ public class Lobby
                         for(int j = 0; j < gameList.get(i).winners.size(); j++)
                         {
                             System.out.println("Winner " + j + " is" + gameList.get(i).winners.get(j).username);
+                            gameList.get(i).winners.get(j).numberOfVictores++;
+                            System.out.println("winner " + gameList.get(i).winners.get(j).username + "now has " + gameList.get(i).winners.get(j).numberOfVictores + " victories");
                         }
-                        gameList.get(i).gameResponse = "end"; //Game is JOEVER
+                        for(int j = 0; j < gameList.get(i).playerList.size(); j++)
+                        {
+                            System.out.println("player " + gameList.get(i).playerList.get(j).username + "now has " + gameList.get(i).playerList.get(j).numberOfVictores + " victories");
+                        }
+                    }
+                    for(int j = 0; j < playerList.size(); j++)
+                    {
+                        if(P.username.equals(playerList.get(j).username))
+                        {
+                            playerList.get(j).numberOfVictores = Integer.parseInt(S.victores); //Update leaderboard with current scores of clients
+                        }
+                    }    
+                    Collections.sort(playerList, new Comparator<Player>() { //Also organize the leaderboard while you're at it
+                        @Override
+                        public int compare(Player p1, Player p2) {
+                            // Handle null player or score scenarios
+                            if (p1 == null || p2 == null) {
+                                return 0; // Consider how to handle null players in sorting logic
+                            }
+                            return Integer.compare(p2.numberOfVictores, p1.numberOfVictores); // Descending order{
+
+                        }
+                    }); 
+                    gameList.get(i).gameResponse = "end"; //Game is JOEVER
                     }
                 }
             }
@@ -394,6 +421,7 @@ public class Lobby
         {
             
         }
+        /* //Not sure where we would use this, we can just compare during other events
         else if(S.event.compareTo("leaderboardEvent") == 0){
             if(S.button.compareTo("Show Leaderboard") == 0){
                 
@@ -440,6 +468,7 @@ public class Lobby
                 System.out.println("Leaderboard is empty or not initialized");
             }
         }
+        */
     }
 }
 //TODO: When you create a room it should forcefully put you in that room
