@@ -265,7 +265,7 @@ public class Lobby
                 {
                     if(S.iidd.compareTo(gameList.get(i).gameID) == 0)  //Finding the specific game using the gameId
                     {
-                        if(gameList.get(i).gameHasStarted == false)
+                        if(gameList.get(i).gameHasStarted == false || gameList.get(i).gameResponse.compareTo("end") == 0)
                         {
                             System.out.println("Game has not started. Board click ignored.");
                             break;

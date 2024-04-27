@@ -77,6 +77,7 @@ connection.onclose = function (evt) {   //close function
 P = new Player();
 P.gameId = "none";  //This is our specific client's gameID
 var timer = 0;
+var gameEnded = 0; //1 if the game has ended 0 if the game has started
 connection.onmessage = function (evt) {
     var msg;
     msg = evt.data;
@@ -124,6 +125,26 @@ connection.onmessage = function (evt) {
                     }
                     //////////////
 
+                    //clear board if a new game has started
+                    if(gameEnded == 1)
+                    {
+                        for(let i = 0; i < WIDTH * HEIGHT; i++)
+                        {
+                            let buttons = document.getElementById(i);
+                            buttons.disabled = false;
+                            buttons.style.backgroundColor = COLORS[0];
+                        }
+
+                        for(let i = 0; i < WIDTH * HEIGHT; i++)
+                        {
+                            let buttons = document.getElementById(i);
+                            buttons.disabled = false;
+                            buttons.style.backgroundColor = COLORS[0];
+                        }
+
+                        gameEnded = 0;
+                    }
+
                     fillBoard(obj.gameList[i].board);
                     fillWordBank(obj.gameList[i].bank);
                     var countdown = obj.gameList[i].clock.countdown;
@@ -136,6 +157,7 @@ connection.onmessage = function (evt) {
                             S.event = "gameEvent";
                             S.player = P;
                             S.iidd = P.gameId;
+                            timer = 0;  //once the game ends
                             connection.send(JSON.stringify(S));
                             clearInterval(intervalid);
                             }
@@ -158,17 +180,21 @@ connection.onmessage = function (evt) {
                     document.getElementById("winners").style.display = "block";
                     document.getElementById("startGameButton").style.display = 'block';
                     fillWinners(obj.gameList[i].winners);
+                    gameEnded = 1; //Game has ended
                 }
                 if(obj.gameList[i].boardButtonMessage === "updateBoard")
                 {
                     console.log("Valid Word");
                     //Broadcast to everyone that word has been found
-
+                    if(gameEnded == 0)  //update board if the game has not eneded
+                    {
                     update_colors(obj.gameList[i].x1, obj.gameList[i].y1,
                         obj.gameList[i].x2, obj.gameList[i].y2, 
                         obj.gameList[i].colorToShow, obj.gameList[i].colorOrientation);
 
                         obj.gameList[i].boardButtonMessage = "";
+                    }
+                    
                 }
                 else if(obj.gameList[i].boardButtonMessage === "resetBoard")
                 {
@@ -309,6 +335,7 @@ function backToLobbyFunction() { //Kicks players out of the game
         buttons.disabled = false;
         buttons.style.backgroundColor = COLORS[0];
     }
+    createRoomButton.style.display = 'block';
 }
 
 function roomFunction(number) { //Navigate to room page  //Go to room from lobby
@@ -628,7 +655,11 @@ function displayTimer(countdown) //Formatting timer
                    <tr />`
         winnerlist.innerHTML += row;            
      }
+
+     timer = 0; //reset the timer
+     gameEnded = 1; //game has ended
  }
+
 function emptyBoard() {
     let bank = document.getElementById("bank");
     for (let i = 0; i < (WIDTH * HEIGHT); i++) {
