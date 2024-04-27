@@ -196,20 +196,16 @@ public class Lobby
                 Player P = new Player(S.player.username, S.victores);
                 for(int i = 0; i < gameList.size(); i++)
                 {   
-                    //If the player left during the game, shame them with -1 points
-                    //If the player left before the game, remove them as well
-                    for(int j = 0; j < gameList.get(i).numberOfPlayers; j++)
-                    {
-
-                        if(S.player.username.compareTo(gameList.get(i).playerList.get(j).username) == 0) //Finds the player in the specific game
-                        {
-                            gameList.get(i).playerList.get(j).score = -1;
-                        }
-                    }
-                    if(S.iidd.equals(gameList.get(i).gameID) && gameList.get(i).gameHasStarted == false)
+                    //If the player left in the game, remove them
+                    if(S.iidd.equals(gameList.get(i).gameID))
 
                     {
                         gameList.get(i).removePlayer(S.player);
+                    }
+                    //Delete the room if no one is in there when someone leaves
+                    if(gameList.get(i).numberOfPlayers == 0)
+                    {
+                        gameList.remove(i);
                     }
                 }
                 //Bring them back to the lobby and remove them from the room
@@ -221,7 +217,10 @@ public class Lobby
                         playerList.get(i).iD = "nothing";
                     }
                 }
-
+                for(int i = 0; i < playerList.size(); i++)
+                {
+                    System.out.println("TRUE NUMBER OF POINTS FOR PLAYER " + playerList.get(i).username + " IS " + playerList.get(i).numberOfVictores);
+                }
             }
             
         }
@@ -345,6 +344,14 @@ public class Lobby
                 {
                     if(S.iidd.compareTo(gameList.get(i).gameID) == 0)
                     {
+                    if(gameList.get(i).gameResponse.equals("end"))
+                    {
+                        System.out.println("PREVENETED DUPLICATE REQUEST");
+                    }
+                    for(int j = 0; j < gameList.get(i).playerList.size(); j++)
+                    {
+                        System.out.println("BEFORE: player " + gameList.get(i).playerList.get(j).username + "now has " + gameList.get(i).playerList.get(j).numberOfVictores + " victories");
+                    }
                     if(!gameList.get(i).gameResponse.equals("end")) //Need this condition to prevent multiple requests to add victories
                     {
                         //Using an arraylist to check for potential multiple winners (No sudden death, too much work)
@@ -366,12 +373,9 @@ public class Lobby
                         {
                             System.out.println("Winner " + j + " is" + gameList.get(i).winners.get(j).username);
                             gameList.get(i).winners.get(j).numberOfVictores++;
-                            System.out.println("winner " + gameList.get(i).winners.get(j).username + "now has " + gameList.get(i).winners.get(j).numberOfVictores + " victories");
+                            System.out.println("AFTER: winner " + gameList.get(i).winners.get(j).username + "now has " + gameList.get(i).winners.get(j).numberOfVictores + " victories");
                         }
-                        for(int j = 0; j < gameList.get(i).playerList.size(); j++)
-                        {
-                            System.out.println("player " + gameList.get(i).playerList.get(j).username + "now has " + gameList.get(i).playerList.get(j).numberOfVictores + " victories");
-                        }
+
                     }
                     for(int j = 0; j < gameList.get(i).winners.size(); j++)
                     {
