@@ -813,7 +813,30 @@ function update_colors(x1, y1, x2, y2, color, orientation)
     }
     else if(orientation === "diagonal")
     {
-
+        if (y1 > y2) //word is diagonal up
+        {
+            
+            for (let i = 0; i < (x2 - x1) + 1; i++)
+            {
+                //[boardY_1 - i][boardX_1 + i]
+                let button = document.getElementById((x1 + i) + (HEIGHT * y1) -(HEIGHT * i));
+                button.style.backgroundColor = COLORS[color];
+                button.disabled = true;
+            }
+            
+        }
+        else if (y1 < y2) //word is diagonal down
+        {
+            
+            for (let i = 0; i < (x2 - x1) + 1; i++)
+            {
+                //[boardY_1 + i][boardX_1 + i]
+                let button = document.getElementById((x1 + i) + (HEIGHT * y1) + (HEIGHT * i));
+                button.style.backgroundColor = COLORS[color];
+                button.disabled = true;
+            }
+            
+        }
     }
 
 
