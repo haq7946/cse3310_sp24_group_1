@@ -78,6 +78,7 @@ P = new Player();
 P.gameId = "none";  //This is our specific client's gameID
 var timer = 0;
 var gameEnded = 0; //1 if the game has ended 0 if the game has started
+var resetTimer = document.getElementById("clock");
 connection.onmessage = function (evt) {
     var msg;
     msg = evt.data;
@@ -161,6 +162,13 @@ connection.onmessage = function (evt) {
                             connection.send(JSON.stringify(S));
                             clearInterval(intervalid);
                             }
+                            else if(display == 1)
+                            {
+                                clearInterval(intervalid);
+                                document.getElementById("startGameButton").style.display = 'block';
+                                let clock = document.getElementById("clock");
+                                clock.innerHTML = 'Prepare Yourselves';
+                            }
                             }
                             , 1000);   
                             timer = 1;                  
@@ -177,6 +185,12 @@ connection.onmessage = function (evt) {
                 else if(obj.gameList[i].gameResponse === "end")
                 {
                     //Thing to show the winner
+                    for(let i = 0; i < WIDTH * HEIGHT; i++)
+                    {
+                        let buttons = document.getElementById(i);
+                        buttons.disabled = true;
+                    }
+
                     document.getElementById("winners").style.display = "block";
                     document.getElementById("startGameButton").style.display = 'block';
                     fillWinners(obj.gameList[i].winners);
@@ -336,6 +350,8 @@ function backToLobbyFunction() { //Kicks players out of the game
         buttons.style.backgroundColor = COLORS[0];
     }
     createRoomButton.style.display = 'block';
+    resetTimer.innerHTML = "Prepare Yourself";
+    
 }
 
 function roomFunction(number) { //Navigate to room page  //Go to room from lobby
