@@ -333,6 +333,7 @@ function backToNameFunction() { //Navigate to name page
     S.button = "backButton";
     S.player = P;
     S.victores = P.numberOfVictores;
+    createRoomButton.style.display = 'block';
     connection.send(JSON.stringify(S));  //Send 
     console.log("Message sent: " + JSON.stringify(S));
     display = 0;   //Change the global variable
@@ -519,8 +520,6 @@ function updateLobbyChat(evt) {
         chat.deleteRow(0);
     }
     let length = obj.playerChat.length;
-    if (length <= 8) 
-    {
         for (let i = 0; i < length; i++)  //Iterate through playerlist to create
         {
             var row = `<tr>
@@ -528,18 +527,7 @@ function updateLobbyChat(evt) {
                   <tr />`
             chat.innerHTML += row;
         }
-    }
-    else 
-    {
-        for (let i = 0; i < 8; i++)  //Iterate through playerlist to create
-        {
-            var row = `<tr>
-                        <td>${obj.playerChat[(length - 8) + i]}<td>
-                  <tr />`
-            chat.innerHTML += row;
-        }
-    }
-
+    chat.scrollBy(0, 50);
 }
 
 function updateGameChat(gamelist)

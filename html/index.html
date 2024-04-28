@@ -9,7 +9,6 @@
 </head>
 
 <body>
-
     <div id="namePage">
         <h1>Welcome to the Word Search Game</h1>
 
@@ -21,50 +20,68 @@
     </div>
 <!-- //////////////////////////////////////////////////////////////////// -->
     <div id="lobbyPage">
-        <center><label style="color:Tomato;background-color:yellow;display:block;font-size:60px;">The World Search
-            Game</label></center>
+        <a href = "https://raidshadowlegends.com">
+        <img src="https://cdn.akamai.steamstatic.com/steam/apps/2333480/header.jpg?t=1705538486" alt="Raid Shadow Legends">
+        </a>
+        <a href = "https://mafia.phantixgames.com/">
+        <img src="https://i.ytimg.com/vi/Yke9BhP1uks/maxresdefault.jpg" alt="Mafia City">
+        </a>
+        <a href = "https://www.roblox.com/home">
+        <img src="https://techcrunch.com/wp-content/uploads/2021/07/roblox-logo.png" alt="Roblox">
+        </a>
+        <a href = "https://www.fortnite.com/?lang=en-US">
+        <img src="https://cloudfront-eu-central-1.images.arcpublishing.com/diarioas/3TPUBXH34VG67FZ6NKG5NLZHXU.png" alt ="Fortnite">
+        </a>
+        <a href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ">
+        <img src="https://i.ytimg.com/vi/NRQfmptejC8/maxresdefault.jpg" alt = "Heehee">
+        </a>
+        <div id="ui">
+            <center><label style="color:Tomato;background-color:yellow;display:block;font-size:60px;">The World Search
+                Game</label></center>
 
-            <div id ="leader scores"> 
-                <h2>Leaderboard</h2>
-                <table class ="scores leaderboard">
-                    <tbody id ="leaderboard" ></tbody>  
-                    <!-- We'll add scores here dynamically -->
-                </table>
-            </div>
-
-            <div style = "float: left;" = "Lobby_Chat">
-                <h2>Chat</h2>
-                <!-- <iframe id= "lob_Chat"  title="Lobby Chat"> -->
-                    <table class ="chatLob chatting">
-                        <tbody id ="chatting" ></tbody>  
-                        <!-- We'll add chats here dynamically -->
+                <div id ="leader_scores"> 
+                    <h2 id="bazinga">Leaderboard</h2>
+                    <table class ="scores leaderboard">
+                        <tbody id ="leaderboard" ></tbody>  
+                        <!-- We'll add scores here dynamically -->
                     </table>
-                <!-- </iframe> -->
-                <br>
-                <input id = "chatButtonLobby" placeholder="Message" onfocus="this.value=''" style="float: left;" size="30">
-                <button onclick="sendLobbyChat()" style="height: 22px; text-align: top">send</button> <br /> <br />
-            </div>
+                </div>
 
-           <div class="box" >
+                <div id="chat" style = "float: left;" = "Lobby_Chat">
+                    <h2>Chat</h2>
+                    <!-- <iframe id= "lob_Chat"  title="Lobby Chat"> -->
+                        <table class ="chatLob chatting">
+                            <tbody id ="chatting" ></tbody>  
+                            <!-- We'll add chats here dynamically -->
+                        </table>
+                    <!-- </iframe> -->
+                    <br>
+                    <input id = "chatButtonLobby" placeholder="Message" onfocus="this.value=''" style="float: left;" size="30">
+                    <button onclick="sendLobbyChat()" style="height: 22px; text-align: top">send</button> <br /> <br />
+                </div>
+
+            <div class="box" >
+                <center>
+                <h2 class="box-group">List of Rooms</h2>
+                <br>
+                <table class ="table table-room">
+                    <tr class="info">
+                    </tr>
+                    <tbody id = "rmTable"></tbody>
+                </table>
+                </center>
+                <button id ="createRoom" class = "button button 5" onclick="createRoom()" style= "float:right" >Create Room</button>
+                <button id = "back" class="button button3" onclick="backToNameFunction()" style = "float:right">back</button>
+
+                </div>
+            
             <center>
-            <h2 class="box-group">List of Rooms</h2>
             <br>
-            <table class ="table table-room">
-                <tr class="info">
-                </tr>
-                <tbody id = "rmTable"></tbody>
-            </table>
-            <button id ="createRoom" class = "button button 5" onclick="createRoom()" style= "float:right" >Create Room</button>
+            <br /><br /><br /><br />
+            <button id ="rmButton" class ="button button 2" onclick="roomFunction()" style = "float:right" disabled>room page</button>
+            <br /><br /><br /><br />
             </center>
-            </div>
-        
-        <center>
-        <br>
-        <br /><br /><br /><br />
-        <button id ="rmButton" class ="button button 2" onclick="roomFunction()" style = "float:right" disabled>room page</button>
-        <br /><br /><br /><br />
-        <button class="button button3" onclick="backToNameFunction()" style = "float:right">back</button>
-        </center>
+        </div>
     </div>
 <!-- ///////////////////////////////////////////////////////////////// -->
     <div id="roomPage">
