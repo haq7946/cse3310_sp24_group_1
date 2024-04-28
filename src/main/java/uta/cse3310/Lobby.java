@@ -38,7 +38,6 @@ public class Lobby
     // i'm pretty sure - AE
     public String serverResponse;  //This gives us a response when players join the room
     public String exitResponse;
-    
     public Lobby() 
     {
         gameList = new ArrayList<Game>();
@@ -196,16 +195,16 @@ public class Lobby
                 Player P = new Player(S.player.username, S.victores);
                 for(int i = 0; i < gameList.size(); i++)
                 {   
-                    //If the player left in the game, remove them
+                    //If the player left the game, remove them, delete the room and the corresponding gamemaker if no one is in there when they leave
                     if(S.iidd.equals(gameList.get(i).gameID))
 
                     {
                         gameList.get(i).removePlayer(S.player);
-                    }
-                    //Delete the room if no one is in there when someone leaves
-                    if(gameList.get(i).numberOfPlayers == 0)
-                    {
-                        gameList.remove(i);
+                        if(gameList.get(i).numberOfPlayers == 0)
+                        {
+                            gameList.remove(i);
+                            gameMakers.remove(i);
+                        }
                     }
                 }
                 //Bring them back to the lobby and remove them from the room
@@ -338,60 +337,52 @@ public class Lobby
             }
             else if(S.button.compareTo("victoryCheck") == 0)
             {
-                Player P = new Player(S.player.username, S.victores);
                 System.out.println("Received victorycheck");
                 for(int i = 0; i < gameList.size(); i++)
                 {
                     if(S.iidd.compareTo(gameList.get(i).gameID) == 0)
                     {
-                    if(gameList.get(i).gameResponse.equals("end"))
-                    {
-                        System.out.println("PREVENETED DUPLICATE REQUEST");
-                    }
-                    for(int j = 0; j < gameList.get(i).playerList.size(); j++)
-                    {
-                        System.out.println("BEFORE: player " + gameList.get(i).playerList.get(j).username + "now has " + gameList.get(i).playerList.get(j).numberOfVictores + " victories");
-                    }
-                    if(!gameList.get(i).gameResponse.equals("end")) //Need this condition to prevent multiple requests to add victories
-                    {
-                        //Using an arraylist to check for potential multiple winners (No sudden death, too much work)
-                        gameList.get(i).winners.clear();
-                        gameList.get(i).winners.add(gameList.get(i).playerList.get(0)); //Putting first player in by default
-                        for(int j = 1; j < gameList.get(i).playerList.size(); j++)
+                        if(gameList.get(i).playerList.get(0).username.equals(S.player.username)) //Need this condition to prevent multiple requests to add victories; just doing the first player
                         {
-                            if(gameList.get(i).winners.get(0).score < gameList.get(i).playerList.get(j).score)//If current winner(s) are less than next player
+                            System.out.println("CHECK PASSED: " + gameList.get(i).playerList.get(0).username + " AND " + S.player.username + "THE SAME");
+                            for(int j = 0; j < gameList.get(i).playerList.size(); j++)
                             {
-                                gameList.get(i).winners.clear();                                
-                                gameList.get(i).winners.add(gameList.get(i).playerList.get(j));
+                                System.out.println("BEFORE: player " + gameList.get(i).playerList.get(j).username + "now has " + gameList.get(i).playerList.get(j).numberOfVictores + " victories");
                             }
-                            if(gameList.get(i).winners.get(0).score == gameList.get(i).playerList.get(j).score && !gameList.get(i).winners.get(0).username.equals(gameList.get(i).playerList.get(j).username)) //If current winner(s) are equal and winner then next player
+                            //Using an arraylist to check for potential multiple winners (No sudden death, too much work)
+                            gameList.get(i).winners.clear();
+                            gameList.get(i).winners.add(gameList.get(i).playerList.get(0)); //Putting first player in by default
+                            for(int j = 1; j < gameList.get(i).playerList.size(); j++)
                             {
-                                gameList.get(i).winners.add(gameList.get(i).playerList.get(j)); //Add the equally winning player in
-                            } //Else don't add any player since winners are already higher
+                                if(gameList.get(i).winners.get(0).score < gameList.get(i).playerList.get(j).score)//If current winner(s) are less than next player
+                                {
+                                    gameList.get(i).winners.clear();                                
+                                    gameList.get(i).winners.add(gameList.get(i).playerList.get(j));
+                                }
+                                if(gameList.get(i).winners.get(0).score == gameList.get(i).playerList.get(j).score && !gameList.get(i).winners.get(0).username.equals(gameList.get(i).playerList.get(j).username)) //If current winner(s) are equal and winner then next player
+                                {
+                                    gameList.get(i).winners.add(gameList.get(i).playerList.get(j)); //Add the equally winning player in
+                                } //Else don't add any player since winners are already higher
+                            }
+                            for(int j = 0; j < gameList.get(i).winners.size(); j++)
+                            {
+                                System.out.println("Winner " + j + " is" + gameList.get(i).winners.get(j).username);
+                                gameList.get(i).winners.get(j).numberOfVictores++;
+                                System.out.println("AFTER: winner " + gameList.get(i).winners.get(j).username + "now has " + gameList.get(i).winners.get(j).numberOfVictores + " victories");
+                            }
+                            for(int j = 0; j < gameList.get(i).winners.size(); j++)
+                            {
+                                for(int k = 0; k < playerList.size(); k++)
+                                {
+                                    if(playerList.get(k).username.equals(gameList.get(i).winners.get(j).username)) //Iterate through the winners list, if the names match, update leaderboard with the +1
+                                    {
+                                        playerList.get(k).numberOfVictores = gameList.get(i).winners.get(j).numberOfVictores; //Update leaderboard with current scores of clients
+                                        System.out.println("number of victories of player " + playerList.get(j).username + " updated with " + gameList.get(i).winners.get(j).numberOfVictores);
+                                    }                            
+                                }
+                            }       
                         }
-                        for(int j = 0; j < gameList.get(i).winners.size(); j++)
-                        {
-                            System.out.println("Winner " + j + " is" + gameList.get(i).winners.get(j).username);
-                            gameList.get(i).winners.get(j).numberOfVictores++;
-                            System.out.println("AFTER: winner " + gameList.get(i).winners.get(j).username + "now has " + gameList.get(i).winners.get(j).numberOfVictores + " victories");
-                        }
-
-                    }
-                    for(int j = 0; j < gameList.get(i).winners.size(); j++)
-                    {
-                        if(P.username.equals(gameList.get(i).winners.get(j).username)) //Iterate through the winners list, if the names match, update player with the +1
-                        {
-                            P.numberOfVictores = gameList.get(i).winners.get(j).numberOfVictores; 
-                        }
-                    }   
-                    for(int j = 0; j < playerList.size(); j++)
-                    {
-                        if(P.username.equals(playerList.get(j).username)) //Now iterate through the winners list, if the names match, slap it on leaderboard
-                        {
-                            playerList.get(j).numberOfVictores = P.numberOfVictores; //Update leaderboard with current scores of clients
-                            System.out.println("number of victories of player " + playerList.get(j).username + " updated with " + P.numberOfVictores);
-                        }
-                    }     
+ 
                     Collections.sort(playerList, new Comparator<Player>() { //Also organize the leaderboard while you're at it
                         @Override
                         public int compare(Player p1, Player p2) {

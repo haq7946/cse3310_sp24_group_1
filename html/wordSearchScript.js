@@ -106,8 +106,8 @@ connection.onmessage = function (evt) {
             if (P.username === obj.gameMakers[i].username) {
                 //startButton.style.display = 'block';
             }
-            fillScoreboard(obj.gameList[i].playerList);
             if (P.gameId === obj.gameList[i].gameID) {
+                fillScoreboard(obj.gameList[i].playerList);
                 updateGameChat(obj.gameList[i]);
                 document.getElementById("winners").style.display = 'none';
                 console.log(obj.gameList[i].gameResponse);
@@ -158,6 +158,7 @@ connection.onmessage = function (evt) {
                             S.player = P;
                             S.iidd = P.gameId;
                             S.victores = P.numberOfVictores;
+                            console.log(P.username + "HAS A VICTORY SCORE OF " + P.numberOfVictores);
                             timer = 0;  //once the game ends
                             connection.send(JSON.stringify(S));
                             clearInterval(intervalid);
@@ -194,6 +195,13 @@ connection.onmessage = function (evt) {
                     document.getElementById("winners").style.display = "block";
                     document.getElementById("startGameButton").style.display = 'block';
                     fillWinners(obj.gameList[i].winners);
+                    for(let j = 0; j < obj.gameList[i].winners.length; j++) //Updating P.numberofvictories to have updated victory count if applicable
+                    {
+                        if(P.username === obj.gameList[i].winners[j].username)
+                        {
+                            P.numberOfVictores = obj.gameList[i].winners[j].numberOfVictores;
+                        }
+                    }
                     gameEnded = 1; //Game has ended
                 }
                 if(obj.gameList[i].boardButtonMessage === "updateBoard")
