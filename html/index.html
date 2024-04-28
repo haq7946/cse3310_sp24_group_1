@@ -35,13 +35,19 @@
         <a href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ">
         <img src="https://i.ytimg.com/vi/NRQfmptejC8/maxresdefault.jpg" alt = "Heehee">
         </a>
+        <a href ="https://www.youtube.com/watch?v=oZ6iiRrz1SY">
+        <img src = "https://badapple.gay/wp-content/uploads/2022/06/its-morbin-time-e1654420386295.jpeg" alt = "Morbius">
+        </a>
+        <a href = "https://genshin.hoyoverse.com/en/">
+        <img src = "https://cdn1.epicgames.com/salesEvent/salesEvent/EGS_GenshinImpact_miHoYoLimited_S1_2560x1440-91c6cd7312cc2647c3ebccca10f30399" alt = "Genshin Impact">    
+        </a>
         <div id="ui">
             <center><label style="color:Tomato;background-color:yellow;display:block;font-size:60px;">The World Search
                 Game</label></center>
 
                 <div id ="leader_scores"> 
                     <h2 id="bazinga">Leaderboard</h2>
-                    <table class ="scores leaderboard">
+                    <table class ="scores_leaderboard">
                         <tbody id ="leaderboard" ></tbody>  
                         <!-- We'll add scores here dynamically -->
                     </table>
@@ -62,13 +68,15 @@
 
             <div class="box" >
                 <center>
-                <h2 class="box-group">List of Rooms</h2>
-                <br>
-                <table class ="table table-room">
-                    <tr class="info">
-                    </tr>
-                    <tbody id = "rmTable"></tbody>
-                </table>
+                    <h2 class="box-group">List of Rooms</h2>
+                    <br>
+                    <div id="overflow">
+                        <table class ="table-room">
+                            <tr class="info">
+                            </tr>
+                            <tbody id = "rmTable"></tbody>
+                        </table>
+                    </div>
                 </center>
                 <button id ="createRoom" class = "button button 5" onclick="createRoom()" style= "float:right" >Create Room</button>
                 <button id = "back" class="button button3" onclick="backToNameFunction()" style = "float:right">back</button>
@@ -79,7 +87,8 @@
             <br>
             <br /><br /><br /><br />
             <button id ="rmButton" class ="button button 2" onclick="roomFunction()" style = "float:right" disabled>room page</button>
-            <br /><br /><br /><br />
+            <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+            <p id = >gamer</p>
             </center>
         </div>
     </div>
@@ -112,13 +121,13 @@
 <label id="scoreBoard" align="right" class="box-group">Score Board</label>
 -->
                 <center>
-                    <h2 class="box-group">Score Board</h2>
+                    <h2 class="box-group1">Score Board</h2>
                     <table class = "score">
                         <tbody id ="scoreboard" ></tbody>  
                             
                     </table>    
 </textarea>
-                    <h2>Room Chat</h2>
+                    <h2 class="box-group1">Room Chat</h2>
                     <br>
                     <table class ="chatLob chatting">
                         <tbody id ="gamechatting" ></tbody>  
@@ -128,7 +137,7 @@
                     <br /><input id="roomChatBox" placeholder="Enter Message" style="height: 10px;" onfocus="this.value=''"> <br /> <br />
                     <button class = "smallbutton button 4" onclick="sendChat()">send</button> <br /> <br />
                     <div id ="word bank"> 
-                        <h2>WordBank</h2>
+                        <h2 class="box-group1">WordBank</h2>
                         <table class ="wordbank">
                             <tbody id ="bank" ></tbody>  
                             
