@@ -68,7 +68,6 @@ console.log(connection);
 
 connection.onopen = function (evt) {    //open function
     console.log("open");
-    
 }
 connection.onclose = function (evt) {   //close function
     console.log("close");
@@ -144,12 +143,14 @@ connection.onmessage = function (evt) {
 
                         gameEnded = 0;
                     }
-
                     fillBoard(obj.gameList[i].board);
                     fillWordBank(obj.gameList[i].bank);
                     var countdown = obj.gameList[i].clock.countdown;
                     if(timer == 0)
                     {
+                        music7.pause();
+                        music7.currentTime = 0;
+                        music8.play();
                         var intervalid = setInterval(function(){displayTimer(countdown); countdown--;
                             if(countdown == -1){
                             S = new ServerEvent();
@@ -200,9 +201,20 @@ connection.onmessage = function (evt) {
                         if(P.username === obj.gameList[i].winners[j].username)
                         {
                             P.numberOfVictores = obj.gameList[i].winners[j].numberOfVictores;
+                            if(gameEnded === 0)
+                            {
+                                music5.play(); //Winner -Bryan (You are gamer)
+                                console.log("playing music");
+                                break;
+                            }
+                        }
+                        if(gameEnded === 0 && j === obj.gameList[i].winners.length-1 && P.username !== obj.gameList[i].winners[j].username)
+                        {
+                            music6.play(); //Loser -Bryan (Jk you tried your best)
                         }
                     }
-                    gameEnded = 1; //Game has ended
+                    console.log("game ended haha");
+                    gameEnded = 1; //Game has ended //Duplicated in fillwinners leaving as comment just in case
                 }
                 if(obj.gameList[i].boardButtonMessage === "updateBoard")
                 {
@@ -256,6 +268,15 @@ var namePage = document.getElementById("namePage"); //Main page
 var lobbyPage = document.getElementById("lobbyPage"); //Lobby Page
 var roomPage = document.getElementById("roomPage"); //Game Page
 const gameClock = document.querySelector(".gameClockValue"); //Game clock
+//ALL THE MUSIC
+var music1 = new Audio("amogus.mp3");
+var music2 = new Audio("osu.mp3");
+var music3 = new Audio("discord.mp3");
+var music4 = new Audio("click.mp3");
+var music5 = new Audio("victory.mp3");
+var music6 = new Audio("defeat.mp3");
+var music7 = new Audio("lobby.mp3");
+var music8 = new Audio("gamestart.mp3");
 ////////////////////////////////////////////////////
 document.getElementById("rmButton").style.display = 'none'; ///Room button
 var startButton = document.getElementById("startGameButton"); //Start game button
@@ -300,6 +321,11 @@ function nameFunction() //This is basically what happens when we press submit (T
         console.log(JSON.stringify(S));       //Showing what we sent into the console
 
         display = 1;  //navigates user to next page    //This is a variable that lets me change the page specifically hide and show pages
+        music1.addEventListener('ended', function() {
+            this.currentTime = 0;
+            this.play();
+        }, false);
+        music1.play();
         hideShow();   //Function that hides and shows pages
     }
     else   //Show an error that user didn't put the name
@@ -322,6 +348,7 @@ function sendChat()
     S.iidd = P.gameId;
     S.message = chat.value;
     S.victores = P.numberOfVictores;
+    music3.play();
     connection.send(JSON.stringify(S));
     console.log(JSON.stringify(S));
 }
@@ -336,6 +363,8 @@ function backToNameFunction() { //Navigate to name page
     createRoomButton.style.display = 'block';
     connection.send(JSON.stringify(S));  //Send 
     console.log("Message sent: " + JSON.stringify(S));
+    music1.pause();
+    music1.currentTime = 0;
     display = 0;   //Change the global variable
     hideShow();    //Change the page
 }
@@ -354,7 +383,16 @@ function backToLobbyFunction() { //Kicks players out of the game
     console.log(JSON.stringify(S));
     S.button = "Show Leaderboard";
     S.event = "leaderboardEvent";
+    music1.addEventListener('ended', function() {
+        this.currentTime = 0;
+        this.play();
+    }, false);
+    music1.play();
     connection.send(JSON.stringify(S));
+    music7.pause();
+    music7.currentTime = 0;
+    music8.pause();
+    music8.currentTime = 0;
     hideShow();
     destroyWordBank();
     
@@ -381,6 +419,10 @@ function roomFunction(number) { //Navigate to room page  //Go to room from lobby
     S.occurrence = number;
     connection.send(JSON.stringify(S));//Send player status that player is ready
     console.log(JSON.stringify(S));
+    music1.pause();
+    music1.currentTime = 0;
+    music2.play();
+    music7.play();
     hideShow();
 }
 
@@ -523,6 +565,7 @@ function sendLobbyChat()
     S.player = P;
     S.message = chat.value;
     S.victores = P.numberOfVictores;
+    music3.play();
     connection.send(JSON.stringify(S));
     console.log(JSON.stringify(S));
 }
@@ -703,7 +746,7 @@ function displayTimer(countdown) //Formatting timer
      }
 
      timer = 0; //reset the timer
-     gameEnded = 1; //game has ended
+     /*gameEnded = 1; //game has ended*/
  }
 
 function emptyBoard() {
@@ -797,6 +840,7 @@ function change_color(id) {
     S.victores = P.numberOfVictores;
     S.x = x;
     S.y = y;
+    music4.play();
     connection.send(JSON.stringify(S));
     console.log(JSON.stringify(S));
 }
