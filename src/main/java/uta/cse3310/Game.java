@@ -64,7 +64,7 @@ public class Game
         bank = new WordBank();
         board = new Board();
         board.initializeBoard(bank);
-        clock = new Clock(5);
+        clock = new Clock(300);
         //board.printBoardArray();
         //System.out.println(bank);
         //System.out.println(board);
