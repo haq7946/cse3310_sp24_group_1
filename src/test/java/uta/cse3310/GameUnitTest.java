@@ -35,20 +35,19 @@ public class GameUnitTest extends TestCase {
         game.removePlayer(player);
         assertEquals(3, game.getNumberOfPlayers());
     }
-    //Did the game initialize everyone's score to 0, checking conditions
+    //Did the game make it unable to join
     public void testStartGame() {
-        player.score = 10;
         game.addPlayer(player.username, Integer.toString(player.numberOfVictores));
         game.startGame();
         assertFalse(game.isAvailableToJoin());
     }
-
+    //Is the word in the wordbank
     public void testCheckValidWord() {
         bank.getWordBank().add(new Word("gamer"));
         assertTrue(game.checkValidWord("gamer", bank));
         assertFalse(game.checkValidWord("gamerr", bank));
     }
-
+    //Does it search and set the availability correctly
     public void testCrossOutWord() {
         bank.getWordBank().add(new Word("gamer"));
         bank.getWordBank().add(new Word("gamerr"));
@@ -57,6 +56,30 @@ public class GameUnitTest extends TestCase {
         assertTrue(bank.getWordBank().get(0).getAvailability());
         assertFalse(bank.getWordBank().get(1).getAvailability());
         assertTrue(bank.getWordBank().get(2).getAvailability());
+    }
+    //Are we selecting the words from the board correctly
+    public void testSelectWord(){
+        game.startGame();
+        game.board.boardArray[0][0] = 'a';
+        game.board.boardArray[0][1] = 'b';
+        game.board.boardArray[1][0] = 'c';
+        game.board.boardArray[1][1] = 'd';
+        //You selected a tile but its not really anything so make it null
+        assertEquals("", game.selectWord(0, 0, 0, 0)); 
+        //All the orientations
+        assertEquals("ab", game.selectWord(0, 0, 1, 0));
+        assertEquals("ac", game.selectWord(0, 0, 0, 1));
+        assertEquals("ad", game.selectWord(0, 0, 1, 1));
+        assertEquals("ca", game.selectWord(0, 1, 0, 0));
+        assertEquals("cb", game.selectWord(0, 1, 1, 0));
+    }
+    //Are we recognizing coordinate points correctly
+    public void testCheckOrientation(){
+        assertEquals("vertical", game.checkOrientation(5, 3, 5, 1));
+        assertEquals("horizontal", game.checkOrientation(1, 5, 3, 5));
+        assertEquals("diagonal", game.checkOrientation(1, 1, 2, 2));
+        assertEquals("diagonal", game.checkOrientation(2, 2, 1, 1));
+        assertEquals("", game.checkOrientation(500, 0, 1, 1));
     }
     //Testing old check winner condition
     //Remember player object inside/outside game is NOT the same
