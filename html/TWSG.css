@@ -79,11 +79,13 @@ span {
   cursor: pointer;
 }
 
-#leaderboard{
-  float:left;
+.scores_leaderboard{
   font-size: 15px;
-  text-align: center;
-  background-color:#008CBA;
+  width: 300px;
+}
+
+#overflow2{
+  background-color: rgb(1, 133, 67);
   height: 300px;
   width: 300px;
   max-height: 300px;
@@ -94,7 +96,6 @@ span {
   left:5%;
   top:55%;
 }
-
 .wordbank{
   background-color:#ba000f;
   font-size: 15px;

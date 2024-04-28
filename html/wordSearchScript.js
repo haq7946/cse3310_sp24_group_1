@@ -487,8 +487,25 @@ function updateLeaderBoard(evt) {  //This function builds leaderboard
     }
     for (var i = 0; i < obj.playerList.length; i++)  //Iterate through playerlist to create
     {
+        let color = "";
+        if(i === 0)
+        {
+            color = "gold";
+        }
+        else if(i === 1)
+        {
+            color = "silver";
+        }
+        else if(i === 2)
+        {
+            color = "brown";
+        }
+        else
+        {
+            color = "black";
+        }
         var row = `<tr>
-                        <td>${obj.playerList[i].username}  ${obj.playerList[i].numberOfVictores}<td>
+                        <td style = "color: ${color};">${obj.playerList[i].username}  ${obj.playerList[i].numberOfVictores}</td>
                   <tr />`
         leaderboard.innerHTML += row;
     }
