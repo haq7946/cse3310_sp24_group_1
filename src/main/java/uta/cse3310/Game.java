@@ -153,7 +153,7 @@ public class Game
             }
             return wordToBeReturned;
         }
-        else if ((boardX_1 - boardX_2) == (boardY_1 - boardY_2)) //word is diagonal
+        else if ((boardX_1 - boardX_2) == Math.abs(boardY_1 - boardY_2)) //word is diagonal
         {
             if (boardY_1 > boardY_2) //word is diagonal up
             {
