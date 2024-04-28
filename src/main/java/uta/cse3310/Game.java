@@ -64,7 +64,7 @@ public class Game
         bank = new WordBank();
         board = new Board();
         board.initializeBoard(bank);
-        clock = new Clock(300);
+        clock = new Clock(30);
         //board.printBoardArray();
         //System.out.println(bank);
         //System.out.println(board);
@@ -153,7 +153,7 @@ public class Game
             }
             return wordToBeReturned;
         }
-        else if ((boardX_1 - boardX_2) == (boardY_1 - boardY_2)) //word is diagonal
+        else if (Math.abs(boardX_1 - boardX_2) == Math.abs(boardY_1 - boardY_2)) //word is diagonal
         {
             if (boardY_1 > boardY_2) //word is diagonal up
             {
@@ -191,7 +191,7 @@ public class Game
         {
             return "horizontal";
         }
-        else if ((boardX_1 - boardX_2) == (boardY_1 - boardY_2)) //word is diagonal
+        else if (Math.abs(boardX_1 - boardX_2) == Math.abs(boardY_1 - boardY_2)) //word is diagonal
         {
             
            return "diagonal";
@@ -219,7 +219,8 @@ public class Game
         }
         return false;
     }
-
+    //Note that this method isn't being used but might come in handy later
+    //Reason is because doesn't check for multiple winners
     public Player checkWinner()
     {
         Player playerMax = playerList.get(0);
