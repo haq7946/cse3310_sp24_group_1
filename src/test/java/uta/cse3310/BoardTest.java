@@ -40,7 +40,6 @@ public class BoardTest extends TestCase
     public void testOrientationValues()
     {
         Board b = new Board();
-        ArrayList<String> wordsFromFile = new ArrayList<String>();
         //Initalize board and wordbank 50 times and see if orientation values are appropriate each time
         for(int e = 0; e < 50; e++)
         {
@@ -57,7 +56,6 @@ public class BoardTest extends TestCase
     public void testBoardFormationTime()
     {
         Board b = new Board();
-        ArrayList<String> wordsFromFile = new ArrayList<String>();
         //Initalize board and wordbank 50 times and see if timer values are appropriate each time
         for(int e = 0; e < 50; e++)
         {
@@ -70,8 +68,7 @@ public class BoardTest extends TestCase
     public void testDensity()
     {
         Board b = new Board();
-        ArrayList<String> wordsFromFile = new ArrayList<String>();
-        //Initalize board and wordbank 5 times and see if density value is appropriate each time
+        //Initalize board and wordbank 3 times and see if density value is appropriate each time
         double density;
         WordBank wordBank;
         for(int e = 0; e < 5; e++)
@@ -93,5 +90,21 @@ public class BoardTest extends TestCase
             assertTrue(density + 0.001 > b.getDensity());
         }
     }
-
+    public void testLinked()
+    {
+        Board b = new Board();
+        WordBank wordBank;
+        //Initalize board and wordbank 3 times and see if linked value is appropriate each time
+        double linked;
+        for(int e = 0; e < 3; e++)
+        {
+            linked = 0;
+            wordBank = new WordBank();
+            b.initializeBoard(wordBank);
+            //I should be counting the number of linked words correctly
+            assertEquals(b.getLinkedWordFrequency(), b.getLinkedWords().size());
+            //Linked words should be > 10
+            assertTrue(b.getLinkedWordFrequency() > 10);
+        }
+    }
 }

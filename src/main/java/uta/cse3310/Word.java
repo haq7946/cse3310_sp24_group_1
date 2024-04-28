@@ -43,7 +43,7 @@ public class Word
             default:
                 orient = Orientation.INVALID;
         }
-        value = random.nextInt(5);
+        value = random.nextInt(4);
         if(value == 0)
         {
             linked = true;

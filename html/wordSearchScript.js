@@ -145,6 +145,7 @@ connection.onmessage = function (evt) {
                     }
                     fillBoard(obj.gameList[i].board);
                     fillWordBank(obj.gameList[i].bank);
+                    fillBoardInformation(obj.gameList[i].board);
                     var countdown = obj.gameList[i].clock.countdown;
                     if(timer == 0)
                     {
@@ -685,6 +686,22 @@ function fillBoard(board) {
             something = something + 1;
         }
     }
+}
+
+function fillBoardInformation(board)
+{
+    let info = document.getElementById("info");
+    let infoString = "";
+    infoString += "Density: " + board.density + `<br>`;
+    infoString += "Horizontal Orientation: " + board.horizontalOrientation + `<br>`;
+    infoString += "VerticalUp Orientation: " + board.verticalUpOrientation + `<br>`;
+    infoString += "VerticalDown Orientation: " + board.verticalDownOrientation + `<br>`;
+    infoString += "DiagonalUp Orientation: " + board.diagonalUpOrientation + `<br>`;
+    infoString += "DiagonalDown Orientation: " + board.diagonalDownOrientation + `<br>`;
+    infoString += "Random Letter Frequency (A-Z): " + board.randomLetterFrequency + `<br>`;
+    infoString += "Board Formation Time: " + board.boardFormationTime + " ms" + `<br>`;
+    infoString += "Linked Words: " + board.linkedWordFrequency + `<br>`;
+    info.innerHTML = infoString;
 }
 function fillWordBank(wordbank)
 {

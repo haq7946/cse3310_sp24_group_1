@@ -23,14 +23,14 @@ public class Board
     private int xCoordinate;
     private int yCoordinate;
     private Word[] wordList;
-    private double density;
-    private double horizontalOrientation;
-    private double verticalUpOrientation;
-    private double verticalDownOrientation;
-    private double diagonalUpOrientation;
-    private double diagonalDownOrientation;
-    private int[] randomLetterFrequency;
-    private int linkedWordFrequency;
+    public double density;
+    public double horizontalOrientation;
+    public double verticalUpOrientation;
+    public double verticalDownOrientation;
+    public double diagonalUpOrientation;
+    public double diagonalDownOrientation;
+    public int[] randomLetterFrequency;
+    public int linkedWordFrequency;
     private ArrayList<Word> linkedWords;
     private double boardFormationTime;
     private int seed;
@@ -66,7 +66,14 @@ public class Board
     {
 
     }
-
+    public ArrayList<Word> getLinkedWords()
+    {
+        return linkedWords;
+    }
+    public int getLinkedWordFrequency()
+    {
+        return linkedWordFrequency;
+    }
     public int[] getRandomLetterFrequency()
     {
         return randomLetterFrequency;
@@ -99,7 +106,7 @@ public class Board
         return density;
     }
 
-    public static ArrayList<Word> addWordBank(Word word)
+    public ArrayList<Word> addWordBank(Word word)
     {
         return null;
     }
@@ -111,6 +118,7 @@ public class Board
         double volume = boardLength * boardWidth;
         double mass = 0;
         double calculatedDensity = 0;
+        linkedWords.clear();
         Arrays.fill(randomLetterFrequency, 0);
         //Intializing board to #'s to prepare for word input
         for(int i = 0; i < boardLength; i++)

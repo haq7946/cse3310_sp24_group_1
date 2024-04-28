@@ -320,10 +320,6 @@ public class Game
         return playerList;
     }
 
-    public void updateGame(GameEvent g)
-    {
-        
-    }
 
 
 }

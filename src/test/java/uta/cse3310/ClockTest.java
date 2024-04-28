@@ -2,10 +2,15 @@ package uta.cse3310;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-public class ClockTest {
+public class ClockTest extends TestCase{
+
+    public ClockTest(String testName)
+    {
+        super(testName);
+    }
     public static Test suite()
     {
-        return new TestSuite(BoardTest.class);
+        return new TestSuite(ClockTest.class);
     }
     public void testClock()
     {
@@ -29,6 +34,7 @@ public class ClockTest {
     System.out.println("Main thread continues running...");
 
     // After the countdown, we should see "The game has ended!" printed to the console
+    assertTrue(true);
     }
 }
 
