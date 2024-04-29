@@ -62,7 +62,16 @@ public class Game
     {
         isAvailableToJoin = false;
         bank = new WordBank();
-        board = new Board();
+        String stringSeed = System.getenv("TEST_GRID");
+        System.out.println("VALUE OF SEED IS : " + stringSeed);
+        if(stringSeed != null)
+        {
+            board = new Board(Integer.parseInt(stringSeed));
+        }
+        else
+        {
+            board = new Board();
+        }
         board.initializeBoard(bank);
         clock = new Clock(300);
         //board.printBoardArray();

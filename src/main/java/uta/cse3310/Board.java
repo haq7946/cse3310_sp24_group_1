@@ -113,7 +113,15 @@ public class Board
 
     public void initializeBoard(WordBank wordBank)
     {  
-        Random random = new Random();
+        Random random;
+        if(seed == -1)
+        {
+            random = new Random();
+        }
+        else
+        {
+            random = new Random(seed);
+        }
         double startTimer = System.currentTimeMillis();
         double volume = boardLength * boardWidth;
         double mass = 0;
@@ -148,7 +156,7 @@ public class Board
         //Placing words into the board
         while(calculatedDensity < density)
         {
-            mass += placeWord(wordBank, allWords);
+            mass += placeWord(wordBank, allWords, random);
             calculatedDensity = mass/volume;
         }
         //If space is still equal to # after placing words, fill it in with a random letter, increment that letter frequency for board information
@@ -172,9 +180,8 @@ public class Board
         boardFormationTime = endTimer - startTimer;
     }
 
-    public int placeWord(WordBank wordBank, ArrayList<String> wordsFromFile)
+    public int placeWord(WordBank wordBank, ArrayList<String> wordsFromFile, Random random)
     {
-        Random random = new Random();
         //Selecting random line number
         double lineNumber = random.nextInt(wordsFromFile.size());
         //Selecting word from that line number that will be placed in the board
@@ -263,9 +270,63 @@ public class Board
         }
         else //Seeded word chosen for testing
         {
-            placingWord = new Word(chosenWord, random.nextInt(5), random.nextInt(10));
+            placingWord = new Word(chosenWord, random.nextInt(5), random.nextInt(4));
+            if(placingWord.getLinked() == true && wordBank.getWordBank().size() != 0)
+            {
+                int index = random.nextInt(wordBank.getWordBank().size());
+                Word tempWord = wordBank.getWordBank().get(index);
+                //Save index of tempWord to change link status to true if word is accepted
+                indexOfLinkedWord = index;
+                boolean tempCheck = false;
+                int offset = 0;
+                for(int i = 0; i < tempWord.getLength(); i++)
+                {
+                    if(tempWord.getWord().substring(i,i+1).equals(placingWord.getWord().substring(0,1)))
+                    {
+                        tempCheck = true;
+                        offset = i;
+                        break;
+                    }
+                }
+                if(tempCheck == false)
+                {
+                    return 0;
+                }
+                else
+                {
+                    //Getting coordinates of linked letter
+                    switch(tempWord.getOrientation())
+                    {
+                        case HORIZONTAL:
+                            placingWord.setXCoordinate(tempWord.getXCoordinate() + offset);
+                            placingWord.setYCoordinate(tempWord.getYCoordinate());
+                            break;
+                        case VERTICALUP:
+                            placingWord.setXCoordinate(tempWord.getXCoordinate());
+                            placingWord.setYCoordinate(tempWord.getYCoordinate() + offset);
+                            break;
+                        case VERTICALDOWN:
+                            placingWord.setXCoordinate(tempWord.getXCoordinate());
+                            placingWord.setYCoordinate(tempWord.getYCoordinate() - offset);
+                            break;
+                        case DIAGONALUP:
+                            placingWord.setXCoordinate(tempWord.getXCoordinate() + offset);
+                            placingWord.setYCoordinate(tempWord.getYCoordinate() + offset);
+                            break;
+                        case DIAGONALDOWN:
+                            placingWord.setXCoordinate(tempWord.getXCoordinate() + offset);
+                            placingWord.setYCoordinate(tempWord.getYCoordinate() - offset);
+                            break;
+                        default:
+                            System.out.println("Something went wrong");
+                    }                   
+                }
+            }    
+            else
+            {
             placingWord.setXCoordinate(xCoordinate);
             placingWord.setYCoordinate(yCoordinate);
+            }
         }
         //Based on the orientation, use the x/y coordinate and move from there to fill in the board
         if(placingWord.getOrientation().name().equals("HORIZONTAL"))

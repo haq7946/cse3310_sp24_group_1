@@ -1,5 +1,6 @@
 package uta.cse3310;
 import java.util.ArrayList;
+import java.util.Random;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -18,23 +19,34 @@ public class BoardTest extends TestCase
 
     public void testTooLong()
     {
+        Random random = new Random();
         Board b = new Board();
         ArrayList<String> wordsFromFile = new ArrayList<String>();
         WordBank wordBank = new WordBank();
         //Word should not fit in the grid!
         wordsFromFile.add("penispenispenispenispenispenispenispenispenispeniss");
-        assertEquals(0, b.placeWord(wordBank, wordsFromFile));
+        assertEquals(0, b.placeWord(wordBank, wordsFromFile, random));
 
     }
 
     public void testTooShort()
     {
+        Random random = new Random();
         Board b = new Board();
         ArrayList<String> wordsFromFile = new ArrayList<String>();
         WordBank wordBank = new WordBank();
         //Word is too short!
         wordsFromFile.add("pen");
-        assertEquals(0, b.placeWord(wordBank, wordsFromFile));
+        assertEquals(0, b.placeWord(wordBank, wordsFromFile, random));
+    }
+
+    public void testSeed()
+    {
+        Board b = new Board(10);
+        Board b2 = new Board(10);
+        assertEquals(b.getLinkedWordFrequency(), b2.getLinkedWordFrequency());
+        assertEquals(b.density, b2.density);
+        assertEquals(b.horizontalOrientation, b2.horizontalOrientation);
     }
 
     public void testOrientationValues()
