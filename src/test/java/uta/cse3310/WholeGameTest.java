@@ -224,6 +224,192 @@ extends TestCase
         else
         {
             System.out.println("Environmental variable is not set for testing. Exit");
+            
+        }
+
+        if(env_variable != null)
+        if(env_variable.compareTo("2") == 0)
+        {
+            //Board has been initialized
+            //Game has started
+            //environmental_variable is 2 //aka seed is 2 //Refer to seed document to take a look at the board
+
+            //Player one selects a word // The word is heaven (18, 0) (23, 0) //firstClick
+            S = new ServerEvent("", "", null, 0, "", "", "");
+            S.player = lobby.playerList.get(0);
+            S.button = "boardClick";
+            S.event = "gameEvent";
+            S.message = "h"; //first letter clicked is h
+            S.iidd = lobby.playerList.get(0).iD;
+            S.victores = Integer.toString(player1.numberOfVictores);
+            S.x = 18;
+            S.y = 0;
+
+            //update the lobby state to process the first click
+            lobby.updateLobby(S);
+
+            //Player one is still selcting the word heaven // secondClick
+            S = new ServerEvent("", "", null, 0, "", "", "");
+            S.player = lobby.playerList.get(0);
+            S.button = "boardClick";
+            S.event = "gameEvent";
+            S.message = "n"; //first letter clicked is h
+            S.iidd = lobby.playerList.get(0).iD;
+            S.victores = Integer.toString(player1.numberOfVictores);
+            S.x = 23;
+            S.y = 0;
+
+            //update the lobby state
+            lobby.updateLobby(S);
+
+            //make sure we've selected the word heaven
+            assertEquals("updateBoard", lobby.gameList.get(0).boardButtonMessage);
+            assertEquals("horizontal", lobby.gameList.get(0).checkOrientation(18, 0, 23, 0));
+            assertEquals("heaven", lobby.gameList.get(0).selectWord(18, 0, 23, 0));
+            System.out.println("HORIZONTAL WORD TEST: PASSED");
+
+
+            //Player 2 selects a word // The word is martial (1, 2) (1, 8) //firstClick
+            S = new ServerEvent("", "", null, 0, "", "", "");
+            S.player = lobby.playerList.get(1);
+            S.button = "boardClick";
+            S.event = "gameEvent";
+            S.message = "m"; //first letter clicked is h
+            S.iidd = lobby.playerList.get(1).iD;
+            S.victores = Integer.toString(player2.numberOfVictores);
+            S.x = 1;
+            S.y = 2;
+
+            //update the lobby state
+            lobby.updateLobby(S);
+
+            S = new ServerEvent("", "", null, 0, "", "", "");
+            S.player = lobby.playerList.get(1);
+            S.button = "boardClick";
+            S.event = "gameEvent";
+            S.message = "l"; //first letter clicked is h
+            S.iidd = lobby.playerList.get(1).iD;
+            S.victores = Integer.toString(player2.numberOfVictores);
+            S.x = 1;
+            S.y = 8;
+
+            //update the lobby state
+            lobby.updateLobby(S);
+
+            //Check if the word selected is martial //vertical
+            //make sure we've selected the word heaven
+            assertEquals("updateBoard", lobby.gameList.get(0).boardButtonMessage);
+            assertEquals("vertical", lobby.gameList.get(0).checkOrientation(1, 2, 1, 8));
+            assertEquals("martial", lobby.gameList.get(0).selectWord(1, 2, 1, 8));
+            System.out.println("VERTICAL WORD TEST: PASSED");
+
+
+            //PLayer 4 selects a word //agricultural (4, 15) (4, 4) //first Click //Vertical up
+            S = new ServerEvent("", "", null, 0, "", "", "");
+            S.player = lobby.playerList.get(2);
+            S.button = "boardClick";
+            S.event = "gameEvent";
+            S.message = "a"; //first letter clicked is a
+            S.iidd = lobby.playerList.get(2).iD;
+            S.victores = Integer.toString(player4.numberOfVictores);
+            S.x = 4;
+            S.y = 15;
+
+            //updaet the state of lobby
+            lobby.updateLobby(S);
+
+            //Second click for player 4
+            S = new ServerEvent("", "", null, 0, "", "", "");
+            S.player = lobby.playerList.get(2);
+            S.button = "boardClick";
+            S.event = "gameEvent";
+            S.message = "l"; //first letter clicked is l
+            S.iidd = lobby.playerList.get(2).iD;
+            S.victores = Integer.toString(player4.numberOfVictores);
+            S.x = 4;
+            S.y = 4;
+
+            //update the lobby state
+            lobby.updateLobby(S);
+
+            //check for agricultural
+            assertEquals("updateBoard", lobby.gameList.get(0).boardButtonMessage);
+            assertEquals("vertical", lobby.gameList.get(0).checkOrientation(4, 15, 4 ,4));
+            assertEquals("agricultural", lobby.gameList.get(0).selectWord(4, 15, 4, 4));
+            System.out.println("VERTICAL UP WORD TEST: PASSED");
+
+
+            //PLayer 1 selects a word //magic (16, 6) (20, 10) //first Click //diagonal down
+            S = new ServerEvent("", "", null, 0, "", "", "");
+            S.player = lobby.playerList.get(0);
+            S.button = "boardClick";
+            S.event = "gameEvent";
+            S.message = "m"; //first letter clicked is m
+            S.iidd = lobby.playerList.get(0).iD;
+            S.victores = Integer.toString(player1.numberOfVictores);
+            S.x = 16;
+            S.y = 6;
+
+            //update the lobby
+            lobby.updateLobby(S);
+
+            //Second click for player 1
+            S = new ServerEvent("", "", null, 0, "", "", "");
+            S.player = lobby.playerList.get(0);
+            S.button = "boardClick";
+            S.event = "gameEvent";
+            S.message = "c"; //first letter clicked is c
+            S.iidd = lobby.playerList.get(0).iD;
+            S.victores = Integer.toString(player1.numberOfVictores);
+            S.x = 20;
+            S.y = 10;
+
+            lobby.updateLobby(S);
+
+             //check for magic
+             assertEquals("updateBoard", lobby.gameList.get(0).boardButtonMessage);
+             assertEquals("diagonal", lobby.gameList.get(0).checkOrientation(16, 6, 20, 10));
+             assertEquals("magic", lobby.gameList.get(0).selectWord(16, 6, 20, 10));
+             System.out.println("DIAGONAL DOWN WORD TEST: PASSED");
+
+
+            // //PLayer 1 selects a word //crowd (24, 21) (28, 17) //first Click //diagonal up
+            S = new ServerEvent("", "", null, 0, "", "", "");
+            S.player = lobby.playerList.get(0);
+            S.button = "boardClick";
+            S.event = "gameEvent";
+            S.message = "c"; //first letter clicked is c
+            S.iidd = lobby.playerList.get(0).iD;
+            S.victores = Integer.toString(player1.numberOfVictores);
+            S.x = 24;
+            S.y = 21;
+
+            lobby.updateLobby(S);
+
+           //Second click for crowd by player 1
+            S = new ServerEvent("", "", null, 0, "", "", "");
+            S.player = lobby.playerList.get(0);
+            S.button = "boardClick";
+            S.event = "gameEvent";
+            S.message = "d"; //first letter clicked is m
+            S.iidd = lobby.playerList.get(0).iD;
+            S.victores = Integer.toString(player1.numberOfVictores);
+            S.x = 28;
+            S.y = 17;
+
+            lobby.updateLobby(S);
+
+            //check for crowd
+            assertEquals("updateBoard", lobby.gameList.get(0).boardButtonMessage);
+            assertEquals("diagonal", lobby.gameList.get(0).checkOrientation(24, 21, 28, 17));
+            assertEquals("crowd", lobby.gameList.get(0).selectWord(24, 21, 28, 17));
+            System.out.println("DIAGONAL UP WORD TEST: PASSED");
+
+
+
+            //The game ends here //We check for winners and check the exit conditions
+
+
         }
         
 
