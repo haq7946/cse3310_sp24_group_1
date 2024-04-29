@@ -30,8 +30,9 @@ extends TestCase
     }
 
     //Here we will test if players navigate through the lobby
-    public void testGameLobby()
+    public void testGame()
     {
+        ///////////////////////////////////Testing LOBBY
         //Adding the players in the lobby
         lobby.addPlayer(player1.username, Integer.toString(player1.numberOfVictores));
         assertEquals(1, lobby.playerList.size());
@@ -106,14 +107,12 @@ extends TestCase
 
         //Make sure the rooms are still up
         assertEquals(2, lobby.gameList.size());
+        //////////////////////////////////////LOBBY TEST ENDS HERE
+
+        //CONTINUE WITH GAME ROOM TESTING HERE
 
     }
 
-    //Here we will test if players can chat, interact, and play with each other in the room
-    public void testGameRoom()
-    {
-
-    }
 
 
 }
