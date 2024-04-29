@@ -38,6 +38,7 @@ public class Lobby
     // i'm pretty sure - AE
     public String serverResponse;  //This gives us a response when players join the room
     public String exitResponse;
+    public String version;
     public Lobby() 
     {
         gameList = new ArrayList<Game>();
@@ -45,10 +46,18 @@ public class Lobby
         playerList = new ArrayList<Player>();
         playerChat = new ArrayList<String>();
         leaderList = new ArrayList<Player>();
+        if(System.getenv("VERSION") != null)
+        {
+            version = System.getenv("VERSION");
+        }
+        else
+        {
+            version = "0";
+        }
         playerChat.add("Server started");
 
     }
-
+    
     public ArrayList<Game> getGamelist() // return the game list. probably never calling this method but w/e
     {
         return gameList;

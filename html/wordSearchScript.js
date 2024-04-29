@@ -58,7 +58,6 @@ class ServerEvent {
 
 
 
-
 var connection = null;   //Connection
 var serverUrl;           //url server
 serverUrl = "ws://" + window.location.hostname + ":9101";
@@ -86,7 +85,7 @@ connection.onmessage = function (evt) {
     updateLeaderBoard(evt);
     updateLobbyChat(evt);
     const obj = JSON.parse(msg);             //passing the server data into a variable //In this case it is lobby.java
-
+    fillVersion(obj.version);
     if (obj.serverResponse === "gameIdResponse") {
         //We display the game info that is passed from JSON
         for (var i = 0; i < obj.playerList.length; i++) {
@@ -100,7 +99,6 @@ connection.onmessage = function (evt) {
             ////////////////
 
         }
-
         for (var i = 0; i < obj.gameList.length; i++) {
             if (P.username === obj.gameMakers[i].username) {
                 //startButton.style.display = 'block';
@@ -303,7 +301,12 @@ function hideShow(evt)   //This function hides and shows pages
 
     }
 }
-
+function fillVersion(env)
+{
+    head = document.getElementById("head");
+    console.log("ENVIRONMENTAL VARIABLE IS " + env);
+    head.innerHTML = "The World Search Game v. " + env;
+}
 function nameFunction() //This is basically what happens when we press submit (This is submit button)
 {   //gets the username
     Player.username = document.querySelector("#nick");  //Get the ID from html     //This is for debug

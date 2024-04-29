@@ -88,6 +88,12 @@ public class LobbyTest extends TestCase
         //Checking after message sent
         assertEquals(2, lobby.gameList.get(0).playerChat.size());
         assertEquals("gamerr : Bing Chilling", lobby.gameList.get(0).playerChat.get(1));
+        //Removing Player 3 and self destructing room
+        assertEquals(1, lobby.gameList.size());
+        S.button = "backToLobbyButton";
+        S.event = "lobbyEvent";
+        lobby.updateLobby(S);
+        assertEquals(0, lobby.gameList.size());
     }
 
     public void testGameFunctions()
@@ -125,5 +131,18 @@ public class LobbyTest extends TestCase
         lobby.gameList.get(0).playerList.get(1).score++;
         lobby.updateLobby(S);
         assertEquals("gamerr", lobby.gameList.get(0).winners.get(0).username);
+        //Checking for multiple winners
+        lobby.gameList.get(0).playerList.get(0).score++;
+        lobby.updateLobby(S);
+        assertEquals(2, lobby.gameList.get(0).winners.size());
+        //Leaderboard should display correct people on leaderboard using Collection.sort() after sorting (just doing a mini manual sort here)
+        if(lobby.playerList.get(0).numberOfVictores < lobby.playerList.get(1).numberOfVictores)
+        {
+            Player P = lobby.playerList.get(0);
+            lobby.playerList.set(0, lobby.playerList.get(1));
+            lobby.playerList.set(1, P);
+        }
+        assertEquals("gamerr", lobby.playerList.get(0).username);
+        assertEquals("gamer", lobby.playerList.get(1).username);
     }
 }
