@@ -211,13 +211,21 @@ extends TestCase
         S.player = lobby.playerList.get(0); //Player 1 starts a game             
         S.iidd = lobby.playerList.get(0).iD;
         S.victores = Integer.toString(player1.numberOfVictores);
-
         //update the state of the lobby
         lobby.updateLobby(S);
 
         System.out.println("The game has started..");  //At this point the game has started (PLayer 1, Player 2, Player 4 are in the same room)
 
-
+        String env_variable = System.getenv("TEST_GRID");
+        if(env_variable != null)
+        {
+            System.out.println("Environmental variable is set for testing.");
+        }
+        else
+        {
+            System.out.println("Environmental variable is not set for testing. Exit");
+        }
+        
 
 
         //////////////////////////////////////////////GAME ROOM TESTING ENDS HERE
