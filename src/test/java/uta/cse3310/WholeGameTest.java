@@ -109,7 +109,84 @@ extends TestCase
         assertEquals(2, lobby.gameList.size());
         //////////////////////////////////////LOBBY TEST ENDS HERE
 
-        //CONTINUE WITH GAME ROOM TESTING HERE
+        //////////////////////////////////////////////CONTINUE WITH GAME ROOM TESTING HERE
+        //3 players decide to join player1's room
+        //Player 1 joins the rooms
+        S = new ServerEvent("", "", null, 0, "", "", "");
+        S.button = "joinRoomButton";  //What button was pressed
+        S.event = "lobbyEvent";       //what kind of event it was
+        S.player = lobby.playerList.get(0);            //who did it
+        S.victores = Integer.toString(player1.numberOfVictores); //
+        S.occurrence = 1; //Since we are joining player1's room
+
+        //update the state of the lobby
+        lobby.updateLobby(S);
+        System.out.println("Player 1 joined the room");
+
+        //Player 2 joins the rooms
+        S = new ServerEvent("", "", null, 0, "", "", "");
+        S.button = "joinRoomButton";  //What button was pressed
+        S.event = "lobbyEvent";       //what kind of event it was
+        S.player = lobby.playerList.get(1);            //who did it
+        S.victores = Integer.toString(player2.numberOfVictores); //
+        S.occurrence = 1; //Since we are joining player1's room
+
+        //update the state of the lobby
+        lobby.updateLobby(S);
+        System.out.println("Player 2 joined the room");
+
+        //Player 4 joins the rooms   //This is because player 3 left
+        S = new ServerEvent("", "", null, 0, "", "", "");
+        S.button = "joinRoomButton";  //What button was pressed
+        S.event = "lobbyEvent";       //what kind of event it was
+        S.player = lobby.playerList.get(2);            //who did it
+        S.victores = Integer.toString(player4.numberOfVictores); //
+        S.occurrence = 1; //Since we are joining player1's room
+
+        //update the state of the lobby
+        lobby.updateLobby(S);
+        System.out.println("Player 4 joined the room");
+
+        //Make sure all three players are in the same room
+        assertEquals(3, lobby.gameList.get(0).playerList.size());  //There should be 3 players in the room
+        assertEquals("Game created", lobby.gameList.get(0).playerChat.get(0)); //make sure the chat is active
+        //NOTE::::://All three players are in the room at this point
+
+
+        //Testing the gameChat here
+        S = new ServerEvent("", "", null, 0, "", "", "");
+        S.button = "sendChat";
+        S.event = "chatEvent";
+        S.player = lobby.playerList.get(1); //Player 2 sends a chat in the game chat
+        S.iidd = lobby.playerList.get(1).iD;
+        S.message = "start game bro";
+        S.victores = Integer.toString(player2.numberOfVictores);
+
+        //update the state of the lobby
+        lobby.updateLobby(S);
+        //Did the chat display??
+        assertEquals(lobby.playerList.get(1).username + " : " + S.message, lobby.gameList.get(0).playerChat.get(1));
+
+
+
+        //Player 1 starts a game
+        S = new ServerEvent("", "", null, 0, "", "", "");
+        S.button = "startGame";  
+        S.event = "gameEvent";        
+        //timer = 0;  //This is on javaScript side
+        S.player = lobby.playerList.get(0); //Player 1 starts a game             
+        S.iidd = lobby.playerList.get(0).iD;
+        S.victores = Integer.toString(player1.numberOfVictores);
+
+        //update the state of the lobby
+        lobby.updateLobby(S);
+
+        System.out.println("The game has started..");  //At this point the game has started (PLayer 1, Player 2, Player 4 are in the same room)
+
+
+
+
+        //////////////////////////////////////////////GAME ROOM TESTING ENDS HERE
 
     }
 
