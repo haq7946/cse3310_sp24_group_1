@@ -153,7 +153,7 @@ extends TestCase
         //NOTE::::://All three players are in the room at this point
 
 
-        //Testing the gameChat here
+        //Testing the gameChat here  //PLayer 2 sends chat
         S = new ServerEvent("", "", null, 0, "", "", "");
         S.button = "sendChat";
         S.event = "chatEvent";
@@ -167,7 +167,41 @@ extends TestCase
         //Did the chat display??
         assertEquals(lobby.playerList.get(1).username + " : " + S.message, lobby.gameList.get(0).playerChat.get(1));
 
+        //PLayer 4 sends chat
+        S = new ServerEvent("", "", null, 0, "", "", "");
+        S.button = "sendChat";
+        S.event = "chatEvent";
+        S.player = lobby.playerList.get(2); //Player 4 sends a chat in the game chat
+        S.iidd = lobby.playerList.get(2).iD;
+        S.message = "wait";
+        S.victores = Integer.toString(player4.numberOfVictores);
 
+        //update the lobby
+        lobby.updateLobby(S);
+        //check if the chat is there and it matches
+        assertEquals(lobby.playerList.get(2).username + " : " + S.message, lobby.gameList.get(0).playerChat.get(2));
+
+
+        ////////////////////////HARD CHECKING GAME CHAT//////////////////////
+        //Print all of the chats sent to game chat
+        for(int i = 0; i < lobby.gameList.get(0).playerChat.size(); i++)
+        {
+            System.out.println(lobby.gameList.get(0).playerChat.get(i));
+            //make sure everyone can see it, becasue javascript only just prints what is in the arraylist
+            if(i == 0)
+            {
+                assertEquals("Game created", lobby.gameList.get(0).playerChat.get(i));
+            }
+            else if(i == 1)
+            {
+                assertEquals("player2 : start game bro", lobby.gameList.get(0).playerChat.get(i));
+            }
+            else if(i == 2)
+            {
+                assertEquals("player4 : wait", lobby.gameList.get(0).playerChat.get(i));
+            }
+        }
+        ///////////////////////GAME CHAT IS PERFECT////////////////////////////////
 
         //Player 1 starts a game
         S = new ServerEvent("", "", null, 0, "", "", "");
