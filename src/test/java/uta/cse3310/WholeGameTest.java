@@ -721,8 +721,82 @@ extends TestCase
           System.out.println("Player 4 left the room");
           System.out.println("|||| ROOM EXIT CHECK : PASSED ||||");
 
+          S = new ServerEvent("", "", null, 0, "", "", "");
+          S.player = player2;
+          S.button = "boardClick";
+          S.event = "gameEvent";
+          S.message = "s"; //first letter clicked is s
+          S.iidd = player2.iD;
+          S.victores = Integer.toString(player2.numberOfVictores);
+          S.x = 33;
+          S.y = 6;
+          //Javascript handles this for us
+          player2.x1 = S.x;
+          player2.y1 = S.y;
+ 
+          //update the lobby state to process the first click for player2
+          lobby.updateLobby(S);
+ 
+          S = new ServerEvent("", "", null, 0, "", "", "");
+          S.player = player6;
+          S.button = "boardClick";
+          S.event = "gameEvent";
+          S.message = "s"; //first letter clicked is s
+          S.iidd = player6.iD;
+          S.victores = Integer.toString(player6.numberOfVictores);
+          S.x = 33;
+          S.y = 6;
+        //Javascript handles this for us
+         player6.x1 = S.x;
+         player6.y1 = S.y;
+
+          //update the lobby state to process the first click for player5
+          lobby.updateLobby(S);
+
+          S = new ServerEvent("", "", null, 0, "", "", "");
+          S.player = player2;
+          S.button = "boardClick";
+          S.event = "gameEvent";
+          S.message = "s"; //last letter clicked is s
+          S.iidd = player2.iD;
+          S.victores = Integer.toString(player2.numberOfVictores);
+          S.x = 33;
+          S.y = 9;
+          //Javascript handles this for us
+          player2.x2 = S.x;
+          player2.y2 = S.y;
+ 
+          //update the lobby state to process the first click for player2
+          lobby.updateLobby(S);
+
+          S = new ServerEvent("", "", null, 0, "", "", "");
+          S.player = player6;
+          S.button = "boardClick";
+          S.event = "gameEvent";
+          S.message = "s"; //last letter clicked is s
+          S.iidd = player6.iD;
+          S.victores = Integer.toString(player6.numberOfVictores);
+          S.x = 33;
+          S.y = 9;
+        //Javascript handles this for us
+         player6.x2 = S.x;
+         player6.y2 = S.y;
+
+          //update the lobby state to process the first click for player5
+          lobby.updateLobby(S);
+
+          //System.out.println("|||||||||||||||||" + player1.x1 + player1.y1 + player1.x2 + player1.y2);
+          //Lets check if the horizontal word is correct in both rooms //future (8,0) (13,0)
+          assertEquals("updateBoard", lobby.gameList.get(0).boardButtonMessage);
+          assertEquals("vertical", lobby.gameList.get(0).checkOrientation(player2.x1, player2.y1, player2.x2, player2.y2));
+          assertEquals("seas", lobby.gameList.get(0).selectWord(player2.x1, player2.y1, player2.x2, player2.y2));
+          System.out.println("|||| VERTICAL DOWN WORD TEST: PASSED (ROOM 1)||||");
+
+          assertEquals("updateBoard", lobby.gameList.get(1).boardButtonMessage);
+          assertEquals("vertical", lobby.gameList.get(1).checkOrientation(player6.x1, player6.y1, player6.x2, player6.y2));
+          assertEquals("seas", lobby.gameList.get(1).selectWord(player6.x1, player6.y1, player6.x2, player6.y2));
+          System.out.println("|||| VERTICAL DOWN WORD TEST: PASSED (ROOM 2)||||");
           
-        
 
         }
         ////////////////////////////////////////////////////////SEED 3////////////
