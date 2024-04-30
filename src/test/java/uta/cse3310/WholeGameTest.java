@@ -1026,6 +1026,43 @@ extends TestCase
           assertEquals("paste", lobby.gameList.get(1).selectWord(player5.x1, player5.y1, player5.x2, player5.y2));
           System.out.println("|||| DIAGONAL DOWN WORD TEST: PASSED (ROOM 2)||||");
 
+          //////////////////////////////////CHECKING EXIT CONDITIONS
+            S = new ServerEvent("", "", null, 0, "", "", "");
+            S.button = "victoryCheck";
+            S.event = "gameEvent";
+            S.player = player1;
+            S.iidd = player1.iD;
+            S.victores = Integer.toString(player1.numberOfVictores);
+
+            lobby.updateLobby(S);
+
+            //Check if the game ended
+            assertEquals("end", lobby.gameList.get(0).gameResponse);
+            System.out.println("|||| GAME ENDED : PASSED ||||");
+
+            //Check if the winner is player with the most points
+            assertEquals("player1", lobby.gameList.get(0).winners.get(0).username);
+            System.out.println("|||| WINNER CHECK : PASSED (ROOM 1)||||");
+
+            S = new ServerEvent("", "", null, 0, "", "", "");
+            S.button = "victoryCheck";
+            S.event = "gameEvent";
+            S.player = player5;
+            S.iidd = player5.iD;
+            S.victores = Integer.toString(player5.numberOfVictores);
+
+            lobby.updateLobby(S);
+
+            //Check if the game ended
+            assertEquals("end", lobby.gameList.get(1).gameResponse);
+            System.out.println("|||| GAME ENDED : PASSED ||||");
+
+            //Check if the winner is player with the most points
+            assertEquals("player5", lobby.gameList.get(1).winners.get(0).username);
+            System.out.println("|||| WINNER CHECK : PASSED (ROOM 2)||||");
+
+
+
         }
         ////////////////////////////////////////////////////////SEED 3////////////
 
