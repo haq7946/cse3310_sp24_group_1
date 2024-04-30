@@ -249,7 +249,7 @@ public class Lobby
                         gameList.get(i).gameResponse = "start";
                         //each player is assigned a unique color at the start of a game
                         // 0 is default board color
-                        // 1 - black  2- yellow  3-blue  4-green
+                        // 1 - red  2- orange  3-blue  4-green
                         for(int c = 0; c < gameList.get(i).playerList.size(); c++)
                         {
                             gameList.get(i).playerList.get(c).color = (c + 1); //Assign each player a different color
@@ -349,6 +349,7 @@ public class Lobby
                 System.out.println("Received victorycheck");
                 for(int i = 0; i < gameList.size(); i++)
                 {
+                    if(gameList.get(i).playerList.size() != 0)  //Make sure there is at least one player in the game
                     if(S.iidd.compareTo(gameList.get(i).gameID) == 0)
                     {
                         if(gameList.get(i).playerList.get(0).username.equals(S.player.username)) //Need this condition to prevent multiple requests to add victories; just doing the first player
