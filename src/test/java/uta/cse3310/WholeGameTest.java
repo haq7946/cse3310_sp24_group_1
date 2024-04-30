@@ -754,13 +754,20 @@ extends TestCase
 
         //Let's start the game in room 2
         //Player 5 starts a game
-        S = new ServerEvent("", "", null, 0, "", "", "");
-        S.button = "startGame";  
-        S.event = "gameEvent";        
-        //timer = 0;  //This is on javaScript side
+        // S = new ServerEvent("", "", null, 0, "", "", "");
+        // S.button = "startGame";  
+        // S.event = "gameEvent";        
+        // //timer = 0;  //This is on javaScript side
+        // S.player = player5; //Player 5 starts a game in room 2             
+        // S.iidd = player5.iD;
+        // S.victores = Integer.toString(player5.numberOfVictores);
+
+        message = "{\"button\":\"startGame\",\"event\":\"gameEvent\"}";
+        S = gson.fromJson(message, ServerEvent.class);
         S.player = player5; //Player 5 starts a game in room 2             
         S.iidd = player5.iD;
         S.victores = Integer.toString(player5.numberOfVictores);
+
         //update the state of the lobby
         lobby.updateLobby(S);
         System.out.println("The game has started.. in room 2");
@@ -777,32 +784,45 @@ extends TestCase
         //Let's check if two players can select the same word in two different rooms
         //Player 1 and Player 5 will select the word future at the same time different rooms
         //Player 1 selects a word // The word is future (8,0) (13,0) //firstClick //Room 1
-         S = new ServerEvent("", "", null, 0, "", "", "");
-         S.player = player1;
-         S.button = "boardClick";
-         S.event = "gameEvent";
-         S.message = "f"; //first letter clicked is f
-         S.iidd = player1.iD;
-         S.victores = Integer.toString(player1.numberOfVictores);
-         S.x = 8;
-         S.y = 0;
-         //Javascript handles this for us
-         player1.x1 = S.x;
-         player1.y1 = S.y;
+        //  S = new ServerEvent("", "", null, 0, "", "", "");
+        //  S.player = player1;
+        //  S.button = "boardClick";
+        //  S.event = "gameEvent";
+        //  S.message = "f"; //first letter clicked is f
+        //  S.iidd = player1.iD;
+        //  S.victores = Integer.toString(player1.numberOfVictores);
+        //  S.x = 8;
+        //  S.y = 0;
+
+        message = "{\"button\":\"boardClick\",\"event\":\"gameEvent\",\"message\":\"f\",\"x\":\"8\",\"y\":\"0\"}";
+        S = gson.fromJson(message, ServerEvent.class);
+        S.player = player1;
+        S.iidd = player1.iD;
+        S.victores = Integer.toString(player1.numberOfVictores);
+
+        //Javascript handles this for us
+        player1.x1 = S.x;
+        player1.y1 = S.y;
 
          //update the lobby state to process the first click for player1
          lobby.updateLobby(S);
 
          //Player 5 also selects the word future // The word is future (8,0) (13,0) //firstClick //Room 2
-          S = new ServerEvent("", "", null, 0, "", "", "");
-          S.player = player5;
-          S.button = "boardClick";
-          S.event = "gameEvent";
-          S.message = "f"; //first letter clicked is h
-          S.iidd = player5.iD;
-          S.victores = Integer.toString(player5.numberOfVictores);
-          S.x = 8;
-          S.y = 0;
+        //   S = new ServerEvent("", "", null, 0, "", "", "");
+        //   S.player = player5;
+        //   S.button = "boardClick";
+        //   S.event = "gameEvent";
+        //   S.message = "f"; //first letter clicked is h
+        //   S.iidd = player5.iD;
+        //   S.victores = Integer.toString(player5.numberOfVictores);
+        //   S.x = 8;
+        //   S.y = 0;
+
+        message = "{\"button\":\"boardClick\",\"event\":\"gameEvent\",\"message\":\"f\",\"x\":\"8\",\"y\":\"0\"}";
+        S = gson.fromJson(message, ServerEvent.class);
+        S.player = player5;
+        S.iidd = player5.iD;
+        S.victores = Integer.toString(player5.numberOfVictores);
         //Javascript handles this for us
          player5.x1 = S.x;
          player5.y1 = S.y;
@@ -811,15 +831,21 @@ extends TestCase
           lobby.updateLobby(S);
 
           //Processing Second click for player1
-          S = new ServerEvent("", "", null, 0, "", "", "");
-          S.player = player1;
-          S.button = "boardClick";
-          S.event = "gameEvent";
-          S.message = "e"; //first letter clicked is f
-          S.iidd = player1.iD;
-          S.victores = Integer.toString(player1.numberOfVictores);
-          S.x = 13;
-          S.y = 0;
+        //   S = new ServerEvent("", "", null, 0, "", "", "");
+        //   S.player = player1;
+        //   S.button = "boardClick";
+        //   S.event = "gameEvent";
+        //   S.message = "e"; //first letter clicked is f
+        //   S.iidd = player1.iD;
+        //   S.victores = Integer.toString(player1.numberOfVictores);
+        //   S.x = 13;
+        //   S.y = 0;
+
+        message = "{\"button\":\"boardClick\",\"event\":\"gameEvent\",\"message\":\"e\",\"x\":\"13\",\"y\":\"0\"}";
+        S = gson.fromJson(message, ServerEvent.class);
+        S.player = player1;
+        S.iidd = player1.iD;
+        S.victores = Integer.toString(player1.numberOfVictores);
           //Javascript handles this for us
           player1.x2 = S.x;
           player1.y2 = S.y;
@@ -828,15 +854,20 @@ extends TestCase
           lobby.updateLobby(S);
 
           //Processing Second click for player5
-          S = new ServerEvent("", "", null, 0, "", "", "");
+        //   S = new ServerEvent("", "", null, 0, "", "", "");
+        //   S.player = player5;
+        //   S.button = "boardClick";
+        //   S.event = "gameEvent";
+        //   S.message = "e"; //first letter clicked is h
+        //   S.iidd = player5.iD;
+        //   S.victores = Integer.toString(player5.numberOfVictores);
+        //   S.x = 13;
+        //   S.y = 0;
+          message = "{\"button\":\"boardClick\",\"event\":\"gameEvent\",\"message\":\"e\",\"x\":\"13\",\"y\":\"0\"}";
+          S = gson.fromJson(message, ServerEvent.class);
           S.player = player5;
-          S.button = "boardClick";
-          S.event = "gameEvent";
-          S.message = "e"; //first letter clicked is h
           S.iidd = player5.iD;
           S.victores = Integer.toString(player5.numberOfVictores);
-          S.x = 13;
-          S.y = 0;
           //Javascript handles this for us
          player5.x2 = S.x;
          player5.y2 = S.y;
@@ -859,9 +890,15 @@ extends TestCase
 
 
           //Player 4 decides to leave the game now
-          S = new ServerEvent("", "", null, 0, "", "", "");
-          S.button = "backToLobbyButton";
-          S.event = "lobbyEvent";
+        //   S = new ServerEvent("", "", null, 0, "", "", "");
+        //   S.button = "backToLobbyButton";
+        //   S.event = "lobbyEvent";
+        //   S.player = player4;
+        //   S.iidd = player4.iD;
+        //   S.victores = Integer.toString(player4.numberOfVictores);
+
+          message = "{\"button\":\"backToLobbyButton\",\"event\":\"lobbyEvent\"}";
+          S = gson.fromJson(message, ServerEvent.class);
           S.player = player4;
           S.iidd = player4.iD;
           S.victores = Integer.toString(player4.numberOfVictores);
@@ -874,15 +911,21 @@ extends TestCase
           System.out.println("Player 4 left the room");
           System.out.println("|||| ROOM EXIT CHECK : PASSED ||||");
 
-          S = new ServerEvent("", "", null, 0, "", "", "");
+        //   S = new ServerEvent("", "", null, 0, "", "", "");
+        //   S.player = player2;
+        //   S.button = "boardClick";
+        //   S.event = "gameEvent";
+        //   S.message = "s"; //first letter clicked is s
+        //   S.iidd = player2.iD;
+        //   S.victores = Integer.toString(player2.numberOfVictores);
+        //   S.x = 33;
+        //   S.y = 6;
+          message = "{\"button\":\"boardClick\",\"event\":\"gameEvent\",\"message\":\"s\",\"x\":\"33\",\"y\":\"6\"}";
+          S = gson.fromJson(message, ServerEvent.class);
           S.player = player2;
-          S.button = "boardClick";
-          S.event = "gameEvent";
-          S.message = "s"; //first letter clicked is s
           S.iidd = player2.iD;
           S.victores = Integer.toString(player2.numberOfVictores);
-          S.x = 33;
-          S.y = 6;
+
           //Javascript handles this for us
           player2.x1 = S.x;
           player2.y1 = S.y;
@@ -890,15 +933,21 @@ extends TestCase
           //update the lobby state to process the first click for player2
           lobby.updateLobby(S);
  
-          S = new ServerEvent("", "", null, 0, "", "", "");
+        //   S = new ServerEvent("", "", null, 0, "", "", "");
+        //   S.player = player6;
+        //   S.button = "boardClick";
+        //   S.event = "gameEvent";
+        //   S.message = "s"; //first letter clicked is s
+        //   S.iidd = player6.iD;
+        //   S.victores = Integer.toString(player6.numberOfVictores);
+        //   S.x = 33;
+        //   S.y = 6;
+
+          message = "{\"button\":\"boardClick\",\"event\":\"gameEvent\",\"message\":\"s\",\"x\":\"33\",\"y\":\"6\"}";
+          S = gson.fromJson(message, ServerEvent.class);
           S.player = player6;
-          S.button = "boardClick";
-          S.event = "gameEvent";
-          S.message = "s"; //first letter clicked is s
           S.iidd = player6.iD;
           S.victores = Integer.toString(player6.numberOfVictores);
-          S.x = 33;
-          S.y = 6;
         //Javascript handles this for us
          player6.x1 = S.x;
          player6.y1 = S.y;
@@ -906,15 +955,20 @@ extends TestCase
           //update the lobby state to process the first click for player5
           lobby.updateLobby(S);
 
-          S = new ServerEvent("", "", null, 0, "", "", "");
+        //   S = new ServerEvent("", "", null, 0, "", "", "");
+        //   S.player = player2;
+        //   S.button = "boardClick";
+        //   S.event = "gameEvent";
+        //   S.message = "s"; //last letter clicked is s
+        //   S.iidd = player2.iD;
+        //   S.victores = Integer.toString(player2.numberOfVictores);
+        //   S.x = 33;
+        //   S.y = 9;
+          message = "{\"button\":\"boardClick\",\"event\":\"gameEvent\",\"message\":\"s\",\"x\":\"33\",\"y\":\"9\"}";
+          S = gson.fromJson(message, ServerEvent.class);
           S.player = player2;
-          S.button = "boardClick";
-          S.event = "gameEvent";
-          S.message = "s"; //last letter clicked is s
           S.iidd = player2.iD;
           S.victores = Integer.toString(player2.numberOfVictores);
-          S.x = 33;
-          S.y = 9;
           //Javascript handles this for us
           player2.x2 = S.x;
           player2.y2 = S.y;
@@ -922,15 +976,20 @@ extends TestCase
           //update the lobby state to process the first click for player2
           lobby.updateLobby(S);
 
-          S = new ServerEvent("", "", null, 0, "", "", "");
+        //   S = new ServerEvent("", "", null, 0, "", "", "");
+        //   S.player = player6;
+        //   S.button = "boardClick";
+        //   S.event = "gameEvent";
+        //   S.message = "s"; //last letter clicked is s
+        //   S.iidd = player6.iD;
+        //   S.victores = Integer.toString(player6.numberOfVictores);
+        //   S.x = 33;
+        //   S.y = 9;
+          message = "{\"button\":\"boardClick\",\"event\":\"gameEvent\",\"message\":\"s\",\"x\":\"33\",\"y\":\"9\"}";
+          S = gson.fromJson(message, ServerEvent.class);
           S.player = player6;
-          S.button = "boardClick";
-          S.event = "gameEvent";
-          S.message = "s"; //last letter clicked is s
           S.iidd = player6.iD;
           S.victores = Integer.toString(player6.numberOfVictores);
-          S.x = 33;
-          S.y = 9;
         //Javascript handles this for us
          player6.x2 = S.x;
          player6.y2 = S.y;
@@ -950,15 +1009,20 @@ extends TestCase
           assertEquals("seas", lobby.gameList.get(1).selectWord(player6.x1, player6.y1, player6.x2, player6.y2));
           System.out.println("|||| VERTICAL DOWN WORD TEST: PASSED (ROOM 2)||||");
 
-          S = new ServerEvent("", "", null, 0, "", "", "");
-          S.player = player1;
-          S.button = "boardClick";
-          S.event = "gameEvent";
-          S.message = "m"; //first letter clicked is m
-          S.iidd = player1.iD;
-          S.victores = Integer.toString(player1.numberOfVictores);
-          S.x = 0;
-          S.y = 27;
+        //   S = new ServerEvent("", "", null, 0, "", "", "");
+        //   S.player = player1;
+        //   S.button = "boardClick";
+        //   S.event = "gameEvent";
+        //   S.message = "m"; //first letter clicked is m
+        //   S.iidd = player1.iD;
+        //   S.victores = Integer.toString(player1.numberOfVictores);
+        //   S.x = 0;
+        //   S.y = 27;
+        message = "{\"button\":\"boardClick\",\"event\":\"gameEvent\",\"message\":\"m\",\"x\":\"0\",\"y\":\"27\"}";
+        S = gson.fromJson(message, ServerEvent.class);
+        S.player = player1;
+        S.iidd = player1.iD;
+        S.victores = Integer.toString(player1.numberOfVictores);
           //Javascript handles this for us
           player1.x1 = S.x;
           player1.y1 = S.y;
@@ -966,15 +1030,20 @@ extends TestCase
           //update the lobby state to process the first click for player1
           lobby.updateLobby(S);
         
-          S = new ServerEvent("", "", null, 0, "", "", "");
-          S.player = player5;
-          S.button = "boardClick";
-          S.event = "gameEvent";
-          S.message = "m"; //first letter clicked is m
-          S.iidd = player5.iD;
-          S.victores = Integer.toString(player5.numberOfVictores);
-          S.x = 0;
-          S.y = 27;
+        //   S = new ServerEvent("", "", null, 0, "", "", "");
+        //   S.player = player5;
+        //   S.button = "boardClick";
+        //   S.event = "gameEvent";
+        //   S.message = "m"; //first letter clicked is m
+        //   S.iidd = player5.iD;
+        //   S.victores = Integer.toString(player5.numberOfVictores);
+        //   S.x = 0;
+        //   S.y = 27;
+        message = "{\"button\":\"boardClick\",\"event\":\"gameEvent\",\"message\":\"m\",\"x\":\"0\",\"y\":\"27\"}";
+        S = gson.fromJson(message, ServerEvent.class);
+        S.player = player5;
+        S.iidd = player5.iD;
+        S.victores = Integer.toString(player5.numberOfVictores);
         //Javascript handles this for us
          player5.x1 = S.x;
          player5.y1 = S.y;
@@ -982,15 +1051,20 @@ extends TestCase
           //update the lobby state to process the first click for player5
           lobby.updateLobby(S);
 
-          S = new ServerEvent("", "", null, 0, "", "", "");
-          S.player = player1;
-          S.button = "boardClick";
-          S.event = "gameEvent";
-          S.message = "l"; //last letter clicked is l
-          S.iidd = player1.iD;
-          S.victores = Integer.toString(player1.numberOfVictores);
-          S.x = 0;
-          S.y = 21;
+        //   S = new ServerEvent("", "", null, 0, "", "", "");
+        //   S.player = player1;
+        //   S.button = "boardClick";
+        //   S.event = "gameEvent";
+        //   S.message = "l"; //last letter clicked is l
+        //   S.iidd = player1.iD;
+        //   S.victores = Integer.toString(player1.numberOfVictores);
+        //   S.x = 0;
+        //   S.y = 21;
+        message = "{\"button\":\"boardClick\",\"event\":\"gameEvent\",\"message\":\"l\",\"x\":\"0\",\"y\":\"21\"}";
+        S = gson.fromJson(message, ServerEvent.class);
+        S.player = player1;
+        S.iidd = player1.iD;
+        S.victores = Integer.toString(player1.numberOfVictores);
           //Javascript handles this for us
           player1.x2 = S.x;
           player1.y2 = S.y;
@@ -998,15 +1072,20 @@ extends TestCase
           //update the lobby state to process the first click for player1
           lobby.updateLobby(S);
 
-          S = new ServerEvent("", "", null, 0, "", "", "");
-          S.player = player5;
-          S.button = "boardClick";
-          S.event = "gameEvent";
-          S.message = "l"; //last letter clicked is l
-          S.iidd = player5.iD;
-          S.victores = Integer.toString(player5.numberOfVictores);
-          S.x = 0;
-          S.y = 21;
+        //   S = new ServerEvent("", "", null, 0, "", "", "");
+        //   S.player = player5;
+        //   S.button = "boardClick";
+        //   S.event = "gameEvent";
+        //   S.message = "l"; //last letter clicked is l
+        //   S.iidd = player5.iD;
+        //   S.victores = Integer.toString(player5.numberOfVictores);
+        //   S.x = 0;
+        //   S.y = 21;
+        message = "{\"button\":\"boardClick\",\"event\":\"gameEvent\",\"message\":\"l\",\"x\":\"0\",\"y\":\"21\"}";
+        S = gson.fromJson(message, ServerEvent.class);
+        S.player = player5;
+        S.iidd = player5.iD;
+        S.victores = Integer.toString(player5.numberOfVictores);
           //Javascript handles this for us
           player5.x2 = S.x;
           player5.y2 = S.y;
@@ -1026,15 +1105,20 @@ extends TestCase
           assertEquals("musical", lobby.gameList.get(1).selectWord(player5.x1, player5.y1, player5.x2, player5.y2));
           System.out.println("|||| VERTICAL UP WORD TEST: PASSED (ROOM 2)||||");
 
-          S = new ServerEvent("", "", null, 0, "", "", "");
-          S.player = player1;
-          S.button = "boardClick";
-          S.event = "gameEvent";
-          S.message = "o"; //first letter clicked is o
-          S.iidd = player1.iD;
-          S.victores = Integer.toString(player1.numberOfVictores);
-          S.x = 15;
-          S.y = 13;
+        //   S = new ServerEvent("", "", null, 0, "", "", "");
+        //   S.player = player1;
+        //   S.button = "boardClick";
+        //   S.event = "gameEvent";
+        //   S.message = "o"; //first letter clicked is o
+        //   S.iidd = player1.iD;
+        //   S.victores = Integer.toString(player1.numberOfVictores);
+        //   S.x = 15;
+        //   S.y = 13;
+        message = "{\"button\":\"boardClick\",\"event\":\"gameEvent\",\"message\":\"o\",\"x\":\"15\",\"y\":\"13\"}";
+        S = gson.fromJson(message, ServerEvent.class);
+        S.player = player1;
+        S.iidd = player1.iD;
+        S.victores = Integer.toString(player1.numberOfVictores);
           //Javascript handles this for us
           player1.x1 = S.x;
           player1.y1 = S.y;
@@ -1042,15 +1126,20 @@ extends TestCase
           //update the lobby state to process the first click for player1
           lobby.updateLobby(S);
 
-          S = new ServerEvent("", "", null, 0, "", "", "");
-          S.player = player5;
-          S.button = "boardClick";
-          S.event = "gameEvent";
-          S.message = "o"; //first letter clicked is o
-          S.iidd = player5.iD;
-          S.victores = Integer.toString(player5.numberOfVictores);
-          S.x = 15;
-          S.y = 13;
+        //   S = new ServerEvent("", "", null, 0, "", "", "");
+        //   S.player = player5;
+        //   S.button = "boardClick";
+        //   S.event = "gameEvent";
+        //   S.message = "o"; //first letter clicked is o
+        //   S.iidd = player5.iD;
+        //   S.victores = Integer.toString(player5.numberOfVictores);
+        //   S.x = 15;
+        //   S.y = 13;
+        message = "{\"button\":\"boardClick\",\"event\":\"gameEvent\",\"message\":\"o\",\"x\":\"15\",\"y\":\"13\"}";
+        S = gson.fromJson(message, ServerEvent.class);
+        S.player = player5;
+        S.iidd = player5.iD;
+        S.victores = Integer.toString(player5.numberOfVictores);
         //Javascript handles this for us
          player5.x1 = S.x;
          player5.y1 = S.y;
@@ -1058,15 +1147,20 @@ extends TestCase
           //update the lobby state to process the first click for player5
           lobby.updateLobby(S);
 
-          S = new ServerEvent("", "", null, 0, "", "", "");
-          S.player = player1;
-          S.button = "boardClick";
-          S.event = "gameEvent";
-          S.message = "r"; //last letter clicked is r
-          S.iidd = player1.iD;
-          S.victores = Integer.toString(player1.numberOfVictores);
-          S.x = 19;
-          S.y = 9;
+        //   S = new ServerEvent("", "", null, 0, "", "", "");
+        //   S.player = player1;
+        //   S.button = "boardClick";
+        //   S.event = "gameEvent";
+        //   S.message = "r"; //last letter clicked is r
+        //   S.iidd = player1.iD;
+        //   S.victores = Integer.toString(player1.numberOfVictores);
+        //   S.x = 19;
+        //   S.y = 9;
+        message = "{\"button\":\"boardClick\",\"event\":\"gameEvent\",\"message\":\"r\",\"x\":\"19\",\"y\":\"9\"}";
+        S = gson.fromJson(message, ServerEvent.class);
+        S.player = player1;
+        S.iidd = player1.iD;
+        S.victores = Integer.toString(player1.numberOfVictores);
           //Javascript handles this for us
           player1.x2 = S.x;
           player1.y2 = S.y;
@@ -1074,15 +1168,20 @@ extends TestCase
           //update the lobby state to process the first click for player1
           lobby.updateLobby(S);
 
-          S = new ServerEvent("", "", null, 0, "", "", "");
-          S.player = player5;
-          S.button = "boardClick";
-          S.event = "gameEvent";
-          S.message = "r"; //last letter clicked is r
-          S.iidd = player5.iD;
-          S.victores = Integer.toString(player5.numberOfVictores);
-          S.x = 19;
-          S.y = 9;
+        //   S = new ServerEvent("", "", null, 0, "", "", "");
+        //   S.player = player5;
+        //   S.button = "boardClick";
+        //   S.event = "gameEvent";
+        //   S.message = "r"; //last letter clicked is r
+        //   S.iidd = player5.iD;
+        //   S.victores = Integer.toString(player5.numberOfVictores);
+        //   S.x = 19;
+        //   S.y = 9;
+          message = "{\"button\":\"boardClick\",\"event\":\"gameEvent\",\"message\":\"r\",\"x\":\"19\",\"y\":\"9\"}";
+        S = gson.fromJson(message, ServerEvent.class);
+        S.player = player5;
+        S.iidd = player5.iD;
+        S.victores = Integer.toString(player5.numberOfVictores);
           //Javascript handles this for us
           player5.x2 = S.x;
           player5.y2 = S.y;
@@ -1103,15 +1202,20 @@ extends TestCase
           System.out.println("|||| DIAGONAL UP WORD TEST: PASSED (ROOM 2)||||");
 
 
-          S = new ServerEvent("", "", null, 0, "", "", "");
-          S.player = player1;
-          S.button = "boardClick";
-          S.event = "gameEvent";
-          S.message = "p"; //first letter clicked is p
-          S.iidd = player1.iD;
-          S.victores = Integer.toString(player1.numberOfVictores);
-          S.x = 2;
-          S.y = 30;
+        //   S = new ServerEvent("", "", null, 0, "", "", "");
+        //   S.player = player1;
+        //   S.button = "boardClick";
+        //   S.event = "gameEvent";
+        //   S.message = "p"; //first letter clicked is p
+        //   S.iidd = player1.iD;
+        //   S.victores = Integer.toString(player1.numberOfVictores);
+        //   S.x = 2;
+        //   S.y = 30;
+        message = "{\"button\":\"boardClick\",\"event\":\"gameEvent\",\"message\":\"p\",\"x\":\"2\",\"y\":\"30\"}";
+        S = gson.fromJson(message, ServerEvent.class);
+        S.player = player1;
+        S.iidd = player1.iD;
+        S.victores = Integer.toString(player1.numberOfVictores);
           //Javascript handles this for us
           player1.x1 = S.x;
           player1.y1 = S.y;
@@ -1119,15 +1223,20 @@ extends TestCase
           //update the lobby state to process the first click for player1
           lobby.updateLobby(S);
 
-          S = new ServerEvent("", "", null, 0, "", "", "");
-          S.player = player5;
-          S.button = "boardClick";
-          S.event = "gameEvent";
-          S.message = "p"; //first letter clicked is p
-          S.iidd = player5.iD;
-          S.victores = Integer.toString(player5.numberOfVictores);
-          S.x = 2;
-          S.y = 30;
+        //   S = new ServerEvent("", "", null, 0, "", "", "");
+        //   S.player = player5;
+        //   S.button = "boardClick";
+        //   S.event = "gameEvent";
+        //   S.message = "p"; //first letter clicked is p
+        //   S.iidd = player5.iD;
+        //   S.victores = Integer.toString(player5.numberOfVictores);
+        //   S.x = 2;
+        //   S.y = 30;
+          message = "{\"button\":\"boardClick\",\"event\":\"gameEvent\",\"message\":\"p\",\"x\":\"2\",\"y\":\"30\"}";
+        S = gson.fromJson(message, ServerEvent.class);
+        S.player = player5;
+        S.iidd = player5.iD;
+        S.victores = Integer.toString(player5.numberOfVictores);
          //Javascript handles this for us
          player5.x1 = S.x;
          player5.y1 = S.y;
@@ -1135,15 +1244,20 @@ extends TestCase
           //update the lobby state to process the first click for player5
           lobby.updateLobby(S);
 
-          S = new ServerEvent("", "", null, 0, "", "", "");
-          S.player = player1;
-          S.button = "boardClick";
-          S.event = "gameEvent";
-          S.message = "e"; //last letter clicked is e
-          S.iidd = player1.iD;
-          S.victores = Integer.toString(player1.numberOfVictores);
-          S.x = 6;
-          S.y = 34;
+        //   S = new ServerEvent("", "", null, 0, "", "", "");
+        //   S.player = player1;
+        //   S.button = "boardClick";
+        //   S.event = "gameEvent";
+        //   S.message = "e"; //last letter clicked is e
+        //   S.iidd = player1.iD;
+        //   S.victores = Integer.toString(player1.numberOfVictores);
+        //   S.x = 6;
+        //   S.y = 34;
+        message = "{\"button\":\"boardClick\",\"event\":\"gameEvent\",\"message\":\"e\",\"x\":\"6\",\"y\":\"34\"}";
+        S = gson.fromJson(message, ServerEvent.class);
+        S.player = player1;
+        S.iidd = player1.iD;
+        S.victores = Integer.toString(player1.numberOfVictores);
           //Javascript handles this for us
           player1.x2 = S.x;
           player1.y2 = S.y;
@@ -1151,15 +1265,20 @@ extends TestCase
           //update the lobby state to process the first click for player1
           lobby.updateLobby(S);
 
-          S = new ServerEvent("", "", null, 0, "", "", "");
-          S.player = player5;
-          S.button = "boardClick";
-          S.event = "gameEvent";
-          S.message = "e"; //last letter clicked is e
-          S.iidd = player5.iD;
-          S.victores = Integer.toString(player5.numberOfVictores);
-          S.x = 6;
-          S.y = 34;
+        //   S = new ServerEvent("", "", null, 0, "", "", "");
+        //   S.player = player5;
+        //   S.button = "boardClick";
+        //   S.event = "gameEvent";
+        //   S.message = "e"; //last letter clicked is e
+        //   S.iidd = player5.iD;
+        //   S.victores = Integer.toString(player5.numberOfVictores);
+        //   S.x = 6;
+        //   S.y = 34;
+        message = "{\"button\":\"boardClick\",\"event\":\"gameEvent\",\"message\":\"e\",\"x\":\"6\",\"y\":\"34\"}";
+        S = gson.fromJson(message, ServerEvent.class);
+        S.player = player5;
+        S.iidd = player5.iD;
+        S.victores = Integer.toString(player5.numberOfVictores);
           //Javascript handles this for us
           player5.x2 = S.x;
           player5.y2 = S.y;
