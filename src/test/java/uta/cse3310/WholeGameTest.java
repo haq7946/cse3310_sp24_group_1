@@ -488,6 +488,15 @@ extends TestCase
             assertEquals("end", lobby.gameList.get(0).gameResponse);
             System.out.println("|||| GAME ENDED : PASSED ||||");
 
+            //Check if the winner is player with the most points
+            assertEquals("player1", lobby.gameList.get(0).winners.get(0).username);
+            System.out.println("|||| WINNER CHECK : PASSED ||||");
+
+            //The game is finshed now.
+            //Is the game joinable?
+            assertEquals(false, lobby.gameList.get(0).isAvailableToJoin);
+            System.out.println("|||| GAME EXIT CONDITION : PASSED ||||");
+
 
         }
 
@@ -504,6 +513,7 @@ extends TestCase
 
 
         //////////////////////////////////////////////GAME ROOM TESTING ENDS HERE
+
 
     }
 
