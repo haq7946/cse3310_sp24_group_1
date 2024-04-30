@@ -653,9 +653,15 @@ extends TestCase
 
             //////////////////////////////////////////GAME EXIT CONDITIONS///////////////
             //The game ends here //We check for winners and check the exit conditions
-            S = new ServerEvent("", "", null, 0, "", "", "");
-            S.button = "victoryCheck";
-            S.event = "gameEvent";
+            // S = new ServerEvent("", "", null, 0, "", "", "");
+            // S.button = "victoryCheck";
+            // S.event = "gameEvent";
+            // S.player = player1;
+            // S.iidd = player1.iD;
+            // S.victores = Integer.toString(player1.numberOfVictores);
+
+            message = "{\"button\":\"victoryCheck\",\"event\":\"gameEvent\"}";
+            S = gson.fromJson(message, ServerEvent.class);
             S.player = player1;
             S.iidd = player1.iD;
             S.victores = Integer.toString(player1.numberOfVictores);
@@ -699,9 +705,15 @@ extends TestCase
         //Let's make Player 5 and Player 6 join PLayer2's room
         //So we can test the rooms simultaneously
         //Player 5 joins the rooms created by Player 2
-        S = new ServerEvent("", "", null, 0, "", "", "");
-        S.button = "joinRoomButton";  //What button was pressed
-        S.event = "lobbyEvent";       //what kind of event it was
+        // S = new ServerEvent("", "", null, 0, "", "", "");
+        // S.button = "joinRoomButton";  //What button was pressed
+        // S.event = "lobbyEvent";       //what kind of event it was
+        // S.player = player5;            //who did it
+        // S.victores = Integer.toString(player5.numberOfVictores); //
+        // S.occurrence = 2; //Since we are joining player1's room
+
+        message = "{\"button\":\"joinRoomButton\",\"event\":\"lobbyEvent\"}";
+        S = gson.fromJson(message, ServerEvent.class);
         S.player = player5;            //who did it
         S.victores = Integer.toString(player5.numberOfVictores); //
         S.occurrence = 2; //Since we are joining player1's room
@@ -714,9 +726,15 @@ extends TestCase
 
 
         //Player 6 joins the rooms created by Player 2
-        S = new ServerEvent("", "", null, 0, "", "", "");
-        S.button = "joinRoomButton";  //What button was pressed
-        S.event = "lobbyEvent";       //what kind of event it was
+        // S = new ServerEvent("", "", null, 0, "", "", "");
+        // S.button = "joinRoomButton";  //What button was pressed
+        // S.event = "lobbyEvent";       //what kind of event it was
+        // S.player = player6;            //who did it
+        // S.victores = Integer.toString(player6.numberOfVictores); //
+        // S.occurrence = 2; //Since we are joining player1's room
+
+        message = "{\"button\":\"joinRoomButton\",\"event\":\"lobbyEvent\"}";
+        S = gson.fromJson(message, ServerEvent.class);
         S.player = player6;            //who did it
         S.victores = Integer.toString(player6.numberOfVictores); //
         S.occurrence = 2; //Since we are joining player1's room
