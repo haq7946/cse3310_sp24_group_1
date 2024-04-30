@@ -9,12 +9,7 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.lang.System;
 import java.util.Arrays;
-//TODO:
-//1. Limit word generation based off orientation limits
-//2. 
-//3.
-//4. 
-//5. 
+
 public class Board 
 {
     public char[][] boardArray;
@@ -61,10 +56,6 @@ public class Board
     public double getBoardWidth()
     {
         return boardWidth;
-    }
-    public static void updateBoardArray(char[][] arr)
-    {
-
     }
     public ArrayList<Word> getLinkedWords()
     {
