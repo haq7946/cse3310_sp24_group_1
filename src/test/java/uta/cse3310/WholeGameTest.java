@@ -17,6 +17,8 @@ extends TestCase
     Player player2 = new Player("player2");
     Player player3 = new Player("player3");
     Player player4 = new Player("player4");
+    Player player5 = new Player("player5");
+    Player player6 = new Player("player6");//Might not use this but doens't hurt to test the code properly
 
 
     public WholeGameTest(String testName)
@@ -62,7 +64,7 @@ extends TestCase
         S = new ServerEvent("", "", null, 0, "", "", "");
         S.button = "createRoomButton";  
         S.event = "lobbyEvent";         
-        S.player = lobby.playerList.get(0); //player1 creates a room              
+        S.player = player1; //player1 creates a room              
         S.victores = Integer.toString(player1.numberOfVictores);
 
         //update the lobby
@@ -76,7 +78,7 @@ extends TestCase
         S = new ServerEvent("", "", null, 0, "", "", "");
         S.button = "createRoomButton";  
         S.event = "lobbyEvent";         
-        S.player = lobby.playerList.get(1); //player2 creates a room              
+        S.player = player2; //player2 creates a room              
         S.victores = Integer.toString(player2.numberOfVictores);
 
         //update lobby
@@ -120,7 +122,7 @@ extends TestCase
         S.occurrence = 1; //Since we are joining player1's room
 
         //Set player1's game ID since javascript does that for us
-        player1.iD = lobby.gameList.get(S.occurrence).gameID;
+        player1.iD = lobby.gameList.get(S.occurrence - 1).gameID;
         //update the state of the lobby
         lobby.updateLobby(S);
         System.out.println("Player 1 joined the room");
@@ -134,7 +136,7 @@ extends TestCase
         S.occurrence = 1; //Since we are joining player1's room
 
         //Set player2's game ID since javascript does that for us
-        player2.iD = lobby.gameList.get(S.occurrence).gameID;
+        player2.iD = lobby.gameList.get(S.occurrence - 1).gameID;
         //update the state of the lobby
         lobby.updateLobby(S);
         System.out.println("Player 2 joined the room");
@@ -149,7 +151,7 @@ extends TestCase
         S.occurrence = 1; //Since we are joining player1's room
 
         //Set player4's game ID since javascript does that for us
-        player4.iD = lobby.gameList.get(S.occurrence).gameID;
+        player4.iD = lobby.gameList.get(S.occurrence - 1).gameID;
         //update the state of the lobby
         lobby.updateLobby(S);
         System.out.println("Player 4 joined the room");
@@ -223,6 +225,10 @@ extends TestCase
 
         System.out.println("The game has started..");  //At this point the game has started (PLayer 1, Player 2, Player 4 are in the same room)
 
+        //At this point game 1 has already started //let's check if it is joinable
+        assertEquals(true, lobby.gameList.get(0).gameHasStarted);
+        assertEquals(false, lobby.gameList.get(0).isAvailableToJoin);
+
         String env_variable = System.getenv("TEST_GRID");
         if(env_variable != null)
         {
@@ -237,8 +243,9 @@ extends TestCase
             
         }
 
+        //////////////////////////////////////////////////////////SEEED 2///////////////////
         if(env_variable != null)
-        if(env_variable.compareTo("2") == 0)
+        if(env_variable.compareTo("2") == 0)    //If the environmental variable is 2
         {
             //Board has been initialized
             //Game has started
@@ -254,6 +261,9 @@ extends TestCase
             S.victores = Integer.toString(player1.numberOfVictores);
             S.x = 18;
             S.y = 0;
+            //Javascript handles this for us
+            player1.x1 = S.x;
+            player1.y1 = S.y;
 
             //update the lobby state to process the first click
             lobby.updateLobby(S);
@@ -268,6 +278,9 @@ extends TestCase
             S.victores = Integer.toString(player1.numberOfVictores);
             S.x = 23;
             S.y = 0;
+            //Javascript handles this for us
+            player1.x2 = S.x;
+            player1.y2 = S.y;
 
             //update the lobby state
             lobby.updateLobby(S);
@@ -278,8 +291,8 @@ extends TestCase
 
             //make sure we've selected the word heaven
             assertEquals("updateBoard", lobby.gameList.get(0).boardButtonMessage);
-            assertEquals("horizontal", lobby.gameList.get(0).checkOrientation(18, 0, 23, 0));
-            assertEquals("heaven", lobby.gameList.get(0).selectWord(18, 0, 23, 0));
+            assertEquals("horizontal", lobby.gameList.get(0).checkOrientation(player1.x1, player1.y1, player1.x2, player1.y2));
+            assertEquals("heaven", lobby.gameList.get(0).selectWord(player1.x1, player1.y1, player1.x2, player1.y2));
             System.out.println("|||| HORIZONTAL WORD TEST: PASSED ||||");
 
 
@@ -293,6 +306,9 @@ extends TestCase
             S.victores = Integer.toString(player2.numberOfVictores);
             S.x = 1;
             S.y = 2;
+            //Javascript handles this for us
+            player2.x1 = S.x;
+            player2.y1 = S.y;
 
             //update the lobby state
             lobby.updateLobby(S);
@@ -306,6 +322,9 @@ extends TestCase
             S.victores = Integer.toString(player2.numberOfVictores);
             S.x = 1;
             S.y = 8;
+            //Javascript handles this for us
+            player2.x2 = S.x;
+            player2.y2 = S.y;
 
             //update the lobby state
             lobby.updateLobby(S);
@@ -317,8 +336,8 @@ extends TestCase
             //Check if the word selected is martial //vertical
             //make sure we've selected the word heaven
             assertEquals("updateBoard", lobby.gameList.get(0).boardButtonMessage);
-            assertEquals("vertical", lobby.gameList.get(0).checkOrientation(1, 2, 1, 8));
-            assertEquals("martial", lobby.gameList.get(0).selectWord(1, 2, 1, 8));
+            assertEquals("vertical", lobby.gameList.get(0).checkOrientation(player2.x1, player2.y1, player2.x2, player2.y2));
+            assertEquals("martial", lobby.gameList.get(0).selectWord(player2.x1, player2.y1, player2.x2, player2.y2));
             System.out.println("|||| VERTICAL WORD TEST: PASSED ||||");
 
 
@@ -332,6 +351,9 @@ extends TestCase
             S.victores = Integer.toString(player4.numberOfVictores);
             S.x = 4;
             S.y = 15;
+            //Javascript handles this for us
+            player4.x1 = S.x;
+            player4.y1 = S.y;
 
             //updaet the state of lobby
             lobby.updateLobby(S);
@@ -346,6 +368,9 @@ extends TestCase
             S.victores = Integer.toString(player4.numberOfVictores);
             S.x = 4;
             S.y = 4;
+            //Javascript handles this for us
+            player4.x2 = S.x;
+            player4.y2 = S.y;
 
             //update the lobby state
             lobby.updateLobby(S);
@@ -356,8 +381,8 @@ extends TestCase
 
             //check for agricultural
             assertEquals("updateBoard", lobby.gameList.get(0).boardButtonMessage);
-            assertEquals("vertical", lobby.gameList.get(0).checkOrientation(4, 15, 4 ,4));
-            assertEquals("agricultural", lobby.gameList.get(0).selectWord(4, 15, 4, 4));
+            assertEquals("vertical", lobby.gameList.get(0).checkOrientation(player4.x1, player4.y1, player4.x2, player4.y2));
+            assertEquals("agricultural", lobby.gameList.get(0).selectWord(player4.x1, player4.y1, player4.x2, player4.y2));
             System.out.println("|||| VERTICAL UP WORD TEST: PASSED ||||");
 
 
@@ -371,6 +396,9 @@ extends TestCase
             S.victores = Integer.toString(player1.numberOfVictores);
             S.x = 16;
             S.y = 6;
+            //Javascript handles this for us
+            player1.x1 = S.x;
+            player1.y1 = S.y;
 
             //update the lobby
             lobby.updateLobby(S);
@@ -385,6 +413,9 @@ extends TestCase
             S.victores = Integer.toString(player1.numberOfVictores);
             S.x = 20;
             S.y = 10;
+            //Javascript handles this for us
+            player1.x2 = S.x;
+            player1.y2 = S.y;
 
             lobby.updateLobby(S);
 
@@ -394,8 +425,8 @@ extends TestCase
 
              //check for magic
              assertEquals("updateBoard", lobby.gameList.get(0).boardButtonMessage);
-             assertEquals("diagonal", lobby.gameList.get(0).checkOrientation(16, 6, 20, 10));
-             assertEquals("magic", lobby.gameList.get(0).selectWord(16, 6, 20, 10));
+             assertEquals("diagonal", lobby.gameList.get(0).checkOrientation(player1.x1, player1.y1, player1.x2, player1.y2));
+             assertEquals("magic", lobby.gameList.get(0).selectWord(player1.x1, player1.y1, player1.x2, player1.y2));
              System.out.println("|||| DIAGONAL DOWN WORD TEST: PASSED ||||");
 
 
@@ -409,6 +440,9 @@ extends TestCase
             S.victores = Integer.toString(player1.numberOfVictores);
             S.x = 24;
             S.y = 21;
+            //Javascript handles this for us
+            player1.x1 = S.x;
+            player1.y1 = S.y;
 
             lobby.updateLobby(S);
 
@@ -422,6 +456,9 @@ extends TestCase
             S.victores = Integer.toString(player1.numberOfVictores);
             S.x = 28;
             S.y = 17;
+            //Javascript handles this for us
+            player1.x2 = S.x;
+            player1.y2 = S.y;
 
             lobby.updateLobby(S);
 
@@ -430,8 +467,8 @@ extends TestCase
 
             //check for crowd
             assertEquals("updateBoard", lobby.gameList.get(0).boardButtonMessage);
-            assertEquals("diagonal", lobby.gameList.get(0).checkOrientation(24, 21, 28, 17));
-            assertEquals("crowd", lobby.gameList.get(0).selectWord(24, 21, 28, 17));
+            assertEquals("diagonal", lobby.gameList.get(0).checkOrientation(player1.x1, player1.y1, player1.x2, player1.y2));
+            assertEquals("crowd", lobby.gameList.get(0).selectWord(player1.x1, player1.y1, player1.x2, player1.y2));
             System.out.println("|||| DIAGONAL UP WORD TEST: PASSED ||||");
 
 
@@ -446,6 +483,9 @@ extends TestCase
             S.victores = Integer.toString(player4.numberOfVictores);
             S.x = 4;
             S.y = 2;
+            //Javascript handles this for us
+            player4.x1 = S.x;
+            player4.y1 = S.y;
 
             //We know what this does by now
             lobby.updateLobby(S);
@@ -460,14 +500,17 @@ extends TestCase
             S.victores = Integer.toString(player4.numberOfVictores);
             S.x = 9;
             S.y = 2;
+            //Javascript handles this for us
+            player4.x2 = S.x;
+            player4.y2 = S.y;
 
             //Update
             lobby.updateLobby(S);
 
             //check if kizvzw is a valid word
             assertEquals("resetBoard", lobby.gameList.get(0).boardButtonMessage);
-            assertEquals("horizontal", lobby.gameList.get(0).checkOrientation(4,2,9,2));
-            assertEquals("kizvzw", lobby.gameList.get(0).selectWord(4,2,9,2));
+            assertEquals("horizontal", lobby.gameList.get(0).checkOrientation(player4.x1, player4.y1, player4.x2, player4.y2));
+            assertEquals("kizvzw", lobby.gameList.get(0).selectWord(player4.x1, player4.y1, player4.x2, player4.y2));
             System.out.println("|||| JARGON WORD TEST: PASSED ||||");
 
             //Since we got here without failing the color broadcast test. This means we are showing the right color for each player
@@ -496,9 +539,175 @@ extends TestCase
             //Is the game joinable?
             assertEquals(false, lobby.gameList.get(0).isAvailableToJoin);
             System.out.println("|||| GAME EXIT CONDITION : PASSED ||||");
+            //////////////////////////////////////////////GAME ROOM TESTING ENDS HERE
 
+
+        } ///////////////////////////////SEED 2 /////////////////////////////ENDS HERE
+
+        if(env_variable != null)  //////////////////////////////////SEED 3///////
+        if(env_variable.compareTo("3") == 0) //If the environmental variable is 3
+        {
+        //Horizontal word future (8,0) (13,0)
+        //vertical down word seas (33, 6) (33, 9)
+        //vertical up word musical (0, 27) (0, 21)
+        //diagonal up word oscar (15, 13) (19, 9)
+        //diagonal down word paste (2, 30) (6, 34)
+        //For reference Players 1,2,4 are also in the lobby
+        //Player 1 and PLayer 2 have created rooms
+        //Player 5 joins the lobby
+        lobby.addPlayer(player5.username, Integer.toString(player5.numberOfVictores));
+        assertEquals(4, lobby.playerList.size());  //Are there 4 people in the lobby?
+        //Player 6 joins the lobby
+        lobby.addPlayer(player6.username, Integer.toString(player6.numberOfVictores));
+        assertEquals(5, lobby.playerList.size());  //Are there 5 people in the lobby?
+
+        //Let's make Player 5 and Player 6 join PLayer2's room
+        //So we can test the rooms simultaneously
+        //Player 5 joins the rooms created by Player 2
+        S = new ServerEvent("", "", null, 0, "", "", "");
+        S.button = "joinRoomButton";  //What button was pressed
+        S.event = "lobbyEvent";       //what kind of event it was
+        S.player = player5;            //who did it
+        S.victores = Integer.toString(player5.numberOfVictores); //
+        S.occurrence = 2; //Since we are joining player1's room
+
+        //Set player1's game ID since javascript does that for us
+        player5.iD = lobby.gameList.get(S.occurrence - 1).gameID;
+        //update the state of the lobby
+        lobby.updateLobby(S);
+        System.out.println("Player 5 joined the room");
+
+
+        //Player 6 joins the rooms created by Player 2
+        S = new ServerEvent("", "", null, 0, "", "", "");
+        S.button = "joinRoomButton";  //What button was pressed
+        S.event = "lobbyEvent";       //what kind of event it was
+        S.player = player6;            //who did it
+        S.victores = Integer.toString(player6.numberOfVictores); //
+        S.occurrence = 2; //Since we are joining player1's room
+
+        //Set player1's game ID since javascript does that for us
+        player6.iD = lobby.gameList.get(S.occurrence - 1).gameID;
+        //update the state of the lobby
+        lobby.updateLobby(S);
+        System.out.println("Player 6 joined the room");
+
+        //Here we have Player1, Player2, Player4 in the first room
+        //Player5, Player6 in the second room
+        //Let's make sure that this information is true
+        assertEquals(3, lobby.gameList.get(0).playerList.size()); //Are there 3 people in the first room?
+        assertEquals(2, lobby.gameList.get(1).playerList.size()); //Are there 2 people in the second room?
+        System.out.println("|||| ROOM SIZE TEST : PASSED ||||");
+
+        //Let's start the game in room 2
+        //Player 5 starts a game
+        S = new ServerEvent("", "", null, 0, "", "", "");
+        S.button = "startGame";  
+        S.event = "gameEvent";        
+        //timer = 0;  //This is on javaScript side
+        S.player = player5; //Player 5 starts a game in room 2             
+        S.iidd = player5.iD;
+        S.victores = Integer.toString(player5.numberOfVictores);
+        //update the state of the lobby
+        lobby.updateLobby(S);
+        System.out.println("The game has started.. in room 2");
+
+        //At this point game 1 has already started //let's check if it is joinable
+        assertEquals(true, lobby.gameList.get(0).gameHasStarted);
+        assertEquals(false, lobby.gameList.get(0).isAvailableToJoin);
+        //At this point game 2 has already started as well. //let's check if it is joinable
+        assertEquals(true, lobby.gameList.get(1).gameHasStarted);
+        assertEquals(false, lobby.gameList.get(1).isAvailableToJoin);
+
+        /////////////////////Testing if 2 games can be played simultaneously
+
+        //Let's check if two players can select the same word in two different rooms
+        //Player 1 and Player 5 will select the word future at the same time different rooms
+        //Player 1 selects a word // The word is future (8,0) (13,0) //firstClick //Room 1
+         S = new ServerEvent("", "", null, 0, "", "", "");
+         S.player = player1;
+         S.button = "boardClick";
+         S.event = "gameEvent";
+         S.message = "f"; //first letter clicked is f
+         S.iidd = player1.iD;
+         S.victores = Integer.toString(player1.numberOfVictores);
+         S.x = 8;
+         S.y = 0;
+         //Javascript handles this for us
+         player1.x1 = S.x;
+         player1.y1 = S.y;
+
+         //update the lobby state to process the first click for player1
+         lobby.updateLobby(S);
+
+         //Player 5 also selects the word future // The word is future (8,0) (13,0) //firstClick //Room 2
+          S = new ServerEvent("", "", null, 0, "", "", "");
+          S.player = player5;
+          S.button = "boardClick";
+          S.event = "gameEvent";
+          S.message = "f"; //first letter clicked is h
+          S.iidd = player5.iD;
+          S.victores = Integer.toString(player5.numberOfVictores);
+          S.x = 8;
+          S.y = 0;
+        //Javascript handles this for us
+         player5.x1 = S.x;
+         player5.y1 = S.y;
+
+          //update the lobby state to process the first click for player5
+          lobby.updateLobby(S);
+
+          //Processing Second click for player1
+          S = new ServerEvent("", "", null, 0, "", "", "");
+          S.player = player1;
+          S.button = "boardClick";
+          S.event = "gameEvent";
+          S.message = "e"; //first letter clicked is f
+          S.iidd = player1.iD;
+          S.victores = Integer.toString(player1.numberOfVictores);
+          S.x = 13;
+          S.y = 0;
+          //Javascript handles this for us
+          player1.x2 = S.x;
+          player1.y2 = S.y;
+
+          //update the lobby
+          lobby.updateLobby(S);
+
+          //Processing Second click for player5
+          S = new ServerEvent("", "", null, 0, "", "", "");
+          S.player = player5;
+          S.button = "boardClick";
+          S.event = "gameEvent";
+          S.message = "e"; //first letter clicked is h
+          S.iidd = player5.iD;
+          S.victores = Integer.toString(player5.numberOfVictores);
+          S.x = 13;
+          S.y = 0;
+          //Javascript handles this for us
+         player5.x2 = S.x;
+         player5.y2 = S.y;
+
+          //update the lobby
+          lobby.updateLobby(S);
+
+          //System.out.println("|||||||||||||||||" + player1.x1 + player1.y1 + player1.x2 + player1.y2);
+          //Lets check if the horizontal word is correct in both rooms //future (8,0) (13,0)
+          assertEquals("updateBoard", lobby.gameList.get(0).boardButtonMessage);
+          assertEquals("horizontal", lobby.gameList.get(0).checkOrientation(player1.x1, player1.y1, player1.x2, player1.y2));
+          assertEquals("future", lobby.gameList.get(0).selectWord(player1.x1, player1.y1, player1.x2, player1.y2));
+          System.out.println("|||| HORIZONTAL WORD TEST: PASSED (ROOM 1)||||");
+
+          assertEquals("updateBoard", lobby.gameList.get(1).boardButtonMessage);
+          assertEquals("horizontal", lobby.gameList.get(1).checkOrientation(player5.x1, player5.y1, player5.x2, player5.y2));
+          assertEquals("future", lobby.gameList.get(1).selectWord(player5.x1, player5.y1, player5.x2, player5.y2));
+          System.out.println("|||| HORIZONTAL WORD TEST: PASSED (ROOM 2)||||");
+
+
+        
 
         }
+        ////////////////////////////////////////////////////////SEED 3////////////
 
 
             //Let's check if the player's color match
@@ -509,10 +718,6 @@ extends TestCase
                 assertEquals(i + 1, lobby.gameList.get(0).playerList.get(i).color);
             }
             System.out.println("|||| PLAYER COLOR TEST : PASSED ||||");
-        
-
-
-        //////////////////////////////////////////////GAME ROOM TESTING ENDS HERE
 
 
     }
