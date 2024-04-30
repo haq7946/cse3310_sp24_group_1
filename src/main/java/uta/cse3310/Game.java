@@ -47,9 +47,6 @@ public class Game
         bank = null;
         clock = null;
         isAvailableToJoin = true;
-        //startGame();
-
-        //I moved the board initialization stuff here to startGame() - AE 11:30 04/13
     }
 
     public String getGameID()
@@ -74,15 +71,11 @@ public class Game
         }
         board.initializeBoard(bank);
         clock = new Clock(300);
-        //board.printBoardArray();
-        //System.out.println(bank);
-        //System.out.println(board);
         for(int i = 0; i < playerList.size(); i++) //Set everyone's score to 0
         {
             playerList.get(i).score = 0;
         }
         gameHasStarted = true;
-        //gameResponse = "start"; //Already does that in lobby.java but keeping it just in case -Bryan
     }
 
     public void setGameID(int gam) //we are never going to use this method
@@ -98,21 +91,6 @@ public class Game
     public void setNumberOfPlayers(int num) //we are never going to use this method
     {
         numberOfPlayers = num;
-    }
-
-    public void updateState(ServerEvent U)
-    {
-
-    }
-
-    public void exitGame() //what does this method do
-    {
-
-    }
-
-    public void initializeWordList()
-    {
-
     }
 
     public void crossOutWord(String word, WordBank wordBank)
@@ -245,29 +223,10 @@ public class Game
         return playerMax;
     }
 
-    public void roomChat(String message, String gameID)
-    {
-
-    }
-
     public String[] chooseWords(File file)
     {
         return null;
     }
-/*
-    public void addPlayer(Player newPlayer)
-    {
-        if (numberOfPlayers < 4) //check that game has less than 4 players
-        {
-            playerList.add(newPlayer);
-            numberOfPlayers++;
-        }
-        else
-        {
-            System.out.println("Error: too many players in that game");
-        }
-    }
-    */
 
     public void addPlayer(String name, String victories) // add a new player to the lobby
     {
@@ -329,7 +288,4 @@ public class Game
     {
         return playerList;
     }
-
-
-
 }
