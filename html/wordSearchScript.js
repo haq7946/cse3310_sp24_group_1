@@ -303,9 +303,9 @@ function hideShow(evt)   //This function hides and shows pages
 }
 function fillVersion(env)
 {
-    head = document.getElementById("head");
+    head = document.getElementById("ver");
     console.log("ENVIRONMENTAL VARIABLE IS " + env);
-    head.innerHTML = "The World Search Game v. " + env;
+    head.innerHTML = env;
 }
 function nameFunction() //This is basically what happens when we press submit (This is submit button)
 {   //gets the username
