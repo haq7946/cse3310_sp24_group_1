@@ -950,6 +950,82 @@ extends TestCase
           System.out.println("|||| DIAGONAL UP WORD TEST: PASSED (ROOM 2)||||");
 
 
+          S = new ServerEvent("", "", null, 0, "", "", "");
+          S.player = player1;
+          S.button = "boardClick";
+          S.event = "gameEvent";
+          S.message = "p"; //first letter clicked is p
+          S.iidd = player1.iD;
+          S.victores = Integer.toString(player1.numberOfVictores);
+          S.x = 2;
+          S.y = 30;
+          //Javascript handles this for us
+          player1.x1 = S.x;
+          player1.y1 = S.y;
+ 
+          //update the lobby state to process the first click for player1
+          lobby.updateLobby(S);
+
+          S = new ServerEvent("", "", null, 0, "", "", "");
+          S.player = player5;
+          S.button = "boardClick";
+          S.event = "gameEvent";
+          S.message = "p"; //first letter clicked is p
+          S.iidd = player5.iD;
+          S.victores = Integer.toString(player5.numberOfVictores);
+          S.x = 2;
+          S.y = 30;
+         //Javascript handles this for us
+         player5.x1 = S.x;
+         player5.y1 = S.y;
+
+          //update the lobby state to process the first click for player5
+          lobby.updateLobby(S);
+
+          S = new ServerEvent("", "", null, 0, "", "", "");
+          S.player = player1;
+          S.button = "boardClick";
+          S.event = "gameEvent";
+          S.message = "e"; //last letter clicked is e
+          S.iidd = player1.iD;
+          S.victores = Integer.toString(player1.numberOfVictores);
+          S.x = 6;
+          S.y = 34;
+          //Javascript handles this for us
+          player1.x2 = S.x;
+          player1.y2 = S.y;
+ 
+          //update the lobby state to process the first click for player1
+          lobby.updateLobby(S);
+
+          S = new ServerEvent("", "", null, 0, "", "", "");
+          S.player = player5;
+          S.button = "boardClick";
+          S.event = "gameEvent";
+          S.message = "e"; //last letter clicked is e
+          S.iidd = player5.iD;
+          S.victores = Integer.toString(player5.numberOfVictores);
+          S.x = 6;
+          S.y = 34;
+          //Javascript handles this for us
+          player5.x2 = S.x;
+          player5.y2 = S.y;
+ 
+          //update the lobby state to process the first click for player5
+          lobby.updateLobby(S);
+
+            //System.out.println("|||||||||||||||||" + player1.x1 + player1.y1 + player1.x2 + player1.y2);
+          //Lets check if the horizontal word is correct in both rooms //future (8,0) (13,0)
+          assertEquals("updateBoard", lobby.gameList.get(0).boardButtonMessage);
+          assertEquals("diagonal", lobby.gameList.get(0).checkOrientation(player1.x1, player1.y1, player1.x2, player1.y2));
+          assertEquals("paste", lobby.gameList.get(0).selectWord(player1.x1, player1.y1, player1.x2, player1.y2));
+          System.out.println("|||| DIAGONAL DOWN WORD TEST: PASSED (ROOM 1)||||");
+
+          assertEquals("updateBoard", lobby.gameList.get(1).boardButtonMessage);
+          assertEquals("diagonal", lobby.gameList.get(1).checkOrientation(player5.x1, player5.y1, player5.x2, player5.y2));
+          assertEquals("paste", lobby.gameList.get(1).selectWord(player5.x1, player5.y1, player5.x2, player5.y2));
+          System.out.println("|||| DIAGONAL DOWN WORD TEST: PASSED (ROOM 2)||||");
+
         }
         ////////////////////////////////////////////////////////SEED 3////////////
 
