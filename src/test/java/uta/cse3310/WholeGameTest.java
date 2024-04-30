@@ -704,6 +704,24 @@ extends TestCase
           System.out.println("|||| HORIZONTAL WORD TEST: PASSED (ROOM 2)||||");
 
 
+
+          //Player 4 decides to leave the game now
+          S = new ServerEvent("", "", null, 0, "", "", "");
+          S.button = "backToLobbyButton";
+          S.event = "lobbyEvent";
+          S.player = player4;
+          S.iidd = player4.iD;
+          S.victores = Integer.toString(player4.numberOfVictores);
+
+          //update the lobby
+          lobby.updateLobby(S);
+
+          //Did the room size update? Player 4 left the room
+          assertEquals(2, lobby.gameList.get(0).playerList.size());
+          System.out.println("Player 4 left the room");
+          System.out.println("|||| ROOM EXIT CHECK : PASSED ||||");
+
+          
         
 
         }
